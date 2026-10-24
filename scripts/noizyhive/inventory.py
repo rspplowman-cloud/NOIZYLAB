@@ -1,11 +1,11 @@
 #!/usr/bin/env python3
-"""NOIZYLAB · scripts/inventory/inventory.py
+"""NOIZYLAB · scripts/noizyhive/inventory.py
 
 Read-only map of everything under the given folders, so it can be organized
 safely. Moves, renames and deletes NOTHING.
 
 Usage (on the Mac):
-    python3 scripts/inventory/inventory.py ~/NOIZYBEAST /Volumes/12TB \
+    python3 scripts/noizyhive/inventory.py ~/NOIZYBEAST /Volumes/12TB \
         ~/Library/Mobile\\ Documents/com~apple~CloudDocs
 
 Writes to ~/NOIZYBEAST/inventory/<timestamp>/:

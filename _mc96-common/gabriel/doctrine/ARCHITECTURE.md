@@ -53,13 +53,13 @@ The Agent SDK lets us specify `model` per call. GABRIEL uses:
 
 | Task type                                    | Model                       | Why                                        |
 | -------------------------------------------- | --------------------------- | ------------------------------------------ |
-| Boot greeting, status checks                 | `claude-haiku-4-5-20251001` | Fast, cheap, canned outputs                |
-| Memory lookups, grep                         | `claude-haiku-4-5-20251001` | Local MCPs, simple orchestration           |
-| Normal dev work, code editing                | `claude-sonnet-4-6`         | Best balance quality/speed/cost            |
-| Architectural reasoning, multi-hour missions | `claude-opus-4-7`           | Maximum reasoning, 1M context when needed  |
-| Voice responses (sub-3s latency target)      | `claude-haiku-4-5-20251001` | TTS pipeline needs sub-second token starts |
+| Boot greeting, status checks                 | `claude-haiku-5-5`          | Fast, cheap, canned outputs                |
+| Memory lookups, grep                         | `claude-haiku-5-5`          | Local MCPs, simple orchestration           |
+| Normal dev work, code editing                | `claude-sonnet-5-5`         | Best balance quality/speed/cost            |
+| Architectural reasoning, multi-hour missions | `claude-opus-5-5`           | Maximum reasoning, 1M context when needed  |
+| Voice responses (sub-3s latency target)      | `claude-haiku-5-5`          | TTS pipeline needs sub-second token starts |
 
-Router function: `src/router.ts` inspects input, chooses model, logs routing decision.
+Router function: `source/router.ts` inspects input, chooses model, logs routing decision.
 
 ## What makes this "more agentic" than base Claude Code
 

@@ -4,7 +4,7 @@ One command helps everything find its correct home.
 
 ## Inhale (read-only, nothing moves)
 
-`HALT_URL=<halt worker> scripts/inventory/hive-inhale.sh`
+`HALT_URL=<halt worker> scripts/noizyhive/hive-inhale.sh`
 
 - No folders given: it scans your home folder plus **every drive** in `/Volumes`.
 - Writes one run folder: `~/NOIZYBEAST/NOIZYHIVE/runs/<time>/`.
@@ -31,7 +31,7 @@ One command helps everything find its correct home.
 
 ## Rescue (do this before exhale)
 
-`HALT_URL=<halt worker> scripts/inventory/hive-inhale.sh --rescue <run folder> --push`
+`HALT_URL=<halt worker> scripts/noizyhive/hive-inhale.sh --rescue <run folder> --push`
 
 - **Unsaved and new files** in a git project are saved to a new branch, `noizyhive/rescue-<time>`.
   - Your files, staging area and current branch are **not changed**.
@@ -43,8 +43,8 @@ One command helps everything find its correct home.
 ## Exhale and undo
 
 1. Rescue first (above). Projects with no remote still need one; `rescue.md` lists them.
-2. Exhale: `HALT_URL=<halt worker> scripts/inventory/hive-inhale.sh --apply <run folder>`
-3. Undo: `HALT_URL=<halt worker> scripts/inventory/hive-inhale.sh --undo <run folder>`
+2. Exhale: `HALT_URL=<halt worker> scripts/noizyhive/hive-inhale.sh --apply <run folder>`
+3. Undo: `HALT_URL=<halt worker> scripts/noizyhive/hive-inhale.sh --undo <run folder>`
 
 ## Rehearsed
 
@@ -68,7 +68,7 @@ The individual steps below can also be run by hand.
 
 ## 0. The Hive: every project on every drive (read-only)
 
-`python3 scripts/inventory/hive.py ~ /Volumes/12TB /Volumes/<each other drive>`
+`python3 scripts/noizyhive/hive.py ~ /Volumes/12TB /Volumes/<each other drive>`
 
 - Treats all drives as **one hive**. It finds every code project from two years of building.
 - **Groups copies into families.**
@@ -87,7 +87,7 @@ Three steps. Each one is separate, so nothing moves until you have read the plan
 
 ## 1. Map (read-only)
 
-`python3 scripts/inventory/inventory.py ~/NOIZYBEAST /Volumes/12TB ~/Library/Mobile\ Documents/com~apple~CloudDocs`
+`python3 scripts/noizyhive/inventory.py ~/NOIZYBEAST /Volumes/12TB ~/Library/Mobile\ Documents/com~apple~CloudDocs`
 
 - Lists every file: size, date and type.
 - Finds duplicates (same content, 1 MB and up), empty folders and broken links.
@@ -95,7 +95,7 @@ Three steps. Each one is separate, so nothing moves until you have read the plan
 
 ## 2. Plan (read-only)
 
-`python3 scripts/inventory/plan.py ~/NOIZYBEAST/inventory/<time> /Volumes/12TB/MC96`
+`python3 scripts/noizyhive/plan.py ~/NOIZYBEAST/inventory/<time> /Volumes/12TB/MC96`
 
 - Read `plan.md` before step 3.
 - **Projects stay whole and in place:** git repos, code projects, and Logic, GarageBand, Pro Tools, Ableton, Xcode, Final Cut and Photos libraries.
@@ -105,9 +105,9 @@ Three steps. Each one is separate, so nothing moves until you have read the plan
 
 ## 3. Move (with undo)
 
-1. Practice run, which prints only: `python3 scripts/inventory/apply.py <inventory>/plan.csv`
-2. Real run: `HALT_URL=<halt worker> python3 scripts/inventory/apply.py <inventory>/plan.csv --yes`
-3. To undo everything: `HALT_URL=<halt worker> python3 scripts/inventory/apply.py <inventory>/undo.csv --undo --yes`
+1. Practice run, which prints only: `python3 scripts/noizyhive/apply.py <inventory>/plan.csv`
+2. Real run: `HALT_URL=<halt worker> python3 scripts/noizyhive/apply.py <inventory>/plan.csv --yes`
+3. To undo everything: `HALT_URL=<halt worker> python3 scripts/noizyhive/apply.py <inventory>/undo.csv --undo --yes`
 
 - **Checks HALT first.** If HALT is set, unreachable or not configured, it stops.
 - Logs each move **before** making it, so even a crash can be undone.

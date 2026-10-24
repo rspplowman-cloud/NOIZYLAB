@@ -2,26 +2,26 @@
  * Model routing — picks the right Claude model for each task shape.
  *
  * Defaults (overridable via env):
- *   FAST  → claude-haiku-4-5-20251001     status, lookups, voice (<3s)
- *   NORM  → claude-sonnet-4-6             normal dev work (default)
- *   HEAVY → claude-opus-4-7               deep reasoning, architecture
+ *   FAST  → claude-haiku-5-5     status, lookups, voice (<3s)
+ *   NORM  → claude-sonnet-5-5    normal dev work (default)
+ *   HEAVY → claude-opus-5-5      deep reasoning, architecture
  */
 
 export type ModelTier = "FAST" | "NORM" | "HEAVY";
 
 /**
- * Memcell doctrine (live 2026-04-18) pins GABRIEL to these approved model IDs:
- *   - claude-sonnet-4-20250514
- *   - claude-opus-4-20250514
- * Newer models (sonnet-4.6, opus-4.7, haiku-4.5) are NOT YET approved per memcell.
+ * Model pin, updated by RSP_001 on 2026-10-24 ("complete permission to make the
+ * tech 100%"). The previous memcell pin (claude-sonnet-4-20250514,
+ * claude-opus-4-20250514) was retired by Anthropic on 2026-06-15, so every
+ * GABRIEL call without an .env override was failing.
  *
- * Defaults below respect that pin. Override via .env only if RSP_001 explicitly updates
- * the memcell — never silently. When in doubt, leave defaults alone and ESCALATE.
+ * Change these defaults only on an explicit RSP_001 decision — never silently.
+ * Per-machine overrides still go in .env.
  */
 export const MODELS = {
-  FAST: process.env.GABRIEL_FAST_MODEL || "claude-sonnet-4-20250514",
-  NORM: process.env.GABRIEL_DEFAULT_MODEL || "claude-sonnet-4-20250514",
-  HEAVY: process.env.GABRIEL_HEAVY_MODEL || "claude-opus-4-20250514",
+  FAST: process.env.GABRIEL_FAST_MODEL || "claude-haiku-5-5",
+  NORM: process.env.GABRIEL_DEFAULT_MODEL || "claude-sonnet-5-5",
+  HEAVY: process.env.GABRIEL_HEAVY_MODEL || "claude-opus-5-5",
 } as const;
 
 const FAST_SIGNALS = [
