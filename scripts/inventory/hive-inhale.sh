@@ -7,6 +7,8 @@
 #     HALT_URL=https://... scripts/inventory/hive-inhale.sh --apply <run folder>
 #   Undo an exhale:
 #     HALT_URL=https://... scripts/inventory/hive-inhale.sh --undo <run folder>
+#   Rescue unsaved / never-committed work first (snapshot branches; files untouched):
+#     HALT_URL=https://... scripts/inventory/hive-inhale.sh --rescue <run folder> [--push]
 #
 # Inhale does, in one run folder (~/NOIZYBEAST/NOIZYHIVE/runs/<time>/):
 #   1. HALT check (fails closed).
@@ -28,6 +30,13 @@ DEST="${NOIZYHIVE_DEST:-/Volumes/12TB/NOIZYHIVE}"
 RUNS="$HOME/NOIZYBEAST/NOIZYHIVE/runs"
 
 halt() { HALT_URL="${HALT_URL:-}" bash "$HERE/../halt/halt_check.sh" || { echo "Stopped: HALT is set, unreachable or HALT_URL is unset." >&2; exit 1; }; }
+
+if [[ "${1:-}" == "--rescue" ]]; then
+  RUN="${2:?give the run folder}"
+  halt
+  python3 "$HERE/hive_rescue.py" "$RUN" --yes ${3:-}
+  exit 0
+fi
 
 if [[ "${1:-}" == "--apply" || "${1:-}" == "--undo" ]]; then
   RUN="${2:?give the run folder}"
@@ -87,7 +96,7 @@ echo "== 4/4 Homes for files";       python3 "$HERE/plan.py" "$RUN" "$DEST"
   echo "3. **plan.md** — the home for every loose file."
   echo "4. **summary.md** — sizes, file types, duplicates, empty folders."; echo
   echo "## Then"; echo
-  echo "- Rescue first: commit and push every project HIVE.md marks at risk."
+  echo "- Rescue first: \`HALT_URL=... $0 --rescue $RUN --push\` (saves unsaved work on new branches; files untouched)."
   echo "- Move loose secrets into Proton Pass (VAULT-OPS)."
   echo "- Exhale: \`HALT_URL=... $0 --apply $RUN\`"
   echo "- Undo:   \`HALT_URL=... $0 --undo $RUN\`"

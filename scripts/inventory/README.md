@@ -29,9 +29,20 @@ One command helps everything find its correct home.
 - A project folder on **another drive** is listed "move by hand" instead of being copied.
 - **Nothing is ever deleted.**
 
+## Rescue (do this before exhale)
+
+`HALT_URL=<halt worker> scripts/inventory/hive-inhale.sh --rescue <run folder> --push`
+
+- **Unsaved and new files** in a git project are saved to a new branch, `noizyhive/rescue-<time>`.
+  - Your files, staging area and current branch are **not changed**.
+- **Projects with no git** get git and a first commit. Secrets go into `.git/info/exclude`.
+- `--push` sends the rescue branch to the project's own remote, under that **new** name. Existing branches are never overwritten.
+- **Never committed:** `.env` files, keys and certificates, credential files, and anything over 50 MB.
+- Report: `rescue.md` in the run folder.
+
 ## Exhale and undo
 
-1. Rescue first. Commit and push every project that `HIVE.md` marks at risk.
+1. Rescue first (above). Projects with no remote still need one; `rescue.md` lists them.
 2. Exhale: `HALT_URL=<halt worker> scripts/inventory/hive-inhale.sh --apply <run folder>`
 3. Undo: `HALT_URL=<halt worker> scripts/inventory/hive-inhale.sh --undo <run folder>`
 
@@ -43,6 +54,11 @@ Rehearsed on a fake two-drive hive:
 - `~/Library` and `~/.ssh` were never planned.
 - Undo put every file back, byte for byte.
 - With HALT set, nothing ran.
+- Rescue was rehearsed on a git project with unsaved edits, new files and a `.env`.
+  - Files, index and branch were unchanged.
+  - The work was saved and pushed to a new branch.
+  - The `.env` was never committed.
+- On a no-git project: it got a clean first commit, and `git add .` afterwards still skipped the `.env`.
 
 ---
 
