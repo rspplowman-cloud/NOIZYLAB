@@ -32,7 +32,7 @@ RSPNOIZY/NOIZYLAB/
 ├── noizyfish/lifeluv/              ← NOIZYFISH LIFELUV program
 │   ├── myfamily/                   ← myFAMILY.AI family share app
 │   ├── tokens/                     ← LLT pay-it-forward ledger (code)
-│   └── LIFELUV.md                  ← The three parts + LLT Ledger definition
+│   └── LIFELUV.md                  ← Full program doctrine + LLT Ledger definition
 │
 ├── voice/                          ← Sovereign voice pipeline
 │   ├── consent/                    ← ConsentOracle + token logic
