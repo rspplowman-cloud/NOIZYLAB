@@ -14,3 +14,7 @@ dist/
 # Private notes export (never commit)
 notes-export/
 notes-export.zip
+
+# Python cache
+__pycache__/
+*.pyc

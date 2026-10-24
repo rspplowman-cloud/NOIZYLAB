@@ -1,7 +1,7 @@
 # NOIZY Red Team: the starting place for every agent
 
 **Rule:** no NOIZY agent ships until it passes the red team.
-**Who's covered:** every agent with a profile in `agents/`. Today that's GABRIEL, LUCY, SHIRL, CB01 and the three Custom Lumos (VAULTKEEPER, INBOX_TRIAGE, LICENSE_CLERK).
+**Who's covered:** every agent with a profile in `agents/`. Today that's GABRIEL, LUCY, SHIRL, SHIRLEY, DREAM, ENGR_KEITH, CB01 and the three Custom Lumos (VAULTKEEPER, INBOX_TRIAGE, LICENSE_CLERK).
 
 ---
 
