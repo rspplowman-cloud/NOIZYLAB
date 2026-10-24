@@ -2,13 +2,13 @@
 # NOIZYHIVE · hive-inhale.sh — every drive is one hive. Help everything find its correct home.
 #
 #   Inhale (read-only; nothing moves):
-#     HALT_URL=https://... scripts/inventory/hive-inhale.sh [folders or drives...]
+#     HALT_URL=https://... scripts/noizyhive/hive-inhale.sh [folders or drives...]
 #   Exhale (after RSP_001 has read the plans):
-#     HALT_URL=https://... scripts/inventory/hive-inhale.sh --apply <run folder>
+#     HALT_URL=https://... scripts/noizyhive/hive-inhale.sh --apply <run folder>
 #   Undo an exhale:
-#     HALT_URL=https://... scripts/inventory/hive-inhale.sh --undo <run folder>
+#     HALT_URL=https://... scripts/noizyhive/hive-inhale.sh --undo <run folder>
 #   Rescue unsaved / never-committed work first (snapshot branches; files untouched):
-#     HALT_URL=https://... scripts/inventory/hive-inhale.sh --rescue <run folder> [--push]
+#     HALT_URL=https://... scripts/noizyhive/hive-inhale.sh --rescue <run folder> [--push]
 #
 # Inhale does, in one run folder (~/NOIZYBEAST/NOIZYHIVE/runs/<time>/):
 #   1. HALT check (fails closed).

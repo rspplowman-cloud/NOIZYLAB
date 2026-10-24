@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
-"""NOIZYLAB · scripts/inventory/plan.py
+"""NOIZYLAB · scripts/noizyhive/plan.py
 
 Turns an inventory (files.csv + duplicates.csv) into a MOVE PLAN. Moves nothing.
 
 Usage:
-    python3 scripts/inventory/plan.py ~/NOIZYBEAST/inventory/<stamp> /Volumes/12TB/MC96
+    python3 scripts/noizyhive/plan.py ~/NOIZYBEAST/inventory/<stamp> /Volumes/12TB/MC96
 
 Writes <inventory>/plan.csv (from, to, reason) and plan.md (what will happen).
 

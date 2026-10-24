@@ -1,11 +1,11 @@
 #!/usr/bin/env python3
-"""NOIZYLAB · scripts/inventory/apply.py
+"""NOIZYLAB · scripts/noizyhive/apply.py
 
 Carries out a reviewed plan.csv, with a full undo.
 
 Usage:
-    HALT_URL=https://... python3 scripts/inventory/apply.py <inventory>/plan.csv --yes
-    python3 scripts/inventory/apply.py <inventory>/undo.csv --undo --yes
+    HALT_URL=https://... python3 scripts/noizyhive/apply.py <inventory>/plan.csv --yes
+    python3 scripts/noizyhive/apply.py <inventory>/undo.csv --undo --yes
 
 - Checks HALT first (scripts/halt/halt_check.sh). Unreachable counts as halted.
 - Writes each move to undo.csv BEFORE making it, so a crash can be undone.

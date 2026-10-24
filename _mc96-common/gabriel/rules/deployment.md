@@ -82,7 +82,7 @@ MISTRAL_API_KEY        — Mistral models
 COHERE_API_KEY         — Command R+
 PERPLEXITY_API_KEY     — Search model
 HEAVEN_URL           — https://heaven.rsp-5f3.workers.dev
-GABRIEL_MODEL          — default: claude-sonnet-4
+GABRIEL_DEFAULT_MODEL  — default: claude-sonnet-5-5 (FAST: GABRIEL_FAST_MODEL, HEAVY: GABRIEL_HEAVY_MODEL)
 JWT_SECRET             — DreamChamber auth
 VOICE_AUTH_TOKEN       — Voice bridge auth
 ```

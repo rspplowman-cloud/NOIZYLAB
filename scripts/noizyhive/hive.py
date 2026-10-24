@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""NOIZYLAB · scripts/inventory/hive.py
+"""NOIZYLAB · scripts/noizyhive/hive.py
 
 Treats every drive as ONE hive. Finds every code project, works out which
 folders are copies of the same project, and flags work at risk. Read-only:
@@ -7,7 +7,7 @@ it never moves, edits, commits or pushes anything, and never reads secret
 values (it only notes that a .env file exists).
 
 Usage (on the Mac):
-    python3 scripts/inventory/hive.py ~ /Volumes/12TB /Volumes/<other drives>
+    python3 scripts/noizyhive/hive.py ~ /Volumes/12TB /Volumes/<other drives>
 
 Writes ~/NOIZYBEAST/inventory/hive-<time>/:
     hive.csv   one row per project

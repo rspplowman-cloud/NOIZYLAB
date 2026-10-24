@@ -1,13 +1,13 @@
 #!/usr/bin/env python3
-"""NOIZYLAB · scripts/inventory/hive_rescue.py
+"""NOIZYLAB · scripts/noizyhive/hive_rescue.py
 
 Rescues uncommitted and unprotected work in every project of a hive run,
 WITHOUT touching anyone's files, staging area or current branch.
 
 Usage:
-    python3 scripts/inventory/hive_rescue.py <run folder>            # dry run
-    python3 scripts/inventory/hive_rescue.py <run folder> --yes      # rescue locally
-    python3 scripts/inventory/hive_rescue.py <run folder> --yes --push
+    python3 scripts/noizyhive/hive_rescue.py <run folder>            # dry run
+    python3 scripts/noizyhive/hive_rescue.py <run folder> --yes      # rescue locally
+    python3 scripts/noizyhive/hive_rescue.py <run folder> --yes --push
 
 What it does, per project in hive.csv:
 - Git, with unsaved changes or untracked files:

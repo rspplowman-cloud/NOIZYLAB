@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""NOIZYLAB · scripts/inventory/hive_plan.py
+"""NOIZYLAB · scripts/noizyhive/hive_plan.py
 
 Gives every PROJECT in the hive its home. Reads hive.csv (from hive.py) and
 writes hive-plan.csv (from, to, reason) in the same folder. Moves nothing.
@@ -12,7 +12,7 @@ Homes
 - A move to another drive is NOT planned (folders only move by instant rename
   on the same drive). Those are listed as "move by hand" in hive-plan.md.
 
-Usage:  python3 scripts/inventory/hive_plan.py <hive-folder> <dest>
+Usage:  python3 scripts/noizyhive/hive_plan.py <hive-folder> <dest>
 
 killSwitchHolder: RSP_001 | covenant: 75/25 | canon: noizy.ai
 """
