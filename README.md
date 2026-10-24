@@ -27,7 +27,7 @@ RSPNOIZY/NOIZYLAB/
 │   ├── scripts/                    ← Automation scripts
 │   ├── skills/                     ← Skill definitions
 │   ├── source/                     ← Source modules
-│   └── ui/                         ← UI components
+│   └── ui/                         ← UI components (characters/ = GABRIEL + LUCY portraits)
 │
 ├── noizyfish/lifeluv/              ← NOIZYFISH LIFELUV program
 │   ├── myfamily/                   ← myFAMILY.AI family share app
