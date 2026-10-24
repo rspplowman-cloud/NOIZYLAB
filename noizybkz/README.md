@@ -143,3 +143,8 @@ npm test     # Node ≥ 22.13; uses node:sqlite to stand in for D1
 ## Licence
 
 AGPL-3.0-or-later. Because NOIZYBKZ runs as a cloud service, the AGPL means anyone who runs a modified version for other people must share their changes. It fits within the GPL-3.0 umbrella in `docs/prune00/`.
+
+## Screenshots
+
+- [Dashboard](./lifeluv-dashboard.png)
+- [App screenshot](./screenshot.png)

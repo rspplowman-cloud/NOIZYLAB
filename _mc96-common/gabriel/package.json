@@ -9,7 +9,7 @@
   },
   "scripts": {
     "build": "tsc",
-    "dev": "tsx src/index.ts",
+    "dev": "tsx source/index.ts",
     "start": "node dist/index.js",
     "daemon": "node dist/index.js --daemon",
     "chat": "node dist/index.js --chat",
