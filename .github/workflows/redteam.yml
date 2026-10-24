@@ -47,3 +47,21 @@ jobs:
       - uses: actions/setup-node@v4
         with: { node-version: "22" }
       - run: node scripts/cf-watch/cf_watch.mjs --dry-run
+  agent-mcp:
+    runs-on: ubuntu-latest
+    defaults: { run: { working-directory: _mc96-common/gabriel/mcp } }
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: "22" }
+      - run: npm ci
+      - run: npm test
+  gabriel-typecheck:
+    runs-on: ubuntu-latest
+    defaults: { run: { working-directory: _mc96-common/gabriel } }
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: "22" }
+      - run: npm ci
+      - run: npx tsc --noEmit -p .

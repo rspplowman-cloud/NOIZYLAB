@@ -27,4 +27,5 @@ Every doc in `docs/`, by area. Add a line here when you add a doc.
 | NOIZYHIVE | [scripts/noizyhive/README.md](../scripts/noizyhive/README.md) | Every drive as one hive: one command gives every project and file its home, with undo |
 | Notes | [scripts/notes/README.md](../scripts/notes/README.md) | Export every Apple Note for the rebuild |
 | Identity | [PASSWORD-INHALE-RUNBOOK.md](./identity/PASSWORD-INHALE-RUNBOOK.md) | Move every password on the M2 Ultra into Proton Pass |
+| Agents | [mcp/README.md](../_mc96-common/gabriel/mcp/README.md) | MCP servers for every agent: GABRIEL, LUCY, ENGR_KEITH, DREAM, CB01, SHIRLEY, FAMILY, HEAVEN |
 | Tasks | [APPLE-REMINDERS-BRIDGE.md](./tasks/APPLE-REMINDERS-BRIDGE.md) | Apple Reminders bridge |

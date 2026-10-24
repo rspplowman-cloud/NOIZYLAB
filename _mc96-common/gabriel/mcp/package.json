@@ -1,12 +1,13 @@
 {
   "name": "gabriel-mcp",
   "version": "1.0.0",
-  "description": "MCP server — GABRIEL AI Orchestration Layer (NOIZY Empire)",
+  "description": "MCP servers for the NOIZY agent family: GABRIEL, LUCY, ENGR_KEITH, DREAM, CB01, SHIRLEY, FAMILY (POPS + SHIRL), HEAVEN",
   "type": "module",
   "main": "index.js",
   "scripts": {
     "start": "node index.js",
-    "dev": "node --watch index.js"
+    "dev": "node --watch index.js",
+    "test": "node --test test/*.test.mjs"
   },
   "dependencies": {
     "@modelcontextprotocol/sdk": "^1.0.0"
