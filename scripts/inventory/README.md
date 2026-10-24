@@ -1,5 +1,22 @@
 # Organize everything: map → plan → move (with undo)
 
+## 0. The Hive: every project on every drive (read-only)
+
+`python3 scripts/inventory/hive.py ~ /Volumes/12TB /Volumes/<each other drive>`
+
+- Treats all drives as **one hive**. It finds every code project from two years of building.
+- **Groups copies into families.**
+  - Same git history means the same project.
+  - Same files means an identical copy, even without git.
+- **Suggests the best copy** of each family: it has a remote, nothing unsaved, nothing unpushed, and the newest work.
+- **Flags work at risk:**
+  - Projects with **no git**.
+  - **Unsaved** changes.
+  - Commits **never pushed**.
+  - Git with **no remote**.
+- Lists **loose `.env` and key files by name only**. It never reads what's inside them.
+- Report: `~/NOIZYBEAST/inventory/hive-<time>/HIVE.md`. Bring it here and we decide together what to keep, merge and archive.
+
 Three steps. Each one is separate, so nothing moves until you have read the plan.
 
 ## 1. Map (read-only)
