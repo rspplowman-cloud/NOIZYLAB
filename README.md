@@ -44,6 +44,8 @@ RSPNOIZY/NOIZYLAB/
 │
 ├── noizybkz/                       ← Free cloud small-business books (Worker + D1)
 │
+├── dreamchamber/                   ← DreamChamber: multi-agent creative room (API + MCP)
+│
 ├── redteam/                        ← Red-team profiles, cases + harness (every agent starts here)
 │
 ├── workers/                        ← Cloudflare Workers
