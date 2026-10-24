@@ -16,6 +16,7 @@ Every doc in `docs/`, by area. Add a line here when you add a doc.
 | Identity | [NOIZY-VAULT-SPEC.md](./identity/NOIZY-VAULT-SPEC.md) | NOIZY VAULT spec |
 | Identity | [SPARK-MAIL-SETUP.md](./identity/SPARK-MAIL-SETUP.md) | Spark Mail AI setup |
 | Infra | [M2ULTRA-CLOUD-NODE.md](./infra/M2ULTRA-CLOUD-NODE.md) | GOD (M2 Ultra) as a cloud node |
+| Infra | [REPAIR-PLAN.md](./infra/REPAIR-PLAN.md) | M2 Ultra repair plan: gates, evidence, n8n guardrail, manifest |
 | Infra | [infra/m2ultra/README.md](../infra/m2ultra/README.md) | M2 Ultra Docker stack: start-up steps |
 | Lumo | [LUMO-PROMPTS.md](./lumo/LUMO-PROMPTS.md) | Lumo role and prompts |
 | Pipeline | [PIPELINE-V5.md](./pipeline/PIPELINE-V5.md) | Pipeline v5 |
@@ -23,7 +24,7 @@ Every doc in `docs/`, by area. Add a line here when you add a doc.
 | Red team | [REDTEAM-GABRIEL-LUCY.md](./redteam/REDTEAM-GABRIEL-LUCY.md) | Red-teaming GABRIEL and LUCY |
 | Reference | [CHROME-EXTENSION-APIS.md](./reference/CHROME-EXTENSION-APIS.md) | Chrome Extension APIs (kept on file) |
 | Reference | [AGENT_SDK.md](../_mc96-common/gabriel/reference/AGENT_SDK.md) | Claude Agent SDK notes for GABRIEL |
-| Organize | [scripts/inventory/README.md](../scripts/inventory/README.md) | Map, plan and move everything, with undo |
+| NOIZYHIVE | [scripts/inventory/README.md](../scripts/inventory/README.md) | Every drive as one hive: one command gives every project and file its home, with undo |
 | Notes | [scripts/notes/README.md](../scripts/notes/README.md) | Export every Apple Note for the rebuild |
 | Identity | [PASSWORD-INHALE-RUNBOOK.md](./identity/PASSWORD-INHALE-RUNBOOK.md) | Move every password on the M2 Ultra into Proton Pass |
 | Tasks | [APPLE-REMINDERS-BRIDGE.md](./tasks/APPLE-REMINDERS-BRIDGE.md) | Apple Reminders bridge |

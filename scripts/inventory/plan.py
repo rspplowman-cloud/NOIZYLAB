@@ -9,18 +9,18 @@ Usage:
 Writes <inventory>/plan.csv (from, to, reason) and plan.md (what will happen).
 
 Rules
-- Project folders are NEVER split: anything inside a git repo, code project,
+- Project folders are NEVER split (hive.csv from the same run is obeyed first): anything inside a git repo, code project,
   Logic/GarageBand/Pro Tools/Ableton session, Xcode project, Final Cut library
   or Photos library stays exactly where it is (listed in plan.md).
 - Loose files go to <dest>/<KIND>/<YEAR>/<original name>.
 - RSP_001 voice recordings go together to <dest>/AUDIO/VOICE-RSP_001/. Nothing
   is ever deleted.
 - Extra copies of duplicates go to <dest>/_DUPLICATES_REVIEW/ for a human to
-  check. One copy (the oldest path) stays where it is.
+  check. One copy (the shortest path) goes to its normal home.
 
 killSwitchHolder: RSP_001 | covenant: 75/25 | canon: noizy.ai
 """
-import csv, os, sys
+import csv, os, re, sys
 from collections import Counter
 from pathlib import Path
 
@@ -36,12 +36,17 @@ KINDS = {
 EXT_KIND = {e: k for k, exts in KINDS.items() for e in exts.split()}
 
 # A folder containing any of these is a project: keep it whole, never split it.
-PROJECT_MARKERS = {".git", "package.json", "pyproject.toml", "Cargo.toml", "go.mod",
-                   "wrangler.jsonc", "wrangler.toml", "docker-compose.yml", "Makefile"}
+PROJECT_MARKERS = {".git", "package.json", "pyproject.toml", "requirements.txt", "Cargo.toml",
+                   "go.mod", "Package.swift", "Gemfile", "deno.json", "wrangler.jsonc",
+                   "wrangler.toml", "wrangler.json", "docker-compose.yml", "compose.yaml",
+                   "Dockerfile", "Makefile"}
 PROJECT_SUFFIXES = (".logicx", ".band", ".xcodeproj", ".xcworkspace", ".fcpbundle",
-                    ".photoslibrary", ".dspproj", ".sparsebundle", ".app", ".rtfd",
+                    ".photoslibrary", ".musiclibrary", ".tvlibrary", ".imovielibrary",
+                    ".aplibrary", ".lrdata", ".dspproj", ".sparsebundle", ".app", ".rtfd",
                     " Project")  # Ableton "<name> Project" folders
 SESSION_EXTS = {".ptx", ".ptf", ".als", ".cpr", ".flp", ".rpp", ".song", ".logic"}
+# Never plan a move for anything in these places: apps and the system depend on them.
+NEVER_TOUCH = re.compile(r"(^|/)(Library|Applications|System|private|usr|bin|sbin|opt|cores)(/|$)|(^|/)\.[^/]+(/|$)")
 VOICE_HINTS = ("voice", "vox", "rsp_001", "rsp001", "robert", "plowman", "noizyvox")
 
 
@@ -79,13 +84,23 @@ def main(inv, dest):
         for p in paths[1:]:
             extra_dup[p] = paths[0]
 
+    # Projects found by hive.py (same run folder) are the source of truth:
+    # their files always travel with the project, never as loose files.
+    hive_projects = set()
+    if (inv / "hive.csv").exists():
+        with open(inv / "hive.csv") as fh:
+            hive_projects = {r["path"] for r in csv.DictReader(fh)}
+
     cache, projects, plan, taken = {}, Counter(), [], set()
     with open(inv / "files.csv") as fh:
         for row in csv.DictReader(fh):
             src, ext = row["path"], row["ext"]
             if src.startswith(str(dest) + os.sep):
                 continue  # already organized
-            proj = project_root(src, cache)
+            if NEVER_TOUCH.search(src):
+                continue  # system, app data or hidden folder: leave alone
+            proj = next((str(a) for a in Path(src).parents if str(a) in hive_projects), None) \
+                or project_root(src, cache)
             if proj:
                 projects[proj] += 1
                 continue

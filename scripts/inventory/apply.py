@@ -41,8 +41,10 @@ def halt_clear():
 def move(src, dst):
     os.makedirs(os.path.dirname(dst), exist_ok=True)
     if os.stat(src).st_dev == os.stat(os.path.dirname(dst)).st_dev:
-        os.rename(src, dst)
+        os.rename(src, dst)  # files and whole project folders: instant, nothing copied
         return
+    if os.path.isdir(src):
+        raise OSError("folder on another drive: move it by hand")
     shutil.copy2(src, dst)
     if os.path.getsize(src) != os.path.getsize(dst) or sha256(src) != sha256(dst):
         os.remove(dst)
