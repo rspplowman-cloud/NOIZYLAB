@@ -1,0 +1,80 @@
+# NOIZY M2 Ultra stack — n8n + Qdrant + Forgejo + Cloudflare Tunnel
+# Model inference (Ollama / LM Studio) runs NATIVELY on macOS for Metal GPU.
+# It is deliberately not a container here. Containers reach it at
+# http://host.docker.internal:11434.
+#
+# Every port binds to 127.0.0.1. The only way in from outside is the
+# Cloudflare Tunnel (cloudflared), which dials out to Cloudflare.
+#
+# Versions and data paths come from .env (see .env.example). Compose refuses
+# to start if any of them is missing, so nothing silently falls back to
+# `latest` or to an empty data folder.
+#
+# killSwitchHolder: RSP_001 | covenant: 75/25 | canon: noizy.ai
+
+name: noizy-m2ultra
+
+services:
+  n8n:
+    image: n8nio/n8n:${N8N_TAG:?set N8N_TAG in .env}
+    restart: unless-stopped
+    ports:
+      - "127.0.0.1:5678:5678"
+    environment:
+      - N8N_HOST=${N8N_PUBLIC_HOST:?set N8N_PUBLIC_HOST in .env}
+      - N8N_PORT=5678
+      - N8N_PROTOCOL=https
+      # Both names are set: older n8n reads WEBHOOK_URL, newer reads N8N_WEBHOOK_URL.
+      - WEBHOOK_URL=https://${N8N_PUBLIC_HOST}/
+      - N8N_WEBHOOK_URL=https://${N8N_PUBLIC_HOST}/
+      # One trusted proxy in front: cloudflared.
+      - N8N_PROXY_HOPS=1
+      - GENERIC_TIMEZONE=${TZ:-America/Toronto}
+      - OLLAMA_HOST=http://host.docker.internal:11434
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    volumes:
+      - ${N8N_DATA_DIR:?set N8N_DATA_DIR to the EXISTING n8n data folder}:/home/node/.n8n
+    networks: [noizy-mesh]
+
+  qdrant:
+    image: qdrant/qdrant:${QDRANT_TAG:?set QDRANT_TAG in .env}
+    restart: unless-stopped
+    ports:
+      - "127.0.0.1:6333:6333"
+      - "127.0.0.1:6334:6334"
+    volumes:
+      - ${QDRANT_DATA_DIR:?set QDRANT_DATA_DIR to the EXISTING qdrant data folder}:/qdrant/storage
+    networks: [noizy-mesh]
+
+  forgejo:
+    image: codeberg.org/forgejo/forgejo:${FORGEJO_TAG:?set FORGEJO_TAG in .env}
+    restart: unless-stopped
+    ports:
+      # Host 3300 (per the handoff) -> Forgejo's own port 3000 inside the container.
+      - "127.0.0.1:3300:3000"
+    environment:
+      - USER_UID=1000
+      - USER_GID=1000
+      - FORGEJO__server__ROOT_URL=https://${FORGEJO_PUBLIC_HOST:?set FORGEJO_PUBLIC_HOST in .env}/
+      - FORGEJO__server__HTTP_PORT=3000
+    volumes:
+      - ${FORGEJO_DATA_DIR:?set FORGEJO_DATA_DIR to the Forgejo data folder}:/data
+    networks: [noizy-mesh]
+
+  cloudflared:
+    image: cloudflare/cloudflared:${CLOUDFLARED_TAG:?set CLOUDFLARED_TAG in .env}
+    restart: unless-stopped
+    # Remotely-managed tunnel. Public hostnames are set in the Cloudflare
+    # dashboard (Zero Trust > Networks > Tunnels):
+    #   n8n.noizylab.ca  -> http://n8n:5678
+    #   git.noizylab.ca  -> http://forgejo:3000
+    command: tunnel --no-autoupdate run
+    environment:
+      - TUNNEL_TOKEN=${CLOUDFLARE_TUNNEL_TOKEN:?set CLOUDFLARE_TUNNEL_TOKEN from Proton Pass}
+    networks: [noizy-mesh]
+    depends_on: [n8n, forgejo]
+
+networks:
+  noizy-mesh:
+    name: noizy-mesh

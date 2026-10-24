@@ -31,7 +31,8 @@ RSPNOIZY/NOIZYLAB/
 │
 ├── noizyfish/lifeluv/              ← NOIZYFISH LIFELUV program
 │   ├── myfamily/                   ← myFAMILY.AI family share app
-│   └── tokens/                     ← LIFELUV credits + token ledger
+│   ├── tokens/                     ← LLT pay-it-forward ledger (code)
+│   └── LIFELUV.md                  ← The three parts + LLT Ledger definition
 │
 ├── voice/                          ← Sovereign voice pipeline
 │   ├── consent/                    ← ConsentOracle + token logic
@@ -50,6 +51,8 @@ RSPNOIZY/NOIZYLAB/
 │   └── reminders/                  ← Apple Reminders bridge
 │
 ├── scripts/                        ← Ops scripts (cf-watch, firebase, halt, prune00, vault)
+│
+├── infra/m2ultra/                  ← M2 Ultra Docker stack (n8n, Qdrant, Forgejo, Cloudflare Tunnel)
 │
 ├── fishmusicinc/                   ← FISHMUSICINC absorbed here
 │   └── README.md                   ← Full brand doctrine + infra
