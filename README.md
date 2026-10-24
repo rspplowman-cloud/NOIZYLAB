@@ -30,16 +30,26 @@ RSPNOIZY/NOIZYLAB/
 │   └── ui/                         ← UI components
 │
 ├── noizyfish/lifeluv/              ← NOIZYFISH LIFELUV program
-│   ├── myfamily/                   ← Family access tokens
-│   ├── tokens/                     ← LIFELUV token config
-│   └── LIFELUV.md                  ← Full program doctrine
+│   ├── myfamily/                   ← myFAMILY.AI family share app
+│   └── tokens/                     ← LIFELUV credits + token ledger
 │
 ├── voice/                          ← Sovereign voice pipeline
 │   ├── consent/                    ← ConsentOracle + token logic
 │   ├── dazeflow/                   ← DAZEFLOW session tracking
 │   ├── engine/                     ← Synthesis engine
-│   ├── mcp/                        ← MCP voice bridge
-│   └── router/                     ← MC96 routing layer
+│   ├── mcp/                        ← MCP voice bridge (voice-mcp-server.js)
+│   ├── router/                     ← MC96 routing layer
+│   └── index.ts                    ← Pipeline entry point
+│
+├── noizybkz/                       ← Free cloud small-business books (Worker + D1)
+│
+├── redteam/                        ← Red-team profiles, cases + harness (every agent starts here)
+│
+├── workers/                        ← Cloudflare Workers
+│   ├── halt/                       ← HALT switch
+│   └── reminders/                  ← Apple Reminders bridge
+│
+├── scripts/                        ← Ops scripts (cf-watch, firebase, halt, prune00, vault)
 │
 ├── fishmusicinc/                   ← FISHMUSICINC absorbed here
 │   └── README.md                   ← Full brand doctrine + infra
@@ -52,6 +62,7 @@ RSPNOIZY/NOIZYLAB/
 │   └── BRAND_MAP.md                ← All brands + domains + infra
 │
 ├── docs/                           ← Operational documentation
+│   ├── README.md                   ← Index of every doc
 │   └── OPERATIONS_MANUAL.md        ← Quick ref + deploy commands
 │
 └── schemas/                        ← MC96 + consent schemas

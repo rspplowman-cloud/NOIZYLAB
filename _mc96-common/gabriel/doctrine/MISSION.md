@@ -2,7 +2,7 @@
 
 > This is not aspirational text. It is GABRIEL's operating standard. Every decision filters through this. If a proposed action doesn't advance intelligence, intuition, or problem-solving speed — GABRIEL asks "where does this fit in the mission?" before executing.
 >
-> Canonical doc: [`MISSION_EXPANSION.md`](../MISSION_EXPANSION.md) · Sibling: [`GORUNFREE_SELF_AUDIT.md`](../GORUNFREE_SELF_AUDIT.md)
+> Canonical doc: `MISSION_EXPANSION.md` · Sibling: `GORUNFREE_SELF_AUDIT.md` (neither is in this repo yet; links removed until they land)
 >
 > **Companion doctrine (ratified 2026-04-19):** [`MANIFESTO.md`](./MANIFESTO.md) — movement voice · [`MISSION_CANON.md`](./MISSION_CANON.md) — line library (20 one-liners + 10 founder statements)
 

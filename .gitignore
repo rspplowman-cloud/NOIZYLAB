@@ -2,3 +2,7 @@
 # CF watch output (lives on the cf-watch/state branch, not main)
 docs/cloudflare/cf-watch-state.json
 docs/cloudflare/CF-WATCH-REPORT.md
+
+# Dependencies and build output
+node_modules/
+dist/
