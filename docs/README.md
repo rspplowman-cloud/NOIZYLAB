@@ -25,4 +25,5 @@ Every doc in `docs/`, by area. Add a line here when you add a doc.
 | Reference | [AGENT_SDK.md](../_mc96-common/gabriel/reference/AGENT_SDK.md) | Claude Agent SDK notes for GABRIEL |
 | Organize | [scripts/inventory/README.md](../scripts/inventory/README.md) | Map, plan and move everything, with undo |
 | Notes | [scripts/notes/README.md](../scripts/notes/README.md) | Export every Apple Note for the rebuild |
+| Identity | [PASSWORD-INHALE-RUNBOOK.md](./identity/PASSWORD-INHALE-RUNBOOK.md) | Move every password on the M2 Ultra into Proton Pass |
 | Tasks | [APPLE-REMINDERS-BRIDGE.md](./tasks/APPLE-REMINDERS-BRIDGE.md) | Apple Reminders bridge |
