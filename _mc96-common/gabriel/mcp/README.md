@@ -61,6 +61,6 @@ Settings, all optional, all read from the environment:
 
 ## Not built yet
 
-- **`dreamchamber-audio-mcp`** (Python, 13 audio-routing tools): it drives a real audio engine that isn't in this repo. It can be built once NOIZYHIVE finds the DreamChamber audio code on the drives.
+- **DreamChamber** now has its own home: `dreamchamber/` (room API + `dreamchamber-mcp`, 13 tools). The **audio** routing into Logic Pro still needs the audio code from the drives.
 - **HEAVEN `h17_gabriel`, `h17_kpi`, `h17_audit` + 4 more**: listed in `rules/agents.md`, but their endpoints aren't in `heaven/README.md`. They are not guessed.
 - **Note:** `voice/consent/ConsentOracle.ts` sends `Authorization: Bearer`, but HEAVEN's README specifies `X-NOIZY-Key`. One of the two is wrong. Check against the live Worker.
