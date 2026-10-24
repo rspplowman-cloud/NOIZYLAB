@@ -18,6 +18,7 @@ n8n, Qdrant and Forgejo in Docker. Cloudflare Tunnel for HTTPS. Models run nativ
 
 ## Before you start
 
+0. **Follow the gates in `docs/infra/REPAIR-PLAN.md`.** Clear the n8n guardrail first. If today's n8n uses **PostgreSQL**, add its database settings before the first start, or n8n comes up empty.
 1. **Check HALT.** If HALT is set or unreachable, stop.
 2. **Back up the data folders** your current containers use.
 3. **Stop the old stack**, the one with the Ollama container and Gitea on 3000.
