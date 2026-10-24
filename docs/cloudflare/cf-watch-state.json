@@ -1,0 +1,285 @@
+{
+  "checked": "2026-10-24",
+  "versions": {
+    "npm:cloudflare": "7.3.0",
+    "npm:cf": "1.0.0-beta.21",
+    "npm:wrangler": "4.152.0",
+    "npm:create-cloudflare": "2.74.3",
+    "npm:workerd": "1.20261024.1",
+    "npm:miniflare": "4.20260730.0",
+    "npm:@cloudflare/workers-types": "5.20261024.1",
+    "npm:@cloudflare/vite-plugin": "1.65.0",
+    "npm:@cloudflare/vitest-plugin": "1.4.7",
+    "npm:agents": "0.30.1",
+    "npm:@cloudflare/ai-chat": "0.12.2",
+    "npm:@cloudflare/think": "0.21.0",
+    "npm:@cloudflare/sandbox": "1.0.3",
+    "npm:@cloudflare/puppeteer": "1.4.0",
+    "npm:@cloudflare/playwright": "1.3.6",
+    "npm:@cloudflare/containers": "0.3.7",
+    "npm:@cloudflare/flagship": "0.6.0",
+    "npm:@cloudflare/workers-oauth-provider": "1.2.4",
+    "npm:workers-ai-provider": "4.0.1",
+    "npm:@cloudflare/kv-asset-handler": "0.5.0",
+    "npm:@cloudflare/realtimekit": "2.0.4",
+    "pypi:cloudflare": "5.9.0",
+    "pypi:cloudflare-flagship": "0.6.0",
+    "go:github.com/cloudflare/cloudflare-go/v7": "v7.13.1",
+    "terraform:cloudflare/cloudflare": "5.28.1",
+    "github_releases:cloudflare/cloudflared": "2026.10.3",
+    "github_releases:cloudflare/mcp-server-cloudflare": "docs-ai-search@0.5.0",
+    "github_releases:cloudflare/workers-sdk": "@cloudflare/vite-plugin@1.65.0"
+  },
+  "changelog": [
+    {
+      "title": "D1 - D1 database undelete requests limited to the last 7 days",
+      "link": "https://developers.cloudflare.com/changelog/post/2026-10-23-undelete-seven-day-window/",
+      "date": "Fri, 23 Oct 2026 00:00:00 GMT"
+    },
+    {
+      "title": "Flagship - Target Flagship feature flags with structured evaluation context",
+      "link": "https://developers.cloudflare.com/changelog/post/2026-10-23-structured-evaluation-context/",
+      "date": "Fri, 23 Oct 2026 00:00:00 GMT"
+    },
+    {
+      "title": "Radar - Redesigned Cloudflare Radar homepage",
+      "link": "https://developers.cloudflare.com/changelog/post/2026-10-23-radar-homepage-redesign/",
+      "date": "Fri, 23 Oct 2026 00:00:00 GMT"
+    },
+    {
+      "title": "Workers - Pin your npm version in Workers Builds with packageManager",
+      "link": "https://developers.cloudflare.com/changelog/post/2026-10-23-workers-builds-pin-npm-version/",
+      "date": "Fri, 23 Oct 2026 00:00:00 GMT"
+    },
+    {
+      "title": "Cloudflare One Client - Cloudflare One Client for Windows (version 2026.9.1555.1)",
+      "link": "https://developers.cloudflare.com/changelog/post/2026-10-22-warp-windows-beta/",
+      "date": "Thu, 22 Oct 2026 13:08:10 GMT"
+    },
+    {
+      "title": "Cloudflare One Client - Cloudflare One Client for macOS (version 2026.9.1555.1)",
+      "link": "https://developers.cloudflare.com/changelog/post/2026-10-22-warp-macos-beta/",
+      "date": "Thu, 22 Oct 2026 13:08:01 GMT"
+    },
+    {
+      "title": "Agents - Cloudflare MCP servers no longer serve /sse",
+      "link": "https://developers.cloudflare.com/changelog/post/2026-10-22-cloudflare-mcp-servers-retire-sse/",
+      "date": "Thu, 22 Oct 2026 00:00:00 GMT"
+    },
+    {
+      "title": "Agents - Agents SDK now supports the latest Pi 1.4 release",
+      "link": "https://developers.cloudflare.com/changelog/post/2026-10-22-pi-harness-pi-1-4/",
+      "date": "Thu, 22 Oct 2026 00:00:00 GMT"
+    },
+    {
+      "title": "Sandboxes - Sandbox SDK 0.12.14 updates trusted certificates after the eMudhra compromise",
+      "link": "https://developers.cloudflare.com/changelog/post/2026-10-22-emudhra-certificates/",
+      "date": "Thu, 22 Oct 2026 00:00:00 GMT"
+    },
+    {
+      "title": "Cloudflare Tunnel, Cloudflare Tunnel for SASE - Cloudflare Tunnel supports URL normalization",
+      "link": "https://developers.cloudflare.com/changelog/post/2026-10-22-cloudflared-path-normalization/",
+      "date": "Thu, 22 Oct 2026 00:00:00 GMT"
+    },
+    {
+      "title": "Cloudflare Fundamentals, Cloudflare One, Cloudflare Tunnel for SASE, Cloudflare Tunnel - Granular Tunnel Read And Monitor role is generally available",
+      "link": "https://developers.cloudflare.com/changelog/post/2026-10-22-granular-read-and-monitor-ga/",
+      "date": "Thu, 22 Oct 2026 00:00:00 GMT"
+    },
+    {
+      "title": "WAF - WAF Release - 2026-10-22 - Emergency - Cloudflare Managed Ruleset",
+      "link": "https://developers.cloudflare.com/changelog/post/2026-10-22-emergency-waf-release-cfmr/",
+      "date": "Thu, 22 Oct 2026 00:00:00 GMT"
+    },
+    {
+      "title": "WAF - WAF Release - 2026-10-22 - Emergency - Cloudflare Free Ruleset",
+      "link": "https://developers.cloudflare.com/changelog/post/2026-10-22-emergency-waf-release-free/",
+      "date": "Thu, 22 Oct 2026 00:00:00 GMT"
+    },
+    {
+      "title": "Cloudflare One Client - Cloudflare One Client for Windows (version 2026.7.1384.0)",
+      "link": "https://developers.cloudflare.com/changelog/post/2026-10-21-warp-windows-ga/",
+      "date": "Wed, 21 Oct 2026 19:42:32 GMT"
+    },
+    {
+      "title": "Cloudflare One Client - Cloudflare One Client for macOS (version 2026.7.1384.0)",
+      "link": "https://developers.cloudflare.com/changelog/post/2026-10-21-warp-macos-ga/",
+      "date": "Wed, 21 Oct 2026 19:42:14 GMT"
+    },
+    {
+      "title": "Agents, Workers AI, AI Gateway - createAI replaces workers-ai-provider and ai-gateway-provider",
+      "link": "https://developers.cloudflare.com/changelog/post/2026-10-21-createai/",
+      "date": "Wed, 21 Oct 2026 00:00:00 GMT"
+    },
+    {
+      "title": "Basin SQL, Basin - Basin SQL supports OFFSET",
+      "link": "https://developers.cloudflare.com/changelog/post/2026-10-21-basin-sql-offset/",
+      "date": "Wed, 21 Oct 2026 00:00:00 GMT"
+    },
+    {
+      "title": "WAF - WAF Release - 2026-10-21 - Emergency - Cloudflare Managed Ruleset",
+      "link": "https://developers.cloudflare.com/changelog/post/2026-10-21-emergency-waf-release-cfmr/",
+      "date": "Wed, 21 Oct 2026 00:00:00 GMT"
+    },
+    {
+      "title": "WAF - WAF Release - 2026-10-21 - Emergency - Cloudflare Free Ruleset",
+      "link": "https://developers.cloudflare.com/changelog/post/2026-10-21-emergency-waf-release-free/",
+      "date": "Wed, 21 Oct 2026 00:00:00 GMT"
+    },
+    {
+      "title": "Cloudflare One Client - Cloudflare One Client for Windows (version 2026.8.2115.0)",
+      "link": "https://developers.cloudflare.com/changelog/post/2026-10-20-warp-windows-ga/",
+      "date": "Tue, 20 Oct 2026 01:21:08 GMT"
+    },
+    {
+      "title": "Cloudflare One Client - Cloudflare One Client for macOS (version 2026.8.2115.0)",
+      "link": "https://developers.cloudflare.com/changelog/post/2026-10-20-warp-macos-ga/",
+      "date": "Tue, 20 Oct 2026 01:20:49 GMT"
+    },
+    {
+      "title": "Cloudflare One Client - Cloudflare One Client for Linux (version 2026.8.2115.0)",
+      "link": "https://developers.cloudflare.com/changelog/post/2026-10-20-warp-linux-ga/",
+      "date": "Tue, 20 Oct 2026 00:55:37 GMT"
+    },
+    {
+      "title": "Agents, Workers - Think agents now use a @cloudflare/computer workspace",
+      "link": "https://developers.cloudflare.com/changelog/post/2026-10-20-think-computer-workspace/",
+      "date": "Tue, 20 Oct 2026 00:00:00 GMT"
+    },
+    {
+      "title": "Workers, Cloudflare CLI - Wrangler and cf now upload source maps by default",
+      "link": "https://developers.cloudflare.com/changelog/post/2026-10-20-source-maps-on-by-default/",
+      "date": "Tue, 20 Oct 2026 00:00:00 GMT"
+    },
+    {
+      "title": "Agents - Cloudflare API MCP server now supports step-up authorization",
+      "link": "https://developers.cloudflare.com/changelog/post/2026-10-19-cloudflare-mcp-step-up/",
+      "date": "Mon, 19 Oct 2026 00:00:00 GMT"
+    },
+    {
+      "title": "Bots - Precursor adds Monitor mode",
+      "link": "https://developers.cloudflare.com/changelog/post/2026-10-19-precursor-monitor-mode/",
+      "date": "Mon, 19 Oct 2026 00:00:00 GMT"
+    },
+    {
+      "title": "Cloud Workload Security - Cloud Workload Security is now available in Beta",
+      "link": "https://developers.cloudflare.com/changelog/post/2026-10-19-cloud-workload-security-beta/",
+      "date": "Mon, 19 Oct 2026 00:00:00 GMT"
+    },
+    {
+      "title": "Workers AI - Introducing Clairic: an extraction model for typed values, now on Workers AI",
+      "link": "https://developers.cloudflare.com/changelog/post/2026-10-19-clairic-workers-ai/",
+      "date": "Mon, 19 Oct 2026 00:00:00 GMT"
+    },
+    {
+      "title": "Workers AI - DeepSeek V4.1 Flash 1017 now available on Workers AI",
+      "link": "https://developers.cloudflare.com/changelog/post/2026-10-19-deepseek-v4.1-flash-workers-ai/",
+      "date": "Mon, 19 Oct 2026 00:00:00 GMT"
+    },
+    {
+      "title": "Workers, Cloudflare CLI - Test Cron Triggers with Local Explorer",
+      "link": "https://developers.cloudflare.com/changelog/post/2026-10-17-local-explorer-cron-triggers/",
+      "date": "Sat, 17 Oct 2026 00:00:00 GMT"
+    },
+    {
+      "title": "AI Search - AI Search keyword search supports Japanese, Chinese, and Korean queries",
+      "link": "https://developers.cloudflare.com/changelog/post/2026-10-16-cjk-keyword-search/",
+      "date": "Fri, 16 Oct 2026 00:00:00 GMT"
+    },
+    {
+      "title": "Workers, Cloudflare CLI - Search Cloudflare documentation with the Cloudflare CLI",
+      "link": "https://developers.cloudflare.com/changelog/post/2026-10-16-docs-search/",
+      "date": "Fri, 16 Oct 2026 00:00:00 GMT"
+    },
+    {
+      "title": "Cloudflare Tunnel, Cloudflare Tunnel for SASE, Cloudflare Mesh, Cloudflare One - 50,000 routes per account and Tunnels for Platforms",
+      "link": "https://developers.cloudflare.com/changelog/post/2026-10-16-tunnels-for-platforms-and-50k-routes/",
+      "date": "Fri, 16 Oct 2026 00:00:00 GMT"
+    },
+    {
+      "title": "Cloudflare One, Gateway - Application Library now supports custom applications",
+      "link": "https://developers.cloudflare.com/changelog/post/2026-10-15-app-library-custom-applications/",
+      "date": "Thu, 15 Oct 2026 00:00:00 GMT"
+    },
+    {
+      "title": "Cloudflare One - Validate data loss prevention matches with Cloudflare Workers",
+      "link": "https://developers.cloudflare.com/changelog/post/2026-10-15-dlp-custom-validation-workers/",
+      "date": "Thu, 15 Oct 2026 00:00:00 GMT"
+    },
+    {
+      "title": "Cloudflare WAN, Magic Transit, Cloudflare One - BGP route filtering for IPsec and GRE tunnels",
+      "link": "https://developers.cloudflare.com/changelog/post/2026-10-15-bgp-filter-profiles/",
+      "date": "Thu, 15 Oct 2026 00:00:00 GMT"
+    },
+    {
+      "title": "Cloudflare One, Workers, Gateway - Gateway and Workers integration is now in public beta",
+      "link": "https://developers.cloudflare.com/changelog/post/2026-10-15-gateway-workers-public-beta/",
+      "date": "Thu, 15 Oct 2026 00:00:00 GMT"
+    },
+    {
+      "title": "Stream - Ultra-low latency live with WebRTC is now Generally Available in Stream",
+      "link": "https://developers.cloudflare.com/changelog/post/2026-10-15-stream-live-webrtc-ga/",
+      "date": "Thu, 15 Oct 2026 00:00:00 GMT"
+    },
+    {
+      "title": "Workers AI, Realtime - Pipecat PhoneLLM Mini now available on Workers AI",
+      "link": "https://developers.cloudflare.com/changelog/post/2026-10-15-phonellm-mini-workers-ai/",
+      "date": "Thu, 15 Oct 2026 00:00:00 GMT"
+    },
+    {
+      "title": "Access, Cloudflare One - Account context in Access deny redirects",
+      "link": "https://developers.cloudflare.com/changelog/post/2026-10-14-deny-redirect-account-id/",
+      "date": "Wed, 14 Oct 2026 00:00:00 GMT"
+    },
+    {
+      "title": "Cloudflare One, Access - Infrastructure applications support a configurable session duration",
+      "link": "https://developers.cloudflare.com/changelog/post/2026-10-14-infrastructure-ssh-session-duration/",
+      "date": "Wed, 14 Oct 2026 00:00:00 GMT"
+    },
+    {
+      "title": "DNS - Configure Advanced Custom Nameservers with nameserver sets (beta)",
+      "link": "https://developers.cloudflare.com/changelog/post/2026-10-14-nameserver-sets/",
+      "date": "Wed, 14 Oct 2026 00:00:00 GMT"
+    },
+    {
+      "title": "Rules - Remove surrounding bytes with trim functions",
+      "link": "https://developers.cloudflare.com/changelog/post/2026-10-14-trim-functions/",
+      "date": "Wed, 14 Oct 2026 00:00:00 GMT"
+    },
+    {
+      "title": "WAF - WAF Release - 2026-10-14 - Emergency",
+      "link": "https://developers.cloudflare.com/changelog/post/2026-10-14-emergency-waf-release/",
+      "date": "Wed, 14 Oct 2026 00:00:00 GMT"
+    },
+    {
+      "title": "Workers - Workers Builds now uses newer versions of Node.js, Python, Go, Bun, and more",
+      "link": "https://developers.cloudflare.com/changelog/post/2026-10-14-workers-builds-default-tooling/",
+      "date": "Wed, 14 Oct 2026 00:00:00 GMT"
+    },
+    {
+      "title": "Agents, Workers - Cloudflare API MCP server sends Workers Issues as MCP Events",
+      "link": "https://developers.cloudflare.com/changelog/post/2026-10-13-cloudflare-mcp-events/",
+      "date": "Tue, 13 Oct 2026 00:00:00 GMT"
+    },
+    {
+      "title": "Agents - New persistent browser tool in the Agents SDK, with tabs and logins that last between turns",
+      "link": "https://developers.cloudflare.com/changelog/post/2026-10-13-persistent-browser/",
+      "date": "Tue, 13 Oct 2026 00:00:00 GMT"
+    },
+    {
+      "title": "Audit Logs - Audit Logs v2 now captures view actions",
+      "link": "https://developers.cloudflare.com/changelog/post/2026-10-13-audit-logs-v2-view-actions/",
+      "date": "Tue, 13 Oct 2026 00:00:00 GMT"
+    },
+    {
+      "title": "Gateway, Cloudflare One - Request Gateway DNS64 through DNS locations and EDNS",
+      "link": "https://developers.cloudflare.com/changelog/post/2026-10-13-gateway-dns64-opt-in/",
+      "date": "Tue, 13 Oct 2026 00:00:00 GMT"
+    },
+    {
+      "title": "Cloudflare Web Analytics - Deeper Core Web Vitals Diagnostics: LCP &amp; INP Sub-Part Metrics in Real User Monitoring",
+      "link": "https://developers.cloudflare.com/changelog/post/2026-10-13-core-web-vital-subparts/",
+      "date": "Tue, 13 Oct 2026 00:00:00 GMT"
+    }
+  ]
+}
