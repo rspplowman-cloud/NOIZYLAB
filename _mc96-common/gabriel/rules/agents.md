@@ -82,6 +82,8 @@ bash scripts/gabriel-merge.sh deploy-v2
 
 ## MCP Server Configuration
 
+> **Built:** gabriel, lucy, engr-keith, dream, cb01, shirley, family and heaven live in `_mc96-common/gabriel/mcp/<name>/index.js`. See `mcp/README.md` for tools, rules and the config to paste. `dreamchamber-audio-mcp` is not built yet.
+
 Three transport targets exist. See `.claude/rules/mcp-builder.md` for full build rules.
 
 ### Local Node stdio (GOD.local → Claude Code / Windsurf)

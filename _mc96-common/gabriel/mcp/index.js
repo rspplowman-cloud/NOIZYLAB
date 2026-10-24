@@ -225,7 +225,7 @@ server.setRequestHandler(ListToolsRequestSchema, async () => ({
             type: "array",
             items: { type: "string" },
             description:
-              'Who is in this conversation: ["rob", "gabriel", "claude_1", etc.]',
+              'Who is in this conversation: ["RSP_001", "gabriel", "claude_1", etc.]',
           },
           tags: {
             type: "array",
@@ -236,7 +236,7 @@ server.setRequestHandler(ListToolsRequestSchema, async () => ({
           context: {
             type: "string",
             description:
-              "Additional context: where is Rob, what triggered this, related threads",
+              "Additional context: where is RSP_001, what triggered this, related threads",
           },
         },
         required: ["title"],
@@ -553,7 +553,7 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
           type: args.type || "operational",
           type_description:
             CONVERSATION_TYPES[args.type || "operational"],
-          participants: args.participants || ["rob", "gabriel"],
+          participants: args.participants || ["RSP_001", "gabriel"],
           tags: args.tags || [],
           context: args.context || null,
           started_at: now(),
