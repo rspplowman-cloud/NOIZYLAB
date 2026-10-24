@@ -1,4 +1,54 @@
-# Organize everything: map → plan → move (with undo)
+# NOIZYHIVE: every drive is one hive
+
+One command helps everything find its correct home.
+
+## Inhale (read-only, nothing moves)
+
+`HALT_URL=<halt worker> scripts/inventory/hive-inhale.sh`
+
+- No folders given: it scans your home folder plus **every drive** in `/Volumes`.
+- Writes one run folder: `~/NOIZYBEAST/NOIZYHIVE/runs/<time>/`.
+- **Read `NOIZYHIVE.md` first.** It points to:
+  - `HIVE.md`: projects, copies and work at risk.
+  - `hive-plan.md`: the home for every project.
+  - `plan.md`: the home for every loose file.
+  - `summary.md`: sizes and duplicates.
+
+## Homes (under `NOIZYHIVE_DEST`, default `/Volumes/12TB/NOIZYHIVE`)
+
+| Home | What goes there |
+|---|---|
+| `PROJECTS/<stack>/<name>` | The best copy of every project, moved whole |
+| `_COPIES_REVIEW/<name>/` | The other copies of that project |
+| `AUDIO/VOICE-RSP_001/<year>` | RSP_001 voice recordings |
+| `AUDIO`, `VIDEO`, `IMAGES`, `DOCS`, `CODE`, `ARCHIVES`, `APPS`, `OTHER` `/<year>` | Loose files |
+| `_DUPLICATES_REVIEW/` | Extra copies of identical files |
+
+- **Never touched:** `~/Library`, hidden folders like `~/.ssh` and `~/.config`, and system folders.
+- **Kept whole:** Logic, Pro Tools, Ableton, Xcode, Final Cut, and the Photos, Music and TV libraries.
+- A project folder on **another drive** is listed "move by hand" instead of being copied.
+- **Nothing is ever deleted.**
+
+## Exhale and undo
+
+1. Rescue first. Commit and push every project that `HIVE.md` marks at risk.
+2. Exhale: `HALT_URL=<halt worker> scripts/inventory/hive-inhale.sh --apply <run folder>`
+3. Undo: `HALT_URL=<halt worker> scripts/inventory/hive-inhale.sh --undo <run folder>`
+
+## Rehearsed
+
+Rehearsed on a fake two-drive hive:
+- Projects moved whole. git still worked afterwards.
+- The copy went to review, the voice clip to `VOICE-RSP_001`, and the duplicate to review.
+- `~/Library` and `~/.ssh` were never planned.
+- Undo put every file back, byte for byte.
+- With HALT set, nothing ran.
+
+---
+
+The individual steps below can also be run by hand.
+
+## The steps by hand
 
 ## 0. The Hive: every project on every drive (read-only)
 

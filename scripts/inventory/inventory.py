@@ -43,7 +43,7 @@ def sha256(path):
 
 
 def main(roots):
-    out = Path.home() / "NOIZYBEAST" / "inventory" / time.strftime("%Y%m%d-%H%M%S")
+    out = Path(os.environ["NOIZY_OUT"]) if os.environ.get("NOIZY_OUT") else Path.home() / "NOIZYBEAST" / "inventory" / time.strftime("%Y%m%d-%H%M%S")
     out.mkdir(parents=True, exist_ok=True)
     by_size = defaultdict(list)
     top_size, types = Counter(), Counter()

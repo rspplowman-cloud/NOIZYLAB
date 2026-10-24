@@ -125,7 +125,7 @@ def score(p):
 
 
 def main(roots):
-    out = Path.home() / "NOIZYBEAST" / "inventory" / time.strftime("hive-%Y%m%d-%H%M%S")
+    out = Path(os.environ["NOIZY_OUT"]) if os.environ.get("NOIZY_OUT") else Path.home() / "NOIZYBEAST" / "inventory" / time.strftime("hive-%Y%m%d-%H%M%S")
     out.mkdir(parents=True, exist_ok=True)
     print("Finding projects...", file=sys.stderr)
     paths = find_projects(roots)

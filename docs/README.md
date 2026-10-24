@@ -23,7 +23,7 @@ Every doc in `docs/`, by area. Add a line here when you add a doc.
 | Red team | [REDTEAM-GABRIEL-LUCY.md](./redteam/REDTEAM-GABRIEL-LUCY.md) | Red-teaming GABRIEL and LUCY |
 | Reference | [CHROME-EXTENSION-APIS.md](./reference/CHROME-EXTENSION-APIS.md) | Chrome Extension APIs (kept on file) |
 | Reference | [AGENT_SDK.md](../_mc96-common/gabriel/reference/AGENT_SDK.md) | Claude Agent SDK notes for GABRIEL |
-| Organize | [scripts/inventory/README.md](../scripts/inventory/README.md) | The Hive (every project, every drive), then map, plan and move with undo |
+| NOIZYHIVE | [scripts/inventory/README.md](../scripts/inventory/README.md) | Every drive as one hive: one command gives every project and file its home, with undo |
 | Notes | [scripts/notes/README.md](../scripts/notes/README.md) | Export every Apple Note for the rebuild |
 | Identity | [PASSWORD-INHALE-RUNBOOK.md](./identity/PASSWORD-INHALE-RUNBOOK.md) | Move every password on the M2 Ultra into Proton Pass |
 | Tasks | [APPLE-REMINDERS-BRIDGE.md](./tasks/APPLE-REMINDERS-BRIDGE.md) | Apple Reminders bridge |
