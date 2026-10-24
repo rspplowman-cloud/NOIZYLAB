@@ -10,3 +10,7 @@ dist/
 # Local secrets
 .env
 !.env.example
+
+# Private notes export (never commit)
+notes-export/
+notes-export.zip

@@ -50,7 +50,7 @@ RSPNOIZY/NOIZYLAB/
 │   ├── halt/                       ← HALT switch
 │   └── reminders/                  ← Apple Reminders bridge
 │
-├── scripts/                        ← Ops scripts (cf-watch, firebase, halt, prune00, vault)
+├── scripts/                        ← Ops scripts (cf-watch, firebase, halt, notes, prune00, vault)
 │
 ├── infra/m2ultra/                  ← M2 Ultra Docker stack (n8n, Qdrant, Forgejo, Cloudflare Tunnel)
 │
