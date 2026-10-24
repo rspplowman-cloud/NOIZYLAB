@@ -17,6 +17,7 @@ Writes to ~/NOIZYBEAST/inventory/<timestamp>/:
 killSwitchHolder: RSP_001 | covenant: 75/25 | canon: noizy.ai
 """
 import csv, hashlib, os, sys, time
+from concurrent.futures import ThreadPoolExecutor
 from collections import Counter, defaultdict
 from pathlib import Path
 
@@ -83,16 +84,31 @@ def main(roots):
                     if count % 20000 == 0:
                         print(f"... {count} files", file=sys.stderr)
 
+    # Hash only files that share a size, in parallel across all CPU cores.
+    candidates = [p for paths in by_size.values() if len(paths) > 1 for p in paths]
+
+    def safe_hash(p):
+        try:
+            return p, sha256(p)
+        except OSError as e:
+            return p, e
+
+    digests = {}
+    with ThreadPoolExecutor(max_workers=os.cpu_count() or 8) as pool:
+        for p, d in pool.map(safe_hash, candidates):
+            if isinstance(d, OSError):
+                unreadable.append(f"{p}: {d}")
+            else:
+                digests[p] = d
+
     dup_groups, wasted = [], 0
     for size, paths in by_size.items():
         if len(paths) < 2:
             continue
         by_hash = defaultdict(list)
         for p in paths:
-            try:
-                by_hash[sha256(p)].append(p)
-            except OSError as e:
-                unreadable.append(f"{p}: {e}")
+            if p in digests:
+                by_hash[digests[p]].append(p)
         for digest, same in by_hash.items():
             if len(same) > 1:
                 dup_groups.append((digest, size, same))
