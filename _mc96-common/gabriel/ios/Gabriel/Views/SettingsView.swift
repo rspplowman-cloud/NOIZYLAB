@@ -144,7 +144,7 @@ struct SettingsView: View {
                         aboutRow("Author", value: "Robert Stephen Plowman")
                         aboutRow("Doctrine", value: "HVS 75/25 Perpetual")
                         aboutRow("Frequency", value: "396 Hz")
-                        aboutRow("Machine", value: "GOD.local (M2 Ultra)")
+                        aboutRow("Machine", value: "M2ULTRA.local (Mac Studio M2 Ultra)")
 
                         Divider().background(Color.gray.opacity(0.3))
 

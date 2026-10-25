@@ -57,7 +57,7 @@ curl -H "X-NOIZY-Key: YOUR_KEY" \
 | GABRIEL_KV | CF KV | GABRIEL_KV |
 | MC96-INDEX | CF KV | MC96-INDEX |
 
-## GOD.local (M2 Ultra Mac Studio)
+## M2ULTRA.local (M2 Ultra Mac Studio)
 
 | Service | Port | Purpose |
 |---------|------|---------|

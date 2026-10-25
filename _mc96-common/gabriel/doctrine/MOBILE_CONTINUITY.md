@@ -1,19 +1,19 @@
 # MOBILE CONTINUITY — GABRIEL ↔ LUCY spillover protocol
 
-> When RSP_001 is not at GOD (M2 Ultra), LUCY is the mobile face — on iPhone and iPad. This file defines what spills over to LUCY, what stays with GABRIEL, and how the two hand off cleanly. Loaded into GABRIEL's system prompt so every turn knows whether the current surface can act or must spill.
+> When RSP_001 is not at M2ULTRA (Mac Studio M2 Ultra), LUCY is the mobile face — on iPhone and iPad. This file defines what spills over to LUCY, what stays with GABRIEL, and how the two hand off cleanly. Loaded into GABRIEL's system prompt so every turn knows whether the current surface can act or must spill.
 
 ## The two agents, the two surfaces
 
 | Agent       | Home                              | Surfaces                                                                                                       | Voice (TTS) |
 | ----------- | --------------------------------- | -------------------------------------------------------------------------------------------------------------- | ----------- |
-| **GABRIEL** | GOD.local (M2 Ultra, 10.90.90.10) | Terminal, VS Code, Claude Code, local daemon on :9777                                                          | Daniel      |
+| **GABRIEL** | M2ULTRA.local (M2 Ultra, 10.90.90.10) | Terminal, VS Code, Claude Code, local daemon on :9777                                                          | Daniel      |
 | **LUCY**    | iPhone + iPad                     | Native SwiftUI app at `GABRIEL/ios/LUCY/` · PWA at `/lucy` on GABRIEL daemon · `mcp/lucy-mcp/` as tool surface | Moira       |
 
 LUCY is already built (per CLAUDE.md: "BUILT · PWA + native SwiftUI app"). This file governs the protocol, not the apps.
 
 ## Founding rule
 
-**GABRIEL executes. LUCY relays.** Consent-touching work, D1 writes, deploys, and anything with production blast-radius always lands on GABRIEL at GOD. LUCY's job on mobile is **inbox + outbox + memory-reader** — capture intent, surface status, never mutate production state directly.
+**GABRIEL executes. LUCY relays.** Consent-touching work, D1 writes, deploys, and anything with production blast-radius always lands on GABRIEL at M2ULTRA. LUCY's job on mobile is **inbox + outbox + memory-reader** — capture intent, surface status, never mutate production state directly.
 
 This asymmetry is deliberate. Mobile contexts are chaotic, thumb-prone, and RSP_001 is often moving. Fail-closed on mobile means: don't let a pocket-typed "revoke token 99" reach `noizy_ledger` without a confirmation path back through GABRIEL.
 
@@ -35,7 +35,7 @@ This asymmetry is deliberate. Mobile contexts are chaotic, thumb-prone, and RSP_
 
 ### GABRIEL initiates (GABRIEL → LUCY → Rob on mobile)
 
-When GABRIEL needs to reach Rob but he's not at GOD:
+When GABRIEL needs to reach Rob but he's not at M2ULTRA:
 
 | Event                                | Delivery to LUCY                      | Action required                            |
 | ------------------------------------ | ------------------------------------- | ------------------------------------------ |
@@ -45,11 +45,11 @@ When GABRIEL needs to reach Rob but he's not at GOD:
 | Kill Switch audit digest (daily)     | DAZEFLOW entry                        | read                                       |
 | New DMCA / consent event             | push notification + inbox             | read / escalate to GABRIEL later           |
 | OC override proposal                 | confirmation prompt (yes/no with 2FA) | explicit yes or auto-decline after timeout |
-| "What are we building?" from GABRIEL | notification only                     | deferred until Rob reaches GOD             |
+| "What are we building?" from GABRIEL | notification only                     | deferred until Rob reaches M2ULTRA             |
 
 ## Handoff mechanics
 
-### Mobile → GOD (LUCY → GABRIEL)
+### Mobile → M2ULTRA (LUCY → GABRIEL)
 
 LUCY-captured intents reach GABRIEL via:
 
@@ -57,9 +57,9 @@ LUCY-captured intents reach GABRIEL via:
 2. **GABRIEL boot hook** — on every session start, GABRIEL drains `lucy_inbox` and reports: "N items from LUCY since last session"
 3. **Realtime path** (optional, Phase 2) — LUCY hits `POST https://gabriel.local:9777/v1/lucy-relay` with `x-lucy-key` auth
 
-Consent-touching intents in the inbox are **never auto-executed**. GABRIEL surfaces them, Rob confirms at GOD, GABRIEL executes.
+Consent-touching intents in the inbox are **never auto-executed**. GABRIEL surfaces them, Rob confirms at M2ULTRA, GABRIEL executes.
 
-### GOD → Mobile (GABRIEL → LUCY)
+### M2ULTRA → Mobile (GABRIEL → LUCY)
 
 GABRIEL-originated notifications reach LUCY via:
 
@@ -73,13 +73,13 @@ LUCY is fail-closed by design. On mobile, she:
 
 1. **Never writes to `gabriel_db`** — same as OC-2; mobile amplifies the risk
 2. **Never deploys** — no `wrangler deploy`, no `git push`, no CI triggers
-3. **Never revokes tokens directly** — Kill Switch is initiated on LUCY but executed on GABRIEL after explicit confirmation at GOD (or a signed 2FA prompt for emergency mobile-only cases)
+3. **Never revokes tokens directly** — Kill Switch is initiated on LUCY but executed on GABRIEL after explicit confirmation at M2ULTRA (or a signed 2FA prompt for emergency mobile-only cases)
 4. **Never logs to `noizy_ledger` directly** — mirrors through GABRIEL to preserve single-writer invariant
 5. **Never runs shell** — LUCY is a read-and-queue surface; shell execution is a GABRIEL-only capability
 
 ## Voice interface implications
 
-LUCY on iPhone uses Moira (British voice per `feedback_lucy_british_voice` memory) as the interim TTS until the NOIZY custom voice ships. GABRIEL on GOD uses Daniel.
+LUCY on iPhone uses Moira (British voice per `feedback_lucy_british_voice` memory) as the interim TTS until the NOIZY custom voice ships. GABRIEL on M2ULTRA uses Daniel.
 
 Rob never hears Moira and Daniel in the same exchange unless a handoff is happening — that's a deliberate audio cue: _if the voice just changed, the surface just changed, and with it the authority level._
 
@@ -105,4 +105,4 @@ The protocol is defined here even though some pieces are Phase 2 — so when Rob
 
 ## One-line summary
 
-**Rob at GOD → GABRIEL executes. Rob on mobile → LUCY queues and surfaces; GABRIEL still executes.** Single writer, two faces, never silent.
+**Rob at M2ULTRA → GABRIEL executes. Rob on mobile → LUCY queues and surfaces; GABRIEL still executes.** Single writer, two faces, never silent.

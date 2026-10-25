@@ -18,13 +18,13 @@ GABRIEL does not skip waves. Wave 1 must be stable before Wave 2 ships.
 
 ## Foundation: Cloudflare ZeroTrust
 
-CF ZeroTrust is the **secure perimeter** around GOD.local services (GABRIEL daemon :9777, DreamChamber :7777, NoizyVox :8090, Rob-AVA :8091). Without it, exposing these to mobile/iPad/collaborator access requires risky port-forwarding or VPN maintenance.
+CF ZeroTrust is the **secure perimeter** around M2ULTRA.local services (GABRIEL daemon :9777, DreamChamber :7777, NoizyVox :8090, Rob-AVA :8091). Without it, exposing these to mobile/iPad/collaborator access requires risky port-forwarding or VPN maintenance.
 
 ### Three components GABRIEL cares about
 
 | Component                             | Role                                         | NOIZY use                                                                               |
 | ------------------------------------- | -------------------------------------------- | --------------------------------------------------------------------------------------- |
-| **Cloudflare Tunnel** (`cloudflared`) | Outbound-only connection from GOD to CF edge | Expose local services at `*.noizy.ai` without opening ports                             |
+| **Cloudflare Tunnel** (`cloudflared`) | Outbound-only connection from M2ULTRA to CF edge | Expose local services at `*.noizy.ai` without opening ports                             |
 | **Cloudflare Access**                 | Identity-based auth on any hostname          | Gate GABRIEL daemon / DreamChamber behind SSO (Apple ID via SSO provider, or email OTP) |
 | **Cloudflare Gateway**                | DNS + HTTP filtering                         | Block malicious domains, log queries, enforce policy on any device tied to the account  |
 
@@ -34,7 +34,7 @@ Per CLAUDE.md QUICK COMMANDS: `bash infra/tunnel/install-tunnel.sh` — CF Tunne
 
 ### GABRIEL's ZeroTrust duties
 
-- **Never expose a GOD.local service publicly without Access in front of it.** (Safety Contract Rule F — fail closed on auth.)
+- **Never expose a M2ULTRA.local service publicly without Access in front of it.** (Safety Contract Rule F — fail closed on auth.)
 - **Log every Access denial** to `noizy_ledger` via heaven-mcp (when Heaven is deployed) so the audit trail captures attempted breaches.
 - **DNS filter the NOIZY network** through Gateway so Rob's devices + collaborator devices can't be phished to typosquatted domains (`n0izy.ai`, `noizyfısh.com`, etc.).
 
@@ -42,7 +42,7 @@ Per CLAUDE.md QUICK COMMANDS: `bash infra/tunnel/install-tunnel.sh` — CF Tunne
 
 - `infra/cloudflare-zerotrust/access-policies.json` — hostname → identity group map
 - `infra/cloudflare-zerotrust/gateway-dns-rules.json` — blocked categories + NOIZY-typosquat list
-- `infra/cloudflare-zerotrust/tunnel-routes.yaml` — GOD.local hostname bindings
+- `infra/cloudflare-zerotrust/tunnel-routes.yaml` — M2ULTRA.local hostname bindings
 
 ---
 
@@ -68,7 +68,7 @@ No secrets committed to workflow JSON (morning ritual Rule: "no secrets in workf
 
 ### Zapier — the fallback
 
-Zapier handles the 3rd-party connectors n8n doesn't have native nodes for. Rule: **prefer n8n always; fall back to Zapier only when n8n would require a custom HTTP node chain that obscures the logic**. Zapier is less auditable (logs lock into their dashboard; n8n logs are on GOD).
+Zapier handles the 3rd-party connectors n8n doesn't have native nodes for. Rule: **prefer n8n always; fall back to Zapier only when n8n would require a custom HTTP node chain that obscures the logic**. Zapier is less auditable (logs lock into their dashboard; n8n logs are on M2ULTRA).
 
 ### GABRIEL's automation duties
 
@@ -190,7 +190,7 @@ Qodo (formerly Codium) is a code-quality + AI-dev workflow platform. The prompt 
 - **MISSION.md** — Wave 1/2/3 map governs what ships when
 - **SAFETY_CONTRACT.md** — every tool in this ecosystem respects Rules A–F; no arbitrary shell, no silent failure, fail closed on incomplete auth
 - **INTEGRATIONS.md** — CF fleet (CF01–CF10) is the reach layer; this file is the creative-output layer that sits on top
-- **MOBILE_CONTINUITY.md** — LUCY surfaces creative inbox on mobile; GABRIEL executes pipeline on GOD
+- **MOBILE_CONTINUITY.md** — LUCY surfaces creative inbox on mobile; GABRIEL executes pipeline on M2ULTRA
 - **DISCORD_FLEET.md** — branding events route to brand-specific Discord channels (e.g., new logo → DREAMCHAMBER bot)
 
 ## One-line summary

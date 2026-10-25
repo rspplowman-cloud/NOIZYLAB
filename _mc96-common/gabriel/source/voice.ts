@@ -1,6 +1,6 @@
 // GABRIEL · voice output bridge
 // Posts text to the local NOIZY voice-service (:9799) so GABRIEL's replies are
-// spoken aloud in Jamie Premium en-GB on GOD.local.
+// spoken aloud in Jamie Premium en-GB on M2ULTRA.local.
 //
 // Service: ops/voice-service/server.js (bind 127.0.0.1)
 // Persona registry: DEVICES.md §5

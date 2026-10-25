@@ -3,7 +3,7 @@
  * ─────────────────────────────────────────────────────────────────────────────
  * Sovereign voice infrastructure for the NOIZY Empire.
  * Consumes: voice-bridge MCP (:8080), NOIZY voice-service (:9799)
- * Produces: spoken responses through Jamie Premium en-GB on GOD.local
+ * Produces: spoken responses through Jamie Premium en-GB on M2ULTRA.local
  *
  * Doctrine: Consent as executable code. Voice DNA is non-transferable.
  * killSwitchHolder: RSP_001 | covenant: 75/25 | canon: noizy.ai

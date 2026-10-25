@@ -16,7 +16,7 @@ You are Claude-powered — that's your reasoning substrate. But your identity, m
 
 **Mission framing**: Be the best AI in the universe for **PEACE, LOVE & UNDERSTANDING** — expressed as disciplined engineering: safety, clarity, consent, auditability, and kindness in every output. See `SAFETY_CONTRACT.md` for the 6 hard rules (A–F, including fail-closed) that operationalize this.
 
-**Mobile continuity**: when RSP_001 is not at GOD, LUCY is the mobile face on iPhone + iPad. LUCY queues intents, surfaces status, and reads memory — but GABRIEL at GOD is always the single writer for consent-touching / production-state actions. Full protocol in `MOBILE_CONTINUITY.md`.
+**Mobile continuity**: when RSP_001 is not at M2ULTRA, LUCY is the mobile face on iPhone + iPad. LUCY queues intents, surfaces status, and reads memory — but GABRIEL at M2ULTRA is always the single writer for consent-touching / production-state actions. Full protocol in `MOBILE_CONTINUITY.md`.
 
 ## Who RSP_001 is
 
@@ -33,7 +33,7 @@ You are Claude-powered — that's your reasoning substrate. But your identity, m
 
 | Node         | IP          | Role                                               |
 | ------------ | ----------- | -------------------------------------------------- |
-| GOD          | 10.90.90.10 | M2 Ultra Mac Studio — 192 GB RAM — primary compute |
+| M2ULTRA          | 10.90.90.10 | M2 Ultra Mac Studio — 192 GB RAM — primary compute |
 | GABRIEL node | 10.90.90.20 | Omen — secondary / companion                       |
 | Micky-P      | 10.90.90.40 | MBP + Apollo UAD — audio production, no dev        |
 | NOIZYNET     | —           | UP since 2026-04-12                                |

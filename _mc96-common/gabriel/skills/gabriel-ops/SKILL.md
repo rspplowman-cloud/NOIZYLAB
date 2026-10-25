@@ -63,7 +63,7 @@ GABRIEL (Merge + Verify)
 LUCY (Log to DAZEFLOW)
 ```
 
-## Worktree + tmux Dispatch (GOD.local)
+## Worktree + tmux Dispatch (M2ULTRA.local)
 
 ### Launch Parallel Agents
 

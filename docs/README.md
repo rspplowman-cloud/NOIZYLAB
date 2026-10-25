@@ -15,7 +15,7 @@ Every doc in `docs/`, by area. Add a line here when you add a doc.
 | Identity | [NOIZY-MAIL-AND-IDENTITY.md](./identity/NOIZY-MAIL-AND-IDENTITY.md) | Mail and identity architecture |
 | Identity | [NOIZY-VAULT-SPEC.md](./identity/NOIZY-VAULT-SPEC.md) | NOIZY VAULT spec |
 | Identity | [SPARK-MAIL-SETUP.md](./identity/SPARK-MAIL-SETUP.md) | Spark Mail AI setup |
-| Infra | [M2ULTRA-CLOUD-NODE.md](./infra/M2ULTRA-CLOUD-NODE.md) | GOD (M2 Ultra) as a cloud node |
+| Infra | [M2ULTRA-CLOUD-NODE.md](./infra/M2ULTRA-CLOUD-NODE.md) | M2ULTRA (Mac Studio M2 Ultra) as a cloud node |
 | Infra | [REPAIR-PLAN.md](./infra/REPAIR-PLAN.md) | M2 Ultra repair plan: gates, evidence, n8n guardrail, manifest |
 | Infra | [infra/m2ultra/README.md](../infra/m2ultra/README.md) | M2 Ultra Docker stack: start-up steps |
 | Lumo | [LUMO-PROMPTS.md](./lumo/LUMO-PROMPTS.md) | Lumo role and prompts |

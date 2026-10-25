@@ -49,7 +49,7 @@
 | **Sandbox SDK** | `@cloudflare/sandbox` | 1.0.1 (1.0 is new; 0.x docs are legacy) | Isolated code runs for agents |
 | Containers | `@cloudflare/containers` | 0.3.7 | Heavy jobs off the M2 Ultra |
 | Browser Run (was Browser Rendering) | `@cloudflare/puppeteer`, `@cloudflare/playwright` | 1.4.0 · 1.3.6 | Web capture |
-| Workers AI with the AI SDK | `workers-ai-provider` | 4.0.0 | **Fallback when GOD sleeps** |
+| Workers AI with the AI SDK | `workers-ai-provider` | 4.0.0 | **Fallback when M2ULTRA sleeps** |
 | OAuth for MCP servers | `@cloudflare/workers-oauth-provider` | 1.2.3 | If we host our own MCP server |
 | Feature flags (Flagship) | `@cloudflare/flagship` (also PyPI `cloudflare-flagship`, Go SDK) | 0.6.0 | Optional |
 | Realtime | `@cloudflare/realtimekit` | 2.0.3 | Live voice/video sessions later |

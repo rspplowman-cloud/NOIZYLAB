@@ -1,6 +1,6 @@
 # _mc96-common/gabriel
 
-**Source of truth:** `NOIZYANTHROPIC` monorepo on GOD.local, maintained by RSP_001.
+**Source of truth:** `NOIZYANTHROPIC` monorepo on M2ULTRA.local, maintained by RSP_001.
 **Synced:** 2026-04-20T17:47:36Z via `ops/gabriel-to-all-brands.sh`.
 **One for all, all for one** — this payload appears identically in every RSPNOIZY brand repo so any brand can pull shared Gabriel doctrine + source + UI + agents + skills + rules without cross-repo dependencies.
 
