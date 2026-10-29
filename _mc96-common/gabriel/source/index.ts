@@ -25,7 +25,7 @@ function banner(): void {
   const label = env.GABRIEL_TARGET_LABEL || "next milestone";
   const days = Math.max(0, Math.ceil((new Date(target).getTime() - Date.now()) / 86400000));
   console.log(chalk.bold.cyan("═══════════════════════════════════════════"));
-  console.log(chalk.bold.cyan("  GABRIEL ONLINE — NOIZY EMPIRE"));
+  console.log(chalk.bold.cyan("  GABRIEL ONLINE — NOIZYWORLD"));
   console.log(chalk.cyan(`  ${date} | ${days} days to ${label}`));
   console.log(chalk.bold.cyan("═══════════════════════════════════════════"));
   console.log();

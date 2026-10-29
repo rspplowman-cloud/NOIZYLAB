@@ -64,7 +64,7 @@ export function loadSafetyContract(): string {
   return readIfExists(SAFETY_CONTRACT_PATH);
 }
 
-/** Load MOBILE_CONTINUITY.md (GABRIEL↔LUCY spillover: mobile queues, GOD executes). */
+/** Load MOBILE_CONTINUITY.md (GABRIEL↔LUCY spillover: mobile queues, M2Ultra executes). */
 export function loadMobileContinuity(): string {
   return readIfExists(MOBILE_CONTINUITY_PATH);
 }
@@ -118,7 +118,7 @@ export function loadMemory(): string {
  *   4. HEAVEN.md           — consent kernel schema, HVS Never Clauses, Kill Switch, endpoint map
  *   5. NEVER_CLAUSES_OPS   — 6 operational Never Clauses (OC-1..OC-6) from live memcells
  *   6. SAFETY_CONTRACT     — Peace/Love/Understanding hard rules A..F, required output format
- *   7. MOBILE_CONTINUITY   — GABRIEL↔LUCY spillover protocol (mobile queues, GOD executes)
+ *   7. MOBILE_CONTINUITY   — GABRIEL↔LUCY spillover protocol (mobile queues, M2Ultra executes)
  *   8. CREATIVE_ECOSYSTEM  — ZeroTrust + n8n/Zapier + Liner/Notion + AI branding + macOS a11y
  *   9. DREAMCHAMBER        — 6-layer accessibility-first production environment (L0..L5)
  *  10. INTEGRATIONS.md     — CF A/V surface, NOIZYCLOUDS fleet, 3rd-party auth boundaries
@@ -158,7 +158,7 @@ export function buildSystemPrompt(): string {
     `- Target: ${targetLabel} (${targetDate})`,
     `- Days remaining: ${daysRemaining}`,
     `- Empire root: ${ROOT}`,
-    `- Machine: GOD.local (M2 Ultra)`,
+    `- Machine: M2Ultra.local (Mac Studio M2 Ultra)`,
     `- Heaven: https://heaven.rsp-5f3.workers.dev  (migrating to heaven.noizy.ai)`,
   ].join("\n");
 

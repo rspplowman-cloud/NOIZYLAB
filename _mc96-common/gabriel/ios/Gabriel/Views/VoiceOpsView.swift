@@ -21,7 +21,7 @@ struct VoiceOpsView: View {
                             .font(.title3.weight(.semibold))
                             .foregroundStyle(.white)
 
-                        Text("Audio stays on GOD.local. Metadata only in Heaven.")
+                        Text("Audio stays on M2Ultra.local. Metadata only in Heaven.")
                             .font(.caption)
                             .foregroundStyle(.gray)
                     }
@@ -35,7 +35,7 @@ struct VoiceOpsView: View {
                             .tracking(2)
 
                         inputField("Member ID", text: $memberId)
-                        inputField("File Reference (local path on GOD)", text: $fileRef)
+                        inputField("File Reference (local path on M2Ultra)", text: $fileRef)
 
                         Button(action: registerVoice) {
                             HStack {

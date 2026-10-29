@@ -31,7 +31,7 @@
 | **`cf`** (Cloudflare CLI, **beta** since 28 Sep 2026) | `npm i -g cf` | One CLI for the whole public API (2,900+ commands, JSON output) **and** Workers projects (`cf init / dev / build / deploy`). `cf cli search "…"` finds a command from plain words. `cf migrate` converts Wrangler config | 1.0.0-beta.17 |
 | **Wrangler** | `npm i -D wrangler` | The Workers CLI we use today (NOIZYBKZ, HALT): deploy, D1 migrations, secrets, tail | 4.151.0 |
 | **create-cloudflare (C3)** | `npm create cloudflare@latest` | New project from a template | 2.74.0 |
-| **cloudflared** | Homebrew / GitHub releases | Cloudflare Tunnel connector. **The M2 Ultra uses this** (`docs/infra/M2ULTRA-CLOUD-NODE.md`) | checked daily |
+| **cloudflared** | Homebrew / GitHub releases | Cloudflare Tunnel connector. **The M2Ultra uses this** (`docs/infra/M2Ultra-CLOUD-NODE.md`) | checked daily |
 
 - **Rule for NOIZY:** keep using **Wrangler** for deploys until `cf` leaves beta. `cf` is fine for **read-only** look-ups now.
 
@@ -47,9 +47,9 @@
 | **Agents SDK** | `agents` | 0.28.1 | **Yes:** GABRIEL/LUCY cloud agents, `onEmail` mail agents |
 | Chat agents | `@cloudflare/ai-chat`, `@cloudflare/think` | 0.12.1 · 0.20.2 | Optional |
 | **Sandbox SDK** | `@cloudflare/sandbox` | 1.0.1 (1.0 is new; 0.x docs are legacy) | Isolated code runs for agents |
-| Containers | `@cloudflare/containers` | 0.3.7 | Heavy jobs off the M2 Ultra |
+| Containers | `@cloudflare/containers` | 0.3.7 | Heavy jobs off the M2Ultra |
 | Browser Run (was Browser Rendering) | `@cloudflare/puppeteer`, `@cloudflare/playwright` | 1.4.0 · 1.3.6 | Web capture |
-| Workers AI with the AI SDK | `workers-ai-provider` | 4.0.0 | **Fallback when GOD sleeps** |
+| Workers AI with the AI SDK | `workers-ai-provider` | 4.0.0 | **Fallback when M2Ultra sleeps** |
 | OAuth for MCP servers | `@cloudflare/workers-oauth-provider` | 1.2.3 | If we host our own MCP server |
 | Feature flags (Flagship) | `@cloudflare/flagship` (also PyPI `cloudflare-flagship`, Go SDK) | 0.6.0 | Optional |
 | Realtime | `@cloudflare/realtimekit` | 2.0.3 | Live voice/video sessions later |
@@ -85,7 +85,7 @@
 
 ## 8. The daily CF watch ("keep them always, check CF every day")
 
-- **What runs:** `.github/workflows/cf-watch.yml`, **every day at 11:41 UTC**, in GitHub's cloud. Nothing runs on the M2 Ultra.
+- **What runs:** `.github/workflows/cf-watch.yml`, **every day at 11:41 UTC**, in GitHub's cloud. Nothing runs on the M2Ultra.
 - **What it checks:**
   - every package in `docs/cloudflare/cf-watch.json` (npm, PyPI, Go, Terraform, GitHub releases);
   - new posts in the Cloudflare changelog;

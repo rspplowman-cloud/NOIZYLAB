@@ -1,6 +1,6 @@
 # DREAMCHAMBER — 6-layer accessibility-first production environment
 
-> DreamChamber is not an app. It is the name for a **layered production environment** where the M2 Ultra becomes a secure, voice-first, switch-accessible creative organism for a partially paralyzed creator — and, by extension, any creator operating at reduced physical capacity. Loaded into GABRIEL's system prompt so every turn knows which layer the current action lives on.
+> DreamChamber is not an app. It is the name for a **layered production environment** where the M2Ultra becomes a secure, voice-first, switch-accessible creative organism for a partially paralyzed creator — and, by extension, any creator operating at reduced physical capacity. Loaded into GABRIEL's system prompt so every turn knows which layer the current action lives on.
 >
 > Source: RSP_001 layered synthesis, 2026-04-18, grounded in current Cloudflare Zero Trust, Apple accessibility, Logic Pro, Final Cut Pro, and n8n documentation.
 
@@ -8,7 +8,7 @@
 
 **Reverse-engineer from 10 years out.** Imagine the creative process of 2036: voice memo → full branding kit + music stem + video edit in minutes, accessible to anyone regardless of physical capacity. Build toward that — but use only tools that **exist today**. That's the discipline. No vaporware. No "once X ships." Every layer below uses currently-documented, currently-available capability.
 
-**Mission alignment**: this is the M2 Ultra earning its right to exist. Not as a powerful computer. As a **creator-first production organism** — _the system adapts to the body, not the body to the system_.
+**Mission alignment**: this is the M2Ultra earning its right to exist. Not as a powerful computer. As a **creator-first production organism** — _the system adapts to the body, not the body to the system_.
 
 ## The 6 Layers
 
@@ -29,7 +29,7 @@ Each layer depends on the one below. GABRIEL does not ship a feature on layer N 
 
 **First. Not later. Not "once things are working." First.**
 
-Cloudflare Zero Trust is the secure foundation. The M2 Ultra sits behind a named Tunnel; internal apps live behind Access; the highest-risk admin surfaces require WARP device posture; the App Launcher is the operator's single front door.
+Cloudflare Zero Trust is the secure foundation. The M2Ultra sits behind a named Tunnel; internal apps live behind Access; the highest-risk admin surfaces require WARP device posture; the App Launcher is the operator's single front door.
 
 ### What's private (behind Access)
 
@@ -48,7 +48,7 @@ Cloudflare Zero Trust is the secure foundation. The M2 Ultra sits behind a named
 
 ### Rules GABRIEL enforces
 
-- **Never expose a GOD.local operator surface publicly without Access in front.** (Safety Contract Rule F applied.)
+- **Never expose a M2Ultra.local operator surface publicly without Access in front.** (Safety Contract Rule F applied.)
 - **Never use CF Access "Bypass" for internal apps.** (CF docs explicitly caution against this.)
 - **Never embed secrets in Tunnel YAML or Access policy JSON.** Use `wrangler secret put` or Tunnel credentials file with 0600 permissions.
 - **Log every Access denial to `noizy_ledger`** when Heaven is deployed (via heaven-mcp).
@@ -74,7 +74,7 @@ If a GABRIEL command cannot be triggered via Voice Control phrase, reached via S
 
 ## Layer 2 — Companion Devices (three-body system)
 
-The M2 Ultra should not do everything directly. iPad + iPhone are not "secondary screens" — they are **companion limbs**.
+The M2Ultra should not do everything directly. iPad + iPhone are not "secondary screens" — they are **companion limbs**.
 
 | Device                    | Role                                                                                                           | Accessibility extensions                                                                |
 | ------------------------- | -------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------- |
@@ -85,7 +85,7 @@ The M2 Ultra should not do everything directly. iPad + iPhone are not "secondary
 ### The asymmetry matters
 
 - **iPad is the canvas surface** — dwell, sketch, compose. Eye Tracking makes it a no-touch control plane. Position matters (arm mount, gooseneck).
-- **iPhone is the panic trigger + capture** — a voice memo from bed, a switch press when the hands are unavailable, a Kill Switch-initiate from away from GOD.
+- **iPhone is the panic trigger + capture** — a voice memo from bed, a switch press when the hands are unavailable, a Kill Switch-initiate from away from M2Ultra.
 - **GABRIEL routes via MOBILE_CONTINUITY.md** — LUCY handles both iPad and iPhone surfaces, but the UI is different per device: iPad shows the full DAZEFLOW dashboard; iPhone shows the emergency-small inbox.
 
 ### The rule
@@ -128,7 +128,7 @@ Looka, Brandmark, Logoai, Canva Magic Studio, Adobe Firefly, Figma AI, etc. — 
 
 ### n8n — the energy-preservation layer
 
-n8n runs self-hosted on GOD (per existing memory `project_agentic_factory`). Its job is: **turn one intentional action into many system actions** so the creator isn't physically re-doing repeatable work.
+n8n runs self-hosted on M2Ultra (per existing memory `project_agentic_factory`). Its job is: **turn one intentional action into many system actions** so the creator isn't physically re-doing repeatable work.
 
 Responsibilities:
 
@@ -216,7 +216,7 @@ Order matters. Later layers depend on earlier ones.
 | 12  | Logic Pro (macOS + iPad)                                 | 3     | Mac App Store; configure VoiceOver + reduced-motion in Logic prefs                       |
 | 13  | Final Cut Pro (macOS + iPad)                             | 3     | Mac App Store; configure Voice Isolation default                                         |
 | 14  | n8n in Docker (self-hosted)                              | 4     | `docker compose -f ops/docker-compose.n8n.yml up -d`; behind Access                      |
-| 15  | GABRIEL protected operator UI                            | 4     | port 9777 on GOD; behind Access; routed via Tunnel                                       |
+| 15  | GABRIEL protected operator UI                            | 4     | port 9777 on M2Ultra; behind Access; routed via Tunnel                                       |
 | 16  | Local AI / MCP tools                                     | 4     | existing `.mcp.json`; reached via GABRIEL daemon behind Access                           |
 | 17  | Governance / receipt / audit dashboard                   | 4     | Heaven `/dashboard` route + Notion "Receipts" DB                                         |
 

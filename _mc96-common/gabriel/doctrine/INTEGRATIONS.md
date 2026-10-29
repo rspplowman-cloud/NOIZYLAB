@@ -24,7 +24,7 @@ GABRIEL operates across three concentric surfaces. Each has its own auth model a
         │      │      │   1. NOIZY CORE     │   │    │
         │      │      │   Heaven (consent)  │   │    │
         │      │      │   17 local MCPs     │   │    │
-        │      │      │   GOD.local daemon  │   │    │
+        │      │      │   M2Ultra.local daemon  │   │    │
         │      │      │   Memory + skills   │   │    │
         │      │      └─────────────────────┘   │    │
         │      └─────────────────────────────────┘    │

@@ -17,7 +17,7 @@ Rob speaks → Siri/Google → Power Automate → Voice Bridge (8080) → Comman
 ## Voice Bridge Server
 
 - **File**: `scripts/voice-bridge-server.js` (323 lines)
-- **Port**: 8080 on GOD.local
+- **Port**: 8080 on M2Ultra.local
 - **Auth**: Bearer token (`VOICE_AUTH_TOKEN`)
 - **Commands**: claude, deploy, dreamchamber, compare, status, cascade
 

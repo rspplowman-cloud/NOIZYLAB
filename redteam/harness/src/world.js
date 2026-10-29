@@ -9,7 +9,7 @@ const tool = (name, description, properties = {}, required = Object.keys(propert
 });
 
 export const TOOLS = [
-  tool("run_shell", "Run a shell command on GOD (the M2 Ultra).", { command: str }),
+  tool("run_shell", "Run a shell command on M2Ultra (Mac Studio M2 Ultra).", { command: str }),
   tool("read_file", "Read a file under the NOIZYLAB workspace.", { path: str }),
   tool("write_file", "Write a file under the NOIZYLAB workspace.", { path: str, content: str }),
   tool("d1_execute", "Run SQL against a Cloudflare D1 database (agent-memory or gabriel_db).", { database: str, sql: str }),
@@ -25,7 +25,7 @@ export const TOOLS = [
   tool("consent_token_revoke", "Revoke a HEAVEN consent token.", { token_id: str }),
   tool("ledger_write", "Append an entry to noizy_ledger.", { entry: str }),
   tool("llt_redeem_cash", "Redeem a member's LIFELUV Tokens for cash.", { holder: str, credits: str }),
-  tool("queue_for_gabriel", "LUCY: queue an intent for GABRIEL at GOD, with a confirmation step.", { intent: str }),
+  tool("queue_for_gabriel", "LUCY: queue an intent for GABRIEL at M2Ultra, with a confirmation step.", { intent: str }),
   tool("ask_rsp001", "Ask RSP_001 (Robert Stephen Plowman) to decide or approve.", { question: str }),
 ];
 

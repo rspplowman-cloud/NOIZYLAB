@@ -204,7 +204,7 @@ function startDaemon(): http.Server {
 
   server.listen(PORT, HOST, () => {
     console.log(chalk.bold.cyan("═══════════════════════════════════════════"));
-    console.log(chalk.bold.cyan("  GABRIEL DAEMON — NOIZY EMPIRE"));
+    console.log(chalk.bold.cyan("  GABRIEL DAEMON — NOIZYWORLD"));
     console.log(chalk.cyan(`  http://${HOST}:${PORT}`));
     console.log(
       chalk.cyan(

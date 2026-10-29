@@ -15,9 +15,9 @@ Every doc in `docs/`, by area. Add a line here when you add a doc.
 | Identity | [NOIZY-MAIL-AND-IDENTITY.md](./identity/NOIZY-MAIL-AND-IDENTITY.md) | Mail and identity architecture |
 | Identity | [NOIZY-VAULT-SPEC.md](./identity/NOIZY-VAULT-SPEC.md) | NOIZY VAULT spec |
 | Identity | [SPARK-MAIL-SETUP.md](./identity/SPARK-MAIL-SETUP.md) | Spark Mail AI setup |
-| Infra | [M2ULTRA-CLOUD-NODE.md](./infra/M2ULTRA-CLOUD-NODE.md) | GOD (M2 Ultra) as a cloud node |
-| Infra | [REPAIR-PLAN.md](./infra/REPAIR-PLAN.md) | M2 Ultra repair plan: gates, evidence, n8n guardrail, manifest |
-| Infra | [infra/m2ultra/README.md](../infra/m2ultra/README.md) | M2 Ultra Docker stack: start-up steps |
+| Infra | [M2Ultra-CLOUD-NODE.md](./infra/M2Ultra-CLOUD-NODE.md) | M2Ultra (Mac Studio M2 Ultra) as a cloud node |
+| Infra | [REPAIR-PLAN.md](./infra/REPAIR-PLAN.md) | M2Ultra repair plan: gates, evidence, n8n guardrail, manifest |
+| Infra | [infra/m2ultra/README.md](../infra/m2ultra/README.md) | M2Ultra Docker stack: start-up steps |
 | Lumo | [LUMO-PROMPTS.md](./lumo/LUMO-PROMPTS.md) | Lumo role and prompts |
 | Pipeline | [PIPELINE-V5.md](./pipeline/PIPELINE-V5.md) | Pipeline v5 |
 | Prune00 | [PRUNE00-LICENSE-STAGE.md](./prune00/PRUNE00-LICENSE-STAGE.md) | Prune00 licence stage |
@@ -26,7 +26,7 @@ Every doc in `docs/`, by area. Add a line here when you add a doc.
 | Reference | [AGENT_SDK.md](../_mc96-common/gabriel/reference/AGENT_SDK.md) | Claude Agent SDK notes for GABRIEL |
 | NOIZYHIVE | [scripts/noizyhive/README.md](../scripts/noizyhive/README.md) | Every drive as one hive: one command gives every project and file its home, with undo |
 | Notes | [scripts/notes/README.md](../scripts/notes/README.md) | Export every Apple Note for the rebuild |
-| Identity | [PASSWORD-INHALE-RUNBOOK.md](./identity/PASSWORD-INHALE-RUNBOOK.md) | Move every password on the M2 Ultra into Proton Pass |
+| Identity | [PASSWORD-INHALE-RUNBOOK.md](./identity/PASSWORD-INHALE-RUNBOOK.md) | Move every password on the M2Ultra into Proton Pass |
 | DreamChamber | [dreamchamber/README.md](../dreamchamber/README.md) | The creative room: rituals, agents in role, receipts. API + MCP |
 | Agents | [mcp/README.md](../_mc96-common/gabriel/mcp/README.md) | MCP servers for every agent: GABRIEL, LUCY, ENGR_KEITH, DREAM, CB01, SHIRLEY, FAMILY, HEAVEN |
 | Tasks | [APPLE-REMINDERS-BRIDGE.md](./tasks/APPLE-REMINDERS-BRIDGE.md) | Apple Reminders bridge |

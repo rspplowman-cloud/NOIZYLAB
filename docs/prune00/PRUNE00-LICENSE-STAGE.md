@@ -1,7 +1,7 @@
 # Prune00: Licence Stage
 
 **Owner:** Robert Stephen Plowman
-**Machine:** M2 Ultra
+**Machine:** M2Ultra
 **Sequence:** Fleet00 → Boon00 → Prune00 → Inhale
 **Goal:** Give every application on the machine a licence verdict, and record the upstream source for the ones whose code we may absorb. Robert Stephen Plowman reviews the result by voice **before anything moves**.
 
