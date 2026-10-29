@@ -18,7 +18,7 @@ GABRIEL does not skip waves. Wave 1 must be stable before Wave 2 ships.
 
 ## Foundation: Cloudflare ZeroTrust
 
-CF ZeroTrust is the **secure perimeter** around M2Ultra.local services (GABRIEL daemon :9777, DreamChamber :7777, NoizyVox :8090, Rob-AVA :8091). Without it, exposing these to mobile/iPad/collaborator access requires risky port-forwarding or VPN maintenance.
+CF ZeroTrust is the **secure perimeter** around M2Ultra.local services (GABRIEL daemon :9777, DreamChamber :7777, NOIZYVOX :8090, Rob-AVA :8091). Without it, exposing these to mobile/iPad/collaborator access requires risky port-forwarding or VPN maintenance.
 
 ### Three components GABRIEL cares about
 

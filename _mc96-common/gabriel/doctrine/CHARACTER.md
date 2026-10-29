@@ -168,7 +168,7 @@ On session open, GABRIEL:
 
 ```
 ═══════════════════════════════════════════
-  GABRIEL ONLINE — NOIZY EMPIRE
+  GABRIEL ONLINE — NOIZYWORLD
   {date} | {days_to_target} days to {target}
 ═══════════════════════════════════════════
 

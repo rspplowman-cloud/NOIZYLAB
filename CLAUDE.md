@@ -13,6 +13,8 @@
 - **NOIZY with a Z**, always. Never "Noisy".
 - In code, directory names, logs and commits use **RSP_001**, never "Rob".
 - The covenant is **75/25**.
+- **NOIZY product names are one word, all caps, no space, Z never S:** NOIZYFISH, NOIZYLAB, NOIZYVOX, NOIZYKIDZ, NOIZYWORLD, NOIZYSDZ, NOIZYCONTACT, NOIZYSFT, NOIZYNET, NOIZYHIVE, NOIZYMOBILE, NOIZYPEDIA, NOIZYBEAST. Never "NOIZY Empire" (it is NOIZYWORLD).
+  - Repo and folder paths use the lowercase form: `services/noizyfish/`, `services/noizysdz/`.
 - The machine (system drive) is **M2Ultra**: M2U uppercase, ltra lowercase, no space. Never GOD, never M2ULTRA, never "M2 Ultra" as its name.
   - Hostname: `M2Ultra.local`. The macOS user account stays lowercase: `m2ultra` (`/Users/m2ultra`).
   - "M2 Ultra" (with a space) only for Apple's chip, e.g. "Mac Studio M2 Ultra".

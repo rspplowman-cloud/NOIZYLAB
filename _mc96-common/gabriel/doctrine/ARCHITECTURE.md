@@ -117,7 +117,7 @@ GABRIEL/
 
 - **9777** — GABRIEL daemon (HTTP + WebSocket)
 - **7777** — DreamChamber (separate process, talks to GABRIEL)
-- **8090** — NoizyVox FastAPI
+- **8090** — NOIZYVOX FastAPI
 - **8091** — Rob-AVA FastAPI
 
 ## Two run modes

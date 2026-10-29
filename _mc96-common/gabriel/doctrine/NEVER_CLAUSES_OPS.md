@@ -27,6 +27,11 @@ Why: one name, spelled one way, so every path, hostname, log and search finds th
 Where it applies: hostnames (`M2Ultra.local`), machine IDs, docs, dashboards, logs, commits, string literals.
 Exceptions: the macOS user account is lowercase `m2ultra` (`/Users/m2ultra`); lowercase folder names such as `infra/m2ultra`; ALL_CAPS constant and secret names such as `MACHINE_TOKEN_M2ULTRA`; "M2 Ultra" with a space only for Apple's chip ("Mac Studio M2 Ultra").
 
+**OC-1B · NOIZY product names are one word, all caps, no space — Z never S.**
+Why: a name with a space is two search terms; one word is one name everywhere. Locked by RSP_001 on 2026-10-29 as canonical and universal for the build.
+The list: NOIZYFISH, NOIZYLAB, NOIZYVOX, NOIZYKIDZ, NOIZYWORLD, NOIZYSDZ, NOIZYCONTACT, NOIZYSFT, NOIZYNET, NOIZYHIVE, NOIZYMOBILE, NOIZYPEDIA, NOIZYBEAST. "NOIZY Empire" is retired: it is NOIZYWORLD.
+Paths: repo and folder names use the lowercase form (`services/noizyfish/`, `services/noizysdz/`). The NOMO driver app is written NOMO.
+
 **OC-2 · Never write to `gabriel_db` without explicit RSP_001 approval.**
 Why: `gabriel_db` holds the consent kernel — HVS lattice, actor identity, estate, ledger. Silent writes = silent consent violations. Read is free; write requires a direct "go".
 Where it applies: any SQL `INSERT/UPDATE/DELETE`, any MCP tool call that mutates `gabriel_db`, any wrangler d1 execute with `--remote` against that DB ID (`68ac0f08-c4ee-43ff-9480-366406d41b37`).
