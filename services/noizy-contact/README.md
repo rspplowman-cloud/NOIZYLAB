@@ -45,11 +45,11 @@ Claude / RSP_001 ──POST /contact/M2Ultra──▶ noizy-contact Worker ─�
 
 ## Deploy (Cloudflare side, ~10 minutes)
 
-Use the **Fishmusicinc account** (the one that owns HEAVEN and the D1s), not the empty one.
+Use the **NOIZY.AI account** (`5f36aa97…`, signed in as rsp@noizy.ai with GitHub). It owns HEAVEN and is production (NOI-114). Not Fishmusicinc (legacy/archive), and not the empty account.
 
 1. `cd services/noizy-contact`
 2. `npm i -D wrangler @cloudflare/workers-types`
-3. `npx wrangler login` (sign in on the Fishmusicinc account)
+3. `npx wrangler login` (sign in as rsp@noizy.ai, NOIZY.AI account), then `npx wrangler whoami` to confirm
 4. `npx wrangler d1 create noizy-contact` → paste the `database_id` into `wrangler.jsonc`
 5. `npx wrangler d1 execute noizy-contact --remote --file=schema.sql`
 6. `npx wrangler secret put CONTROL_TOKEN` (make it with `openssl rand -hex 32`)
