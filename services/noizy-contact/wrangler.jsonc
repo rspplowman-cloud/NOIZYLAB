@@ -1,0 +1,36 @@
+// wrangler.jsonc — NOIZY CONTACT
+{
+  "name": "noizy-contact",
+  "main": "src/index.ts",
+  "compatibility_date": "2025-03-07",
+  "compatibility_flags": ["nodejs_compat"],
+  "observability": {
+    "enabled": true,
+    "head_sampling_rate": 1
+  },
+
+  // Non-secret configuration. Secrets (CONTROL_TOKEN, MACHINE_TOKEN_M2ULTRA) are set with
+  // `wrangler secret put <NAME>` and never appear in this file or in the code.
+  "vars": {
+    "MACHINES": "M2ULTRA",
+    "ASSERTED_BY": "RSP001,CLAUDE,GABRIEL,LUCY,SHIRL,ENGR_KEITH,POPS,DREAM",
+    "REQUEST_TIMEOUT_MS": "15000"
+  },
+
+  // One Durable Object per machine; holds the machine's outbound WebSocket.
+  "durable_objects": {
+    "bindings": [{ "name": "MACHINE", "class_name": "Machine" }]
+  },
+  "migrations": [{ "tag": "v1", "new_sqlite_classes": ["Machine"] }],
+
+  // Rule Zero receipts. Create with `wrangler d1 create noizy-contact`, paste the id here,
+  // then `wrangler d1 execute noizy-contact --remote --file=schema.sql`.
+  "d1_databases": [
+    { "binding": "DB", "database_name": "noizy-contact", "database_id": "REPLACE_WITH_D1_ID" }
+  ],
+
+  // 60 contacts per minute per machine; enough for a one-man shop, too few for a runaway loop.
+  "ratelimits": [
+    { "name": "CONTROL_RL", "namespace_id": "1001", "simple": { "limit": 60, "period": 60 } }
+  ]
+}
