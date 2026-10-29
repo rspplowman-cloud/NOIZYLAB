@@ -13,6 +13,10 @@
 - **NOIZY with a Z**, always. Never "Noisy".
 - In code, directory names, logs and commits use **RSP_001**, never "Rob".
 - The covenant is **75/25**.
+- The machine (system drive) is **M2Ultra**: M2U uppercase, ltra lowercase, no space. Never GOD, never M2ULTRA, never "M2 Ultra" as its name.
+  - Hostname: `M2Ultra.local`. The macOS user account stays lowercase: `m2ultra` (`/Users/m2ultra`).
+  - "M2 Ultra" (with a space) only for Apple's chip, e.g. "Mac Studio M2 Ultra".
+  - ALL_CAPS constant and secret names keep caps, e.g. `MACHINE_TOKEN_M2ULTRA`.
 
 ## Safety
 

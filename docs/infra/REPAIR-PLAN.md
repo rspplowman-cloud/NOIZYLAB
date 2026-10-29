@@ -1,4 +1,4 @@
-# M2 Ultra repair plan: gates, evidence, manifest
+# M2Ultra repair plan: gates, evidence, manifest
 
 > Agreed by RSP_001, 2026-10-24. **Nothing is marked fixed without evidence:** a passing health check, a restore test, or a signed receipt.
 

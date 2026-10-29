@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-// DreamChamber Super AI API — local HTTP on the M2 Ultra.
+// DreamChamber Super AI API — local HTTP on the M2Ultra.
 // Layer 0 (DREAMCHAMBER.md): binds 127.0.0.1 only; reach it from iPad/iPhone through the
 // Cloudflare Tunnel with Access in front. Every route except /health needs
 // `Authorization: Bearer $DREAMCHAMBER_TOKEN`, and the server refuses to start without one.

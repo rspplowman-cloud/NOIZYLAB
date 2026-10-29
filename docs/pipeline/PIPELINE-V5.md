@@ -29,7 +29,7 @@
 Two sources disagree about HEAVEN's current state, and they need to be reconciled first:
 
 - `HEAVEN.md` (dated 2026-04-18) says **"UNDEPLOYED · 522"** and source version **v18.x**.
-- The voice summary says it is **alive, returning 401**, and should be deployed from **"v4 source from God"**.
+- The voice summary says it is **alive, returning 401**, and should be deployed from **"v4 source from M2Ultra"**.
 
 On the Mac, run these two checks first. They don't need any keys:
 
@@ -82,7 +82,7 @@ Slack Events / Discord Interactions
 | **Agents SDK** | HEAVEN's long-running agent behaviour, and the `comms` and mail agents. Gives each agent stored state, WebSockets, scheduling and an email hook | `McpAgent` is now frozen; new MCP servers should use `createMcpHandler` |
 | **Cloudflare API MCP server** (`mcp.cloudflare.com/mcp`) | Lets Claude Code deploy, read logs and manage KV, D1 and DNS with no dashboard | Grant only the permissions each job needs |
 | **Email Service** | Routing (free) and sending (Workers Paid, beta) | The basis of MAIL01 |
-| **Workers AI** | An edge fallback for classification when the M2 Ultra is asleep | Check that the model you want is in the current Workers AI catalogue before relying on it |
+| **Workers AI** | An edge fallback for classification when the M2Ultra is asleep | Check that the model you want is in the current Workers AI catalogue before relying on it |
 | **Service Bindings** | Workers calling each other directly (comms → HEAVEN, mail-hub → HEAVEN ledger) | Keeps HEAVEN off the public path |
 | **`cf` CLI** (beta) | Scripting across the whole Cloudflare API | Use alongside `wrangler`, which still handles deploys |
 

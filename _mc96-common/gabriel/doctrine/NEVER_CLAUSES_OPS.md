@@ -22,6 +22,11 @@ Why: structured artifacts survive the session. "Rob" is a conversation register,
 Where it applies: file paths, directory names, git commit messages, code comments, string literals in code, log statements, JSON keys, SQL column data, anything grepable.
 Exception: prose in markdown intended for human reading (e.g. CHARACTER.md conversational sections) — but even there, prefer RSP_001 in structured tables and operational sections.
 
+**OC-1A · The machine is always `M2Ultra` — never GOD, never M2ULTRA, never "M2 Ultra" as its name.**
+Why: one name, spelled one way, so every path, hostname, log and search finds the same machine. Locked by RSP_001 on 2026-10-29.
+Where it applies: hostnames (`M2Ultra.local`), machine IDs, docs, dashboards, logs, commits, string literals.
+Exceptions: the macOS user account is lowercase `m2ultra` (`/Users/m2ultra`); lowercase folder names such as `infra/m2ultra`; ALL_CAPS constant and secret names such as `MACHINE_TOKEN_M2ULTRA`; "M2 Ultra" with a space only for Apple's chip ("Mac Studio M2 Ultra").
+
 **OC-2 · Never write to `gabriel_db` without explicit RSP_001 approval.**
 Why: `gabriel_db` holds the consent kernel — HVS lattice, actor identity, estate, ledger. Silent writes = silent consent violations. Read is free; write requires a direct "go".
 Where it applies: any SQL `INSERT/UPDATE/DELETE`, any MCP tool call that mutates `gabriel_db`, any wrangler d1 execute with `--remote` against that DB ID (`68ac0f08-c4ee-43ff-9480-366406d41b37`).
