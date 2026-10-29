@@ -12,7 +12,7 @@
   // Non-secret configuration. Secrets (CONTROL_TOKEN, MACHINE_TOKEN_M2ULTRA) are set with
   // `wrangler secret put <NAME>` and never appear in this file or in the code.
   "vars": {
-    "MACHINES": "M2ULTRA",
+    "MACHINES": "M2Ultra",
     "ASSERTED_BY": "RSP001,CLAUDE,GABRIEL,LUCY,SHIRL,ENGR_KEITH,POPS,DREAM",
     "REQUEST_TIMEOUT_MS": "15000"
   },

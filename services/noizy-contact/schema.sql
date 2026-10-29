@@ -4,7 +4,7 @@
 CREATE TABLE IF NOT EXISTS receipts (
   id          TEXT PRIMARY KEY,          -- uuid, also returned to the caller as receipt_id
   ts          TEXT NOT NULL,             -- ISO 8601 UTC
-  machine     TEXT NOT NULL,             -- M2ULTRA
+  machine     TEXT NOT NULL,             -- M2Ultra
   action      TEXT NOT NULL,             -- one of the allowlisted actions
   asserted_by TEXT NOT NULL,             -- RSP001 | CLAUDE | GABRIEL | LUCY | SHIRL | ENGR_KEITH | POPS | DREAM
   args_json   TEXT NOT NULL DEFAULT '{}',

@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 """
-lucy_link.py — LUCY's outbound link from M2ULTRA to the NOIZY CONTACT Worker.
+lucy_link.py — LUCY's outbound link from M2Ultra to the NOIZY CONTACT Worker.
 
-Runs on M2ULTRA under launchd. Opens ONE outbound WebSocket to the Worker, says hello,
+Runs on M2Ultra under launchd. Opens ONE outbound WebSocket to the Worker, says hello,
 heartbeats every 30 s, and answers allowlisted requests by talking to local services
 only (LUCY on 127.0.0.1:9778, MC96 on 127.0.0.1:9696) plus HEAVEN's public health route.
 Nothing listens inbound.
@@ -16,7 +16,7 @@ MC96_TOKEN is looked up the same way (service=noizy-contact account=MC96_TOKEN).
 Install:  /usr/bin/python3 -m pip install --user websockets
 Config:   environment variables, all optional except CONTACT_URL
   CONTACT_URL           wss://noizy-contact.<your-subdomain>.workers.dev
-  MACHINE               M2ULTRA
+  MACHINE               M2Ultra
   LUCY_HEALTH_URL       http://127.0.0.1:9778/health
   MC96_STATUS_URL       http://127.0.0.1:9696/status
   GABRIEL_HEALTH_URL    https://heaven.rsp-5f3.workers.dev/api/health
@@ -44,7 +44,7 @@ except ImportError:  # pragma: no cover
     sys.exit(2)
 
 VERSION = "1.0.1"
-MACHINE = os.environ.get("MACHINE", "M2ULTRA")
+MACHINE = os.environ.get("MACHINE", "M2Ultra")
 CONTACT_URL = os.environ.get("CONTACT_URL", "").rstrip("/")
 LUCY_HEALTH_URL = os.environ.get("LUCY_HEALTH_URL", "http://127.0.0.1:9778/health")
 MC96_STATUS_URL = os.environ.get("MC96_STATUS_URL", "http://127.0.0.1:9696/status")
@@ -208,9 +208,9 @@ async def main() -> None:
     if not CONTACT_URL:
         sys.stderr.write("CONTACT_URL is not set\n")
         sys.exit(2)
-    token = secret(f"MACHINE_TOKEN_{MACHINE}")
+    token = secret(f"MACHINE_TOKEN_{MACHINE.upper()}")
     if not token:
-        sys.stderr.write(f"MACHINE_TOKEN_{MACHINE} not found in environment or Keychain\n")
+        sys.stderr.write(f"MACHINE_TOKEN_{MACHINE.upper()} not found in environment or Keychain\n")
         sys.exit(2)
     url = f"{CONTACT_URL}/link/{MACHINE}"
     backoff = 2

@@ -1,10 +1,10 @@
 // src/index.ts
 // NOIZY CONTACT — the Cloudflare Worker that lets a cloud session (Claude, RSP001)
-// reach M2ULTRA through LUCY without opening a single inbound port on the Mac.
+// reach M2Ultra through LUCY without opening a single inbound port on the Mac.
 //
 // Shape (one chain, boring on purpose):
-//   LUCY on M2ULTRA  --outbound WebSocket-->  Machine Durable Object (one per machine)
-//   Claude / RSP001  --POST /contact/M2ULTRA-->  Worker  --relay-->  DO  --socket-->  LUCY
+//   LUCY on M2Ultra  --outbound WebSocket-->  Machine Durable Object (one per machine)
+//   Claude / RSP001  --POST /contact/M2Ultra-->  Worker  --relay-->  DO  --socket-->  LUCY
 //   Every contact ends in a Rule Zero receipt in D1: who asked, what ran, how to reverse it.
 //
 // Doctrine honoured here:
@@ -27,9 +27,9 @@ export interface Env {
   CONTROL_RL: RateLimit;
   // Secrets (wrangler secret put ...)
   CONTROL_TOKEN: string; // Claude / RSP001 -> this Worker
-  MACHINE_TOKEN_M2ULTRA: string; // LUCY on M2ULTRA -> this Worker (one per machine: MACHINE_TOKEN_<NAME>)
+  MACHINE_TOKEN_M2ULTRA: string; // LUCY on M2Ultra -> this Worker (one per machine: MACHINE_TOKEN_<NAME>)
   // Vars (wrangler.jsonc)
-  MACHINES: string; // "M2ULTRA" or "M2ULTRA,MICHAEL"
+  MACHINES: string; // "M2Ultra" or "M2Ultra,MICHAEL"
   ASSERTED_BY: string; // "RSP001,CLAUDE,GABRIEL,LUCY,SHIRL,ENGR_KEITH,POPS,DREAM"
   REQUEST_TIMEOUT_MS: string; // "15000"
 }
@@ -40,8 +40,8 @@ const ACTIONS = {
   status: { desc: "Link state and last heartbeat (answered by the Worker, no round trip)", reverse: "none (read-only)" },
   "lucy.health": { desc: "LUCY MCP health on 127.0.0.1:9778", reverse: "none (read-only)" },
   "mc96.status": { desc: "MC96 control plane status on 127.0.0.1:9696", reverse: "none (read-only)" },
-  "gabriel.health": { desc: "LUCY checks GABRIEL (HEAVEN / D1) from M2ULTRA", reverse: "none (read-only)" },
-  say: { desc: "Deliver a text message to LUCY's inbox on M2ULTRA", reverse: "delete the inbox line carrying this receipt id" },
+  "gabriel.health": { desc: "LUCY checks GABRIEL (HEAVEN / D1) from M2Ultra", reverse: "none (read-only)" },
+  say: { desc: "Deliver a text message to LUCY's inbox on M2Ultra", reverse: "delete the inbox line carrying this receipt id" },
 } as const;
 
 type ActionName = keyof typeof ACTIONS;
@@ -124,7 +124,8 @@ function csv(value: string | undefined): Set<string> {
   );
 }
 
-const MACHINE_NAME = /^[A-Z0-9]{2,32}$/;
+// Machine IDs are canonical names like "M2Ultra" (mixed case). Secret names stay ALL_CAPS.
+const MACHINE_NAME = /^[A-Za-z0-9]{2,32}$/;
 
 function isAction(value: unknown): value is ActionName {
   return typeof value === "string" && Object.prototype.hasOwnProperty.call(ACTIONS, value);
@@ -342,7 +343,7 @@ async function writeReceipt(
 export default {
   async fetch(request: Request, env: Env, ctx: ExecutionContext): Promise<Response> {
     const url = new URL(request.url);
-    const parts = url.pathname.split("/").filter(Boolean); // e.g. ["contact", "M2ULTRA"]
+    const parts = url.pathname.split("/").filter(Boolean); // e.g. ["contact", "M2Ultra"]
     const machines = csv(env.MACHINES);
 
     // --- Public ----------------------------------------------------------------
@@ -354,7 +355,7 @@ export default {
     if (parts[0] === "link" && parts.length === 2) {
       const machine = parts[1];
       if (!MACHINE_NAME.test(machine) || !machines.has(machine)) return json({ error: "unknown_machine" }, 404);
-      const secret = (env as unknown as Record<string, string | undefined>)[`MACHINE_TOKEN_${machine}`];
+      const secret = (env as unknown as Record<string, string | undefined>)[`MACHINE_TOKEN_${machine.toUpperCase()}`];
       if (!tokenMatches(bearer(request), secret)) return json({ error: "unauthorized" }, 401);
       if (request.headers.get("Upgrade")?.toLowerCase() !== "websocket") {
         return json({ error: "expected_websocket" }, 426);
