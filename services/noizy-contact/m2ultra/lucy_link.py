@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-lucy_link.py — LUCY's outbound link from M2Ultra to the NOIZY CONTACT Worker.
+lucy_link.py — LUCY's outbound link from M2Ultra to the NOIZYCONTACT Worker.
 
 Runs on M2Ultra under launchd. Opens ONE outbound WebSocket to the Worker, says hello,
 heartbeats every 30 s, and answers allowlisted requests by talking to local services

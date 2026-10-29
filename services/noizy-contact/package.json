@@ -2,7 +2,7 @@
   "name": "noizy-contact",
   "version": "1.0.1",
   "private": true,
-  "description": "NOIZY CONTACT: cloud-to-M2ULTRA contact through LUCY, outbound WebSocket, Rule Zero receipts",
+  "description": "NOIZYCONTACT: cloud-to-M2ULTRA contact through LUCY, outbound WebSocket, Rule Zero receipts",
   "license": "AGPL-3.0-or-later",
   "scripts": {
     "typecheck": "tsc --noEmit -p tsconfig.json",

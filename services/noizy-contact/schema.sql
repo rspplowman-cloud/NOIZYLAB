@@ -1,4 +1,4 @@
--- schema.sql — Rule Zero receipts for NOIZY CONTACT
+-- schema.sql — Rule Zero receipts for NOIZYCONTACT
 -- Apply: wrangler d1 execute noizy-contact --remote --file=schema.sql
 
 CREATE TABLE IF NOT EXISTS receipts (

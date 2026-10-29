@@ -1,5 +1,5 @@
 // src/index.ts
-// NOIZY CONTACT — the Cloudflare Worker that lets a cloud session (Claude, RSP001)
+// NOIZYCONTACT — the Cloudflare Worker that lets a cloud session (Claude, RSP001)
 // reach M2Ultra through LUCY without opening a single inbound port on the Mac.
 //
 // Shape (one chain, boring on purpose):

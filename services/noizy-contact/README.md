@@ -1,4 +1,4 @@
-# NOIZY CONTACT
+# NOIZYCONTACT
 
 The Worker that lets a cloud session (Claude, RSP_001) make contact with M2Ultra through LUCY,
 with **no inbound port on the Mac** and a **Rule Zero receipt** for every contact.

@@ -1,4 +1,4 @@
-// wrangler.jsonc — NOIZY CONTACT
+// wrangler.jsonc — NOIZYCONTACT
 {
   "name": "noizy-contact",
   "main": "src/index.ts",
