@@ -1,0 +1,16 @@
+{
+  "name": "noizy-ledger",
+  "version": "0.1.0",
+  "private": true,
+  "description": "NOIZY Mini MBC: hash-chained catalog ledger, Genesis Record, 75/25 split, LLT access credits (never cash).",
+  "license": "AGPL-3.0-or-later",
+  "type": "module",
+  "scripts": {
+    "typecheck": "tsc --noEmit -p tsconfig.json",
+    "test": "node --test test/*.test.mjs"
+  },
+  "devDependencies": {
+    "@cloudflare/workers-types": "^5.20261029.1",
+    "typescript": "^5.6.0"
+  }
+}
