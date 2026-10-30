@@ -9,15 +9,19 @@ on:
         description: "Run the live smoke set against the Claude API (costs money)"
         type: boolean
         default: false
+concurrency:
+  group: redteam-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true   # a new push stops the old run: fast and no stale results
 jobs:
   harness:
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     defaults: { run: { working-directory: redteam/harness } }
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with: { node-version: "22" }
-      - run: npm ci || npm install --no-audit --no-fund
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with: { node-version: "22", cache: npm, cache-dependency-path: redteam/harness/package-lock.json }
+      - run: npm ci --no-audit --no-fund || npm install --no-audit --no-fund
       - run: npm test
       - run: npm run selftest
       - name: Live smoke (manual only)
@@ -26,51 +30,57 @@ jobs:
         run: npm run smoke
   noizybkz:
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     defaults: { run: { working-directory: noizybkz } }
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
         with: { node-version: "22" }
       - run: npm test
   reminders:
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     defaults: { run: { working-directory: workers/reminders } }
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
         with: { node-version: "22" }
       - run: npm test
   cf-watch:
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
         with: { node-version: "22" }
       - run: node scripts/cf-watch/cf_watch.mjs --dry-run
   agent-mcp:
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     defaults: { run: { working-directory: _mc96-common/gabriel/mcp } }
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with: { node-version: "22" }
-      - run: npm ci
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with: { node-version: "22", cache: npm, cache-dependency-path: _mc96-common/gabriel/mcp/package-lock.json }
+      - run: npm ci --no-audit --no-fund
       - run: npm test
   gabriel-typecheck:
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     defaults: { run: { working-directory: _mc96-common/gabriel } }
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with: { node-version: "22" }
-      - run: npm ci
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with: { node-version: "22", cache: npm, cache-dependency-path: _mc96-common/gabriel/package-lock.json }
+      - run: npm ci --no-audit --no-fund
       - run: npx tsc --noEmit -p .
   dreamchamber:
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     defaults: { run: { working-directory: dreamchamber } }
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with: { node-version: "22" }
-      - run: npm ci
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with: { node-version: "22", cache: npm, cache-dependency-path: dreamchamber/package-lock.json }
+      - run: npm ci --no-audit --no-fund
       - run: npm test
