@@ -1,0 +1,71 @@
+# NOIZY Canonical Registry — v1 (corrected)
+# Owner: RSP001 (Robert Stephen Plowman). Written Oct 30 2026.
+# Source of truth for names. Anything marked OPEN waits on an RSP001 decision.
+# check.mjs refuses known-wrong names (see banned list there).
+
+owner:
+  id: RSP001
+  name: Robert Stephen Plowman
+  legal_entity: Fish Music Inc.          # corporation since Dec 1996, RSP001 sole shareholder
+  machine: M2Ultra                       # hostname M2Ultra.local, user account m2ultra
+  phone: iPhone 15 Pro Max               # the only mobile device in use
+
+tree:                                    # THE NOIZY TREE (official names: Tree, Canopy)
+  roots: fishmusicinc.com                # legal owner, the one real mailbox, the M365 tenant
+  trunk: noizy.ai                        # dev home; HEAVEN runs on the NOIZY.AI Cloudflare account
+  branches: [NOIZYFISH, NOIZYVOX, NOIZYKIDZ, NOIZYLAB, NOIZYWORLD, NOIZYMOBILE, NOIZYSTRMZ, THEGATHERING]
+  canopy: artists, their voices and their work
+  rule: every domain is registered to Fish Music Inc.
+
+identity_roots:
+  - { role: legal and business mail, address: rp@fishmusicinc.com, home: Microsoft 365 (Fish Music tenant) }
+  - { role: workspace and Cloudflare login, address: rsp@noizy.ai, home: Google Workspace, note: "keep its mail on Google; it is the HEAVEN account login" }
+  - { role: archive (5 TB, NOIZYWORLD folder), address: rspnoizy@gmail.com }
+  - { role: GitHub notifications, address: rspplowman@gmail.com, note: "do not retire; GitHub depends on it" }
+  - { role: vault, home: Proton Pass (VAULT-OPS) }
+  - { role: tenant admin, address: rsp320521@fishmusicinc.onmicrosoft.com, note: "existing Fish Music tenant being rescued, not new" }
+
+covenant:
+  creator: 75
+  house: 25
+  noizykidz_1_percent: OPEN               # is it real, and does it come from the house's 25?
+
+agents:                                   # each must have a red team profile before real tools
+  core:
+    GABRIEL:       { full_name: Gabriel Alameida, role: orchestrator and safety kernel }
+    LUCY:          { full_name: Lucy Cortez, role: mobile face and voice; relays, never mutates production }
+    SHIRL:         { role: consent guardian; may flip HALT; never touches the catalogue }
+    DREAM:         { role: visionary and long-arc strategist; standalone, never folded into GABRIEL }
+    POPS:          { role: grounding and the 100-year view (Historian mode) }
+    ENGR_KEITH:    { role: technical lead and HEAVEN architect }
+  specialists:
+    SHIRLEY:       { role: files, code and the catalogue (Librarian mode) }
+    VAULTKEEPER:   { role: answers only from the vault }
+    LICENSE_CLERK: { role: licence verdicts }
+    INBOX_TRIAGE:  { role: morning mail }
+    ORACLE:        { role: research evidence only, never decides }
+    AVA:           { role: voice and audio quality; consent still via SHIRL }
+  outside_the_council:
+    NOIZYCLAW:     { role: tool allowlist and sandbox; no vote can overrule it }
+    OBSERVER:      { role: read-only evaluation and drift }
+  modes: [Librarian (SHIRLEY), Prosecutor (any agent, pass 2), Historian (POPS)]
+  separate_agents_rule: "ENGR_KEITH, POPS and AVA are three agents with three mailboxes or aliases of their own, never one merged stem"
+
+CB:                                       # OPEN: one meaning only
+  status: OPEN
+  meanings_in_use:
+    - CB01 = DNS and domains agent (GoDaddy escape)
+    - CB01-CB05 = casting agents and order takers (Oct 30 brief)
+    - CB-01..CB-05 = screens and devices (another AI's registry draft)
+  proposal: "CB01 keeps DNS; casting agents become CAST01-CAST05; devices become DEV01-DEV05"
+
+people:                                   # spellings confirmed by RSP001
+  - J. Warden McKimm                      # two M's
+  - Alex P. Graham
+  - Clayton Connell
+  - Casey Chisick                         # counsel, Cassels
+  - Mark Adam                             # no s
+  - Craig Cardiff                         # verified public profile
+  - "LUCY voice actor: OPEN (spelling not yet confirmed by RSP001)"
+
+products: [NOIZYFISH, NOIZYLAB, NOIZYVOX, NOIZYKIDZ, NOIZYWORLD, NOIZYSDZ, NOIZYCONTACT, NOIZYSFT, NOIZYNET, NOIZYHIVE, NOIZYMOBILE, NOIZYPEDIA, NOIZYBEAST, NOIZYSTRMZ, NOMO]
