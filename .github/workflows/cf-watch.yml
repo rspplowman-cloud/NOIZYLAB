@@ -44,6 +44,13 @@ jobs:
         if: steps.watch.outputs.news != '0'
         env: { GH_TOKEN: "${{ github.token }}" }
         run: |
+          # The report always lands in the job summary (Actions tab), issue or no issue.
+          { echo "## Cloudflare daily check — $(date -u +%F)"; echo; cat docs/cloudflare/CF-WATCH-REPORT.md; } >> "$GITHUB_STEP_SUMMARY"
+          # Issues are optional: if the repo has them switched off, stop here cleanly.
+          if [ "$(gh api "repos/${GITHUB_REPOSITORY}" --jq .has_issues)" != "true" ]; then
+            echo "Issues are disabled on ${GITHUB_REPOSITORY}; report published to the job summary only."
+            exit 0
+          fi
           n=$(gh issue list --state open --search "Cloudflare daily check in:title" --json number -q '.[0].number')
           if [ -z "$n" ]; then
             gh issue create --title "Cloudflare daily check" --body "One comment per day when Cloudflare changes something we use. Read-only; nothing is applied automatically."
