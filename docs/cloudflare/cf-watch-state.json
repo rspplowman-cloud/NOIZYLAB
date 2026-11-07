@@ -1,0 +1,285 @@
+{
+  "checked": "2026-11-07",
+  "versions": {
+    "npm:cloudflare": "7.3.0",
+    "npm:cf": "1.0.0-beta.28",
+    "npm:wrangler": "4.158.0",
+    "npm:create-cloudflare": "2.74.9",
+    "npm:workerd": "1.20261107.1",
+    "npm:miniflare": "4.20260730.0",
+    "npm:@cloudflare/workers-types": "5.20261107.1",
+    "npm:@cloudflare/vite-plugin": "1.67.0",
+    "npm:@cloudflare/vitest-plugin": "1.6.0",
+    "npm:agents": "0.33.0",
+    "npm:@cloudflare/ai-chat": "0.12.2",
+    "npm:@cloudflare/think": "0.23.0",
+    "npm:@cloudflare/sandbox": "1.0.3",
+    "npm:@cloudflare/puppeteer": "1.4.0",
+    "npm:@cloudflare/playwright": "1.3.6",
+    "npm:@cloudflare/containers": "0.3.7",
+    "npm:@cloudflare/flagship": "0.7.0",
+    "npm:@cloudflare/workers-oauth-provider": "1.2.4",
+    "npm:workers-ai-provider": "4.0.1",
+    "npm:@cloudflare/kv-asset-handler": "0.5.0",
+    "npm:@cloudflare/realtimekit": "2.0.4",
+    "pypi:cloudflare": "5.10.0",
+    "pypi:cloudflare-flagship": "0.7.0",
+    "go:github.com/cloudflare/cloudflare-go/v7": "v7.14.0",
+    "terraform:cloudflare/cloudflare": "5.28.1",
+    "github_releases:cloudflare/cloudflared": "2026.10.7",
+    "github_releases:cloudflare/mcp-server-cloudflare": "docs-ai-search@0.5.0",
+    "github_releases:cloudflare/workers-sdk": "@cloudflare/deploy-helpers@0.26.0"
+  },
+  "changelog": [
+    {
+      "title": "AI Gateway - Review provider key activity in AI Gateway",
+      "link": "https://developers.cloudflare.com/changelog/post/2026-11-06-provider-key-security/",
+      "date": "Fri, 06 Nov 2026 00:00:00 GMT"
+    },
+    {
+      "title": "Access, Cloudflare One - Sign in to Cloudflare Access with passkeys",
+      "link": "https://developers.cloudflare.com/changelog/post/2026-11-06-access-passkeys/",
+      "date": "Fri, 06 Nov 2026 00:00:00 GMT"
+    },
+    {
+      "title": "Cloudflare One - Cloudflare One adds fast flux detection to UEBA",
+      "link": "https://developers.cloudflare.com/changelog/post/2026-11-06-fast-flux-detection-ueba/",
+      "date": "Fri, 06 Nov 2026 00:00:00 GMT"
+    },
+    {
+      "title": "Cloudflare Fundamentals - User API tokens have a redesigned creation experience",
+      "link": "https://developers.cloudflare.com/changelog/post/2026-11-06-user-api-token-redesign/",
+      "date": "Fri, 06 Nov 2026 00:00:00 GMT"
+    },
+    {
+      "title": "Durable Objects, Workers - Automatic retries for Durable Object calls",
+      "link": "https://developers.cloudflare.com/changelog/post/2026-11-05-durable-objects-automatic-retries/",
+      "date": "Thu, 05 Nov 2026 00:00:00 GMT"
+    },
+    {
+      "title": "Email security - Set expiration dates for Email security policies",
+      "link": "https://developers.cloudflare.com/changelog/post/2026-11-05-expiring-policies/",
+      "date": "Thu, 05 Nov 2026 00:00:00 GMT"
+    },
+    {
+      "title": "Workers AI - Planned model deprecations on Workers AI",
+      "link": "https://developers.cloudflare.com/changelog/post/2026-11-05-planned-model-deprecations/",
+      "date": "Thu, 05 Nov 2026 00:00:00 GMT"
+    },
+    {
+      "title": "AI Gateway - Route across a pool of models with model aliases",
+      "link": "https://developers.cloudflare.com/changelog/post/2026-11-04-model-aliases/",
+      "date": "Wed, 04 Nov 2026 00:00:00 GMT"
+    },
+    {
+      "title": "Bots - Granular access controls for the top Personal Agents",
+      "link": "https://developers.cloudflare.com/changelog/post/2026-11-04-personal-agent-policies/",
+      "date": "Wed, 04 Nov 2026 00:00:00 GMT"
+    },
+    {
+      "title": "Browser Isolation, Cloudflare One - Block data entry with Browser Isolation without losing search, copy, and zoom (beta)",
+      "link": "https://developers.cloudflare.com/changelog/post/2026-11-04-granular-keyboard-controls/",
+      "date": "Wed, 04 Nov 2026 00:00:00 GMT"
+    },
+    {
+      "title": "Cloudflare Network Firewall - New managed rule to help mitigate CVE-2026-98432.",
+      "link": "https://developers.cloudflare.com/changelog/post/2026-11-04-cve-2026-98432-managed-rule/",
+      "date": "Wed, 04 Nov 2026 00:00:00 GMT"
+    },
+    {
+      "title": "Load Balancing, Cloudflare Tunnel, Cloudflare Mesh - Steer Cloudflare One users and private networks to the same endpoint with session affinity and hash steering in private load balancers",
+      "link": "https://developers.cloudflare.com/changelog/post/2026-11-04-private-lb-session-affinity/",
+      "date": "Wed, 04 Nov 2026 00:00:00 GMT"
+    },
+    {
+      "title": "Cloudflare One Client - Cloudflare One Client for Linux (version 2026.7.1385.0)",
+      "link": "https://developers.cloudflare.com/changelog/post/2026-11-03-warp-linux-ga/",
+      "date": "Tue, 03 Nov 2026 19:57:25 GMT"
+    },
+    {
+      "title": "Agents - Agents SDK now supports Pi 1.5 with fewer storage writes and lower memory use",
+      "link": "https://developers.cloudflare.com/changelog/post/2026-11-03-pi-harness-pi-1-5/",
+      "date": "Tue, 03 Nov 2026 00:00:00 GMT"
+    },
+    {
+      "title": "AI Gateway - New AI Gateways require authentication",
+      "link": "https://developers.cloudflare.com/changelog/post/2026-11-03-required-authentication/",
+      "date": "Tue, 03 Nov 2026 00:00:00 GMT"
+    },
+    {
+      "title": "Bots - See which AI assistants act for your users in Account Abuse Protection",
+      "link": "https://developers.cloudflare.com/changelog/post/2026-11-03-aap-ai-assistant-scope/",
+      "date": "Tue, 03 Nov 2026 00:00:00 GMT"
+    },
+    {
+      "title": "Browser Run - Crawl results include URL outcomes and robots.txt diagnostics",
+      "link": "https://developers.cloudflare.com/changelog/post/2026-11-03-crawl-result-diagnostics/",
+      "date": "Tue, 03 Nov 2026 00:00:00 GMT"
+    },
+    {
+      "title": "R2 - Request metrics breakdown by region and HTTP error code",
+      "link": "https://developers.cloudflare.com/changelog/post/2026-11-03-r2-request-error-breakdowns/",
+      "date": "Tue, 03 Nov 2026 00:00:00 GMT"
+    },
+    {
+      "title": "Radar - Zero Wire, a hub for investigating critical Internet vulnerabilities",
+      "link": "https://developers.cloudflare.com/changelog/post/2026-11-03-radar-zero-wire/",
+      "date": "Tue, 03 Nov 2026 00:00:00 GMT"
+    },
+    {
+      "title": "WAF - WAF Release - 2026-11-03",
+      "link": "https://developers.cloudflare.com/changelog/post/2026-11-03-waf-release/",
+      "date": "Tue, 03 Nov 2026 00:00:00 GMT"
+    },
+    {
+      "title": "WAF - WAF Release - Scheduled changes for 2026-11-10",
+      "link": "https://developers.cloudflare.com/changelog/post/scheduled-waf-release/",
+      "date": "Tue, 03 Nov 2026 00:00:00 GMT"
+    },
+    {
+      "title": "AI Search - AI Search billing postponed to December 1, 2026, and default sync interval is now 24 hours",
+      "link": "https://developers.cloudflare.com/changelog/post/2026-11-02-billing-postponed-default-sync-interval/",
+      "date": "Mon, 02 Nov 2026 00:00:00 GMT"
+    },
+    {
+      "title": "Bots - New Account Abuse Protection Dashboard",
+      "link": "https://developers.cloudflare.com/changelog/post/2026-11-02-account-abuse-protection-dashboard/",
+      "date": "Mon, 02 Nov 2026 00:00:00 GMT"
+    },
+    {
+      "title": "Cloudflare One, Access - Organize and authorize Access service tokens with tags",
+      "link": "https://developers.cloudflare.com/changelog/post/2026-11-02-service-token-tags/",
+      "date": "Mon, 02 Nov 2026 00:00:00 GMT"
+    },
+    {
+      "title": "Flagship - Evaluate Flagship flags locally",
+      "link": "https://developers.cloudflare.com/changelog/post/2026-11-02-local-flag-store/",
+      "date": "Mon, 02 Nov 2026 00:00:00 GMT"
+    },
+    {
+      "title": "Workers - Workers will use the new module registry by default on November 17",
+      "link": "https://developers.cloudflare.com/changelog/post/2026-11-02-module-registry-default/",
+      "date": "Mon, 02 Nov 2026 00:00:00 GMT"
+    },
+    {
+      "title": "Workers - Request.signal will be enabled by default in Workers on November 17",
+      "link": "https://developers.cloudflare.com/changelog/post/2026-11-02-request-signal-default/",
+      "date": "Mon, 02 Nov 2026 00:00:00 GMT"
+    },
+    {
+      "title": "Cloudflare One, Access - Inspect provisioned users and groups with the SCIM population viewer",
+      "link": "https://developers.cloudflare.com/changelog/post/2026-10-30-scim-population-viewer/",
+      "date": "Fri, 30 Oct 2026 00:00:00 GMT"
+    },
+    {
+      "title": "Audit Logs - Audit Logs v2: Account analytics",
+      "link": "https://developers.cloudflare.com/changelog/post/2026-10-30-audit-logs-v2-account-analytics/",
+      "date": "Fri, 30 Oct 2026 00:00:00 GMT"
+    },
+    {
+      "title": "Browser Run - Browser Run now runs Chrome 152",
+      "link": "https://developers.cloudflare.com/changelog/post/2026-10-30-chrome-152/",
+      "date": "Fri, 30 Oct 2026 00:00:00 GMT"
+    },
+    {
+      "title": "D1 - D1 will enforce a maximum query result size of 50 MB",
+      "link": "https://developers.cloudflare.com/changelog/post/2026-10-30-query-result-size-limit/",
+      "date": "Fri, 30 Oct 2026 00:00:00 GMT"
+    },
+    {
+      "title": "Data Localization Suite, Cloudflare WAN, Cloudflare One - Cloudflare WAN supports regional Gateway HTTP inspection",
+      "link": "https://developers.cloudflare.com/changelog/post/2026-10-30-cloudflare-wan-regional-processing/",
+      "date": "Fri, 30 Oct 2026 00:00:00 GMT"
+    },
+    {
+      "title": "DNS - New DNS records experience is now the default for everyone",
+      "link": "https://developers.cloudflare.com/changelog/post/2026-10-30-classic-dns-records-page-retired/",
+      "date": "Fri, 30 Oct 2026 00:00:00 GMT"
+    },
+    {
+      "title": "DNS - Cloudflare Services for Private Origins is generally available",
+      "link": "https://developers.cloudflare.com/changelog/post/2026-10-30-private-origins-ga/",
+      "date": "Fri, 30 Oct 2026 00:00:00 GMT"
+    },
+    {
+      "title": "Durable Objects, Workers - Durable Objects now defer code updates by default",
+      "link": "https://developers.cloudflare.com/changelog/post/2026-10-30-durable-objects-deferred-code-updates/",
+      "date": "Fri, 30 Oct 2026 00:00:00 GMT"
+    },
+    {
+      "title": "SSL/TLS - Keyless SSL supports TLS 1.3 with ECDSA certificates",
+      "link": "https://developers.cloudflare.com/changelog/post/2026-10-30-keyless-ssl-tls13-ecdsa/",
+      "date": "Fri, 30 Oct 2026 00:00:00 GMT"
+    },
+    {
+      "title": "WAF - WAF Release - 2026-10-30 - Emergency",
+      "link": "https://developers.cloudflare.com/changelog/post/2026-10-30-emergency-waf-release/",
+      "date": "Fri, 30 Oct 2026 00:00:00 GMT"
+    },
+    {
+      "title": "WAF - WAF Release - 2026-10-30",
+      "link": "https://developers.cloudflare.com/changelog/post/2026-10-30-waf-release/",
+      "date": "Fri, 30 Oct 2026 00:00:00 GMT"
+    },
+    {
+      "title": "Workers, BYOIP, Bots - Workers subrequests now preserve context for BYOIP destinations",
+      "link": "https://developers.cloudflare.com/changelog/post/2026-10-30-byoip-workers-subrequest-context/",
+      "date": "Fri, 30 Oct 2026 00:00:00 GMT"
+    },
+    {
+      "title": "Agents - Agents SDK: Agent Skills are files in your agent&apos;s Workspace",
+      "link": "https://developers.cloudflare.com/changelog/post/2026-10-29-agent-skills-from-files/",
+      "date": "Thu, 29 Oct 2026 00:00:00 GMT"
+    },
+    {
+      "title": "Data Localization Suite, SSL/TLS - View your data localization settings in one dashboard page",
+      "link": "https://developers.cloudflare.com/changelog/post/2026-10-29-dls-dashboard-overview/",
+      "date": "Thu, 29 Oct 2026 00:00:00 GMT"
+    },
+    {
+      "title": "Access, Cloudflare One - Google Workspace SCIM user provisioning through generic SAML",
+      "link": "https://developers.cloudflare.com/changelog/post/2026-10-28-google-workspace-scim/",
+      "date": "Wed, 28 Oct 2026 00:00:00 GMT"
+    },
+    {
+      "title": "Access, Cloudflare One - Filter MCP tool-call analytics by response status",
+      "link": "https://developers.cloudflare.com/changelog/post/2026-10-28-mcp-analytics-response-status/",
+      "date": "Wed, 28 Oct 2026 00:00:00 GMT"
+    },
+    {
+      "title": "Agents, Browser Run - Agents SDK: Preview dev servers in the browser without public URLs",
+      "link": "https://developers.cloudflare.com/changelog/post/2026-10-28-browser-internal-hostnames/",
+      "date": "Wed, 28 Oct 2026 00:00:00 GMT"
+    },
+    {
+      "title": "China Network, Challenges, Bots - China-native Challenge Pages for the China Network",
+      "link": "https://developers.cloudflare.com/changelog/post/2026-10-28-china-native-challenge-pages/",
+      "date": "Wed, 28 Oct 2026 00:00:00 GMT"
+    },
+    {
+      "title": "WAF - WAF Release - 2026-10-28",
+      "link": "https://developers.cloudflare.com/changelog/post/2026-10-28-waf-release/",
+      "date": "Wed, 28 Oct 2026 00:00:00 GMT"
+    },
+    {
+      "title": "Workers VPC - Select a virtual network for VPC Network bindings",
+      "link": "https://developers.cloudflare.com/changelog/post/2026-10-28-virtual-network-bindings/",
+      "date": "Wed, 28 Oct 2026 00:00:00 GMT"
+    },
+    {
+      "title": "Workers, Cloudflare CLI - Serve Workers Static Assets from a URL path prefix",
+      "link": "https://developers.cloudflare.com/changelog/post/2026-10-28-static-assets-base-path/",
+      "date": "Wed, 28 Oct 2026 00:00:00 GMT"
+    },
+    {
+      "title": "Workers - Workers Builds now retains builds and build logs for 90 days",
+      "link": "https://developers.cloudflare.com/changelog/post/2026-10-28-workers-builds-90-day-retention/",
+      "date": "Wed, 28 Oct 2026 00:00:00 GMT"
+    },
+    {
+      "title": "Cloudflare One, Access - Fully customize user-facing Access pages",
+      "link": "https://developers.cloudflare.com/changelog/post/2026-10-27-access-custom-pages/",
+      "date": "Tue, 27 Oct 2026 00:00:00 GMT"
+    }
+  ]
+}
