@@ -27,7 +27,7 @@ bash smoke_test.sh
 curl https://heaven.rsp-5f3.workers.dev/health
 ```
 
-## DreamChamber (Local on GOD.local)
+## DreamChamber (Local on M2Ultra.local)
 
 ```bash
 cd dreamchamber && npm start    # port 7777

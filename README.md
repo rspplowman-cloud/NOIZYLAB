@@ -54,7 +54,7 @@ RSPNOIZY/NOIZYLAB/
 │
 ├── scripts/                        ← Ops scripts (cf-watch, firebase, halt, noizyhive, notes, prune00, vault)
 │
-├── infra/m2ultra/                  ← M2 Ultra Docker stack (n8n, Qdrant, Forgejo, Cloudflare Tunnel)
+├── infra/m2ultra/                  ← M2Ultra Docker stack (n8n, Qdrant, Forgejo, Cloudflare Tunnel)
 │
 ├── fishmusicinc/                   ← FISHMUSICINC absorbed here
 │   └── README.md                   ← Full brand doctrine + infra

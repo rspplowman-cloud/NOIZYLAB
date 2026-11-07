@@ -1,10 +1,10 @@
 // GABRIEL — Living Presence Engine
-// GOD.local · M2 Ultra 192GB @ 10.90.90.10 | GABRIEL_V3 | Executor
+// M2Ultra.local · M2 Ultra 192GB @ 10.90.90.10 | GABRIEL_V3 | Executor
 // 2026-03-27 | DAZEFLOW
 
 const GABRIEL = {
   ip: '10.90.90.10',
-  host: 'GOD.local',
+  host: 'M2Ultra.local',
   voiceBridge: 'http://localhost:8080',
   ollamaLocal: 'http://localhost:11434',
   account: '5f36aa9795348ea681d0b21910dfc82a',
@@ -20,20 +20,20 @@ const STANDING_ORDERS = [
   'DAZEFLOW active — 2026-03-27 | RSP_001 session running',
   'Chain: Robert → Claude → GABRIEL → world',
   'HEAVEN Worker: pending deploy → wrangler login required',
-  'Voice Bridge: http://GOD.local:8080 — awaiting keepalive',
-  'Gemma3 MCP: running on GOD.local:11434',
+  'Voice Bridge: http://M2Ultra.local:8080 — awaiting keepalive',
+  'Gemma3 MCP: running on M2Ultra.local:11434',
   'GitHub: NOIZY.AI Enterprise · personal repos → ARCHIVE/ ✓',
   'CF Account: 5f36aa9795348ea681d0b21910dfc82a',
   'D1 at limit — do NOT create new databases without GO',
   'Cloudflare Tunnel: not yet deployed — needed for Teams webhook',
   'iPhone Teams: install + create NOIZY Dream Chamber channels',
   'Audio Hijack: wire audiohijack-recording-stop.js → Recording Stop',
-  'mlx-whisper: installing on GOD.local (Apple Silicon optimized)',
+  'mlx-whisper: installing on M2Ultra.local (Apple Silicon optimized)',
 ];
 
 // ── BOOT LOG ───────────────────────────────────────────────────
 const BOOT_LOG = [
-  { ts: '13:16', msg: 'Gemma3 MCP server initialized — GOD.local:11434', cls: '' },
+  { ts: '13:16', msg: 'Gemma3 MCP server initialized — M2Ultra.local:11434', cls: '' },
   { ts: '13:14', msg: 'Voice pipeline scaffolded — 5 scripts deployed', cls: '' },
   { ts: '13:12', msg: 'Audio Hijack scripting API wired — awaiting session arm', cls: 'warn' },
   { ts: '13:09', msg: 'HEAVEN Worker: TypeScript build complete — deploy pending', cls: 'warn' },
@@ -67,7 +67,7 @@ async function checkGabrielStatus() {
   const badge = document.getElementById('gabrielStatusBadge');
   if (badge) { badge.className = 'gabriel-badge checking'; badge.textContent = 'CHECKING…'; }
 
-  // Try Voice Bridge health (GOD.local — here, not 10.90.90.20 which we can't reach from browser)
+  // Try Voice Bridge health (M2Ultra.local — here, not 10.90.90.20 which we can't reach from browser)
   let bridgeOnline = false;
   try {
     const r = await fetch(`${GABRIEL.voiceBridge}/health`, { signal: AbortSignal.timeout(3000) });
@@ -134,7 +134,7 @@ async function sendGabrielCommand() {
       addGabrielLog(`Bridge error ${res.status} — is Voice Bridge running?`, 'err');
     }
   } catch(e) {
-    addGabrielLog(`Cannot reach GOD.local:8080 — start: node ~/NOIZYLAB/voice-bridge-server.js`, 'warn');
+    addGabrielLog(`Cannot reach M2Ultra.local:8080 — start: node ~/NOIZYLAB/voice-bridge-server.js`, 'warn');
   }
 }
 
@@ -159,8 +159,8 @@ function renderGabrielHero() {
   </div>
   <div class="gabriel-identity">
     <div class="gabriel-name">GABRIEL</div>
-    <div class="gabriel-title">Warrior Executor · GABRIEL_V3 · GOD.local · M2 Ultra 192GB @ 10.90.90.10</div>
-    <div class="gabriel-ip">GABRIEL = GOD.local @ 10.90.90.10 &nbsp;|&nbsp; DaFixer → 10.90.90.40 &nbsp;|&nbsp; Ollama: gemma3 · mistral · llava:34b</div>
+    <div class="gabriel-title">Warrior Executor · GABRIEL_V3 · M2Ultra.local · M2 Ultra 192GB @ 10.90.90.10</div>
+    <div class="gabriel-ip">GABRIEL = M2Ultra.local @ 10.90.90.10 &nbsp;|&nbsp; DaFixer → 10.90.90.40 &nbsp;|&nbsp; Ollama: gemma3 · mistral · llava:34b</div>
     <div class="gabriel-doctrine">
       Military-calm. No hype. No flattery. Ships things — doesn't narrate about shipping things.
       Chain of command: Robert → Claude → GABRIEL → world.
@@ -179,7 +179,7 @@ function renderMemoryCells() {
   const el = document.getElementById('gabrielCells');
   if (!el) return;
   const cells = [
-    { id:'bridgeStatus', title:'Voice Bridge', value:'…',    sub:'GOD.local:8080', pct:0 },
+    { id:'bridgeStatus', title:'Voice Bridge', value:'…',    sub:'M2Ultra.local:8080', pct:0 },
     { id:'ollamaStatus', title:'Ollama / Gemma3', value:'…', sub:'localhost:11434', pct:0 },
     { id:'gabrielTasks', title:'Tasks Run',    value:'0',    sub:'this session',   pct:0 },
     { id:'gabrielUptime',title:'Uptime',       value:'0:00', sub:'session clock',  pct:0 },

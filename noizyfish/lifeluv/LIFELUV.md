@@ -13,7 +13,7 @@
 | Part | Foundation | What it means in the build |
 |---|---|---|
 | **1. What it is** | **The artist's body, mind, heart and soul** | The source of all creation. Not data to mine. The whole human being, creating in truth. |
-| **2. What NOIZY puts behind it** | **All the building energy and genius** | The M2 Ultra infrastructure, local AI routing, and the partner roster: GABRIEL, LUCY, SHIRLEY, DREAM, ENGR_KEITH. |
+| **2. What NOIZY puts behind it** | **All the building energy and genius** | The M2Ultra infrastructure, local AI routing, and the partner roster: GABRIEL, LUCY, SHIRLEY, DREAM, ENGR_KEITH. |
 | **3. What's done with it** | **Given, and paid forward** | Creative contribution and mutual lift. No coercion, no artificial gates, no exploitation. |
 
 ### The LLT Ledger

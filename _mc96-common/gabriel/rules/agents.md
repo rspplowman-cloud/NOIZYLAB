@@ -86,7 +86,7 @@ bash scripts/gabriel-merge.sh deploy-v2
 
 Three transport targets exist. See `.claude/rules/mcp-builder.md` for full build rules.
 
-### Local Node stdio (GOD.local → Claude Code / Windsurf)
+### Local Node stdio (M2Ultra.local → Claude Code / Windsurf)
 
 Personality agents, ops tools, anything touching local processes:
 
@@ -103,7 +103,7 @@ Personality agents, ops tools, anything touching local processes:
 }
 ```
 
-### Local Python / FastMCP (GOD.local → Claude Code / Windsurf)
+### Local Python / FastMCP (M2Ultra.local → Claude Code / Windsurf)
 
 Audio pipeline, ML tools, anything calling Python libs:
 
