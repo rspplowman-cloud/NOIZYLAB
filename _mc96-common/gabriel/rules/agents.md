@@ -83,6 +83,8 @@ bash scripts/gabriel-merge.sh deploy-v2
 ## MCP Server Configuration
 
 > **Built:** gabriel, lucy, engr-keith, dream, cb01, shirley, family and heaven live in `_mc96-common/gabriel/mcp/<name>/index.js`. See `mcp/README.md` for tools, rules and the config to paste. `dreamchamber-audio-mcp` is not built yet.
+>
+> **Wired:** GABRIEL's daemon dispatches every boss to its MCP server (`source/bosses/mcp-boss.ts`): `lucy`, `dream`, `engr_keith`, `cb01`, `shirley`, and `pops`/`shirl` (family-mcp, each limited to its own tools). GABRIEL adds `delegate` (any boss) and `ask` (DreamChamber). `POST /intent` with `{ boss, verb, args }`; `verb: "tools"` lists what a boss can do.
 
 Three transport targets exist. See `.claude/rules/mcp-builder.md` for full build rules.
 
