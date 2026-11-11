@@ -34,6 +34,8 @@ Every doc in `docs/`, by area. Add a line here when you add a doc.
 | No public repos | [identity/NO-PUBLIC-REPOS.md](identity/NO-PUBLIC-REPOS.md) | Every NOIZY repo private; NOIZYGIT-MASTER is canon; the steps in the right order |
 | Organize M2Ultra | [../scripts/organize/README.md](../scripts/organize/README.md) | App map (App Intents, MCP, Claude), Spotlight tags by category, videos sorted by when they were made |
 | 75/25 economics | [economics/75-25-SURVEY-AND-MODEL.md](economics/75-25-SURVEY-AND-MODEL.md) | How labels took the money (1900s–2026), the tested 75/25 math, and Return to Analog |
+| NOIZYINDIES | [indies/NOIZYINDIES.md](indies/NOIZYINDIES.md) | Small Canadian indies meet, share pressing and tools, keep ownership and 75/25; first invite list |
+| 12 TB rescue | [infra/12TB-RESCUE.md](infra/12TB-RESCUE.md) | The clicking 12 TB drive: do not power on; cleanroom lab questions; costs; what to do with the image |
 | Archive | [scripts/archive/README.md](../scripts/archive/README.md) | TaleSpin finder and deck reader (every .pptx, one JSON per slide); read only, skips the clicking drive |
 | Pipeline | [PIPELINE-V5.md](./pipeline/PIPELINE-V5.md) | Pipeline v5 |
 | Prune00 | [PRUNE00-LICENSE-STAGE.md](./prune00/PRUNE00-LICENSE-STAGE.md) | Prune00 licence stage |
