@@ -1,0 +1,10 @@
+# Rain: background work that must never delay a voice command or switch press.
+# One pattern per line, matched against the full command line (pgrep -f). Keep patterns SPECIFIC:
+# a broad word like "index" would also match the agent MCP servers (index.js), which answer live.
+# Model servers answering RSP_001 live are THUNDER, not rain: never list them here.
+noizyhive/hive.py
+noizyhive/inventory.py
+noizyhive/plan.py
+noizyhive/hive_rescue.py
+# Add your own batch jobs below, one per line, e.g.:
+# lucy/index_literature.py

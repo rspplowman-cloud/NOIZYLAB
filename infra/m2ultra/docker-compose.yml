@@ -16,6 +16,10 @@ name: noizy-m2ultra
 
 services:
   n8n:
+    # Rain: limited so a runaway job can't starve the Mac (doctrine/LIGHTNING_AND_RAIN.md).
+    deploy:
+      resources:
+        limits: { cpus: "4", memory: 6G }
     image: n8nio/n8n:${N8N_TAG:?set N8N_TAG in .env}
     restart: unless-stopped
     ports:
@@ -38,6 +42,10 @@ services:
     networks: [noizy-mesh]
 
   qdrant:
+    # Rain: limited so a runaway job can't starve the Mac (doctrine/LIGHTNING_AND_RAIN.md).
+    deploy:
+      resources:
+        limits: { cpus: "4", memory: 16G }
     image: qdrant/qdrant:${QDRANT_TAG:?set QDRANT_TAG in .env}
     restart: unless-stopped
     ports:
@@ -48,6 +56,10 @@ services:
     networks: [noizy-mesh]
 
   forgejo:
+    # Rain: limited so a runaway job can't starve the Mac (doctrine/LIGHTNING_AND_RAIN.md).
+    deploy:
+      resources:
+        limits: { cpus: "2", memory: 4G }
     image: codeberg.org/forgejo/forgejo:${FORGEJO_TAG:?set FORGEJO_TAG in .env}
     restart: unless-stopped
     ports:
@@ -63,6 +75,10 @@ services:
     networks: [noizy-mesh]
 
   cloudflared:
+    # Rain: limited so a runaway job can't starve the Mac (doctrine/LIGHTNING_AND_RAIN.md).
+    deploy:
+      resources:
+        limits: { cpus: "1", memory: 512M }
     image: cloudflare/cloudflared:${CLOUDFLARED_TAG:?set CLOUDFLARED_TAG in .env}
     restart: unless-stopped
     # Remotely-managed tunnel. Public hostnames are set in the Cloudflare
