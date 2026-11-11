@@ -1,5 +1,7 @@
 # Red-team gate. Free checks run on every pull request; the live smoke run (Claude API,
 # costs money) runs only when started by hand and the ANTHROPIC_API_KEY secret exists.
+# Fast and clear: a new push cancels the old run for the same PR, every job has a
+# 10-minute ceiling, and npm downloads are cached between runs.
 name: redteam
 on:
   pull_request:
@@ -9,15 +11,24 @@ on:
         description: "Run the live smoke set against the Claude API (costs money)"
         type: boolean
         default: false
+concurrency:
+  group: redteam-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+permissions:
+  contents: read
 jobs:
   harness:
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     defaults: { run: { working-directory: redteam/harness } }
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with: { node-version: "22" }
-      - run: npm ci || npm install --no-audit --no-fund
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version: "22"
+          cache: npm
+          cache-dependency-path: redteam/harness/package-lock.json
+      - run: npm ci --no-audit --no-fund
       - run: npm test
       - run: npm run selftest
       - name: Live smoke (manual only)
@@ -26,55 +37,73 @@ jobs:
         run: npm run smoke
   noizybkz:
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     defaults: { run: { working-directory: noizybkz } }
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
         with: { node-version: "22" }
       - run: npm test
   reminders:
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     defaults: { run: { working-directory: workers/reminders } }
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
         with: { node-version: "22" }
       - run: npm test
   cf-watch:
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
         with: { node-version: "22" }
       - run: node scripts/cf-watch/cf_watch.mjs --dry-run
   agent-mcp:
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     defaults: { run: { working-directory: _mc96-common/gabriel/mcp } }
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with: { node-version: "22" }
-      - run: npm ci
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version: "22"
+          cache: npm
+          cache-dependency-path: _mc96-common/gabriel/mcp/package-lock.json
+      - run: npm ci --no-audit --no-fund
       - run: npm test
   gabriel:
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     defaults: { run: { working-directory: _mc96-common/gabriel } }
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with: { node-version: "22" }
-      - run: npm ci
-      - run: npm ci
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version: "22"
+          cache: npm
+          cache-dependency-path: |
+            _mc96-common/gabriel/package-lock.json
+            _mc96-common/gabriel/mcp/package-lock.json
+            dreamchamber/package-lock.json
+      - run: npm ci --no-audit --no-fund
+      - run: npm ci --no-audit --no-fund
         working-directory: _mc96-common/gabriel/mcp
-      - run: npm ci
+      - run: npm ci --no-audit --no-fund
         working-directory: dreamchamber
       - run: npm test   # typecheck + build, then intents through every boss over real MCP
   dreamchamber:
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     defaults: { run: { working-directory: dreamchamber } }
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with: { node-version: "22" }
-      - run: npm ci
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version: "22"
+          cache: npm
+          cache-dependency-path: dreamchamber/package-lock.json
+      - run: npm ci --no-audit --no-fund
       - run: npm test
