@@ -3,7 +3,7 @@
 The fish was here first.
 
 Music Catalog and Licensing for Robert Plowman (RSP_001).
-Part of NOIZYWORLD. Canonical code in RSPNOIZY/NOIZYLAB.
+Part of NOIZYWORLD. Canonical code in NOIZYGIT-MASTER (private).
 
 ## Four Sacred Invariants
 1. 75/25 Royalty Split - Creators keep 75c always

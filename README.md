@@ -104,7 +104,7 @@ RSPNOIZY/NOIZYLAB/
 
 ---
 
-`killSwitchHolder: RSP_001 | covenant: 75/25 | canon: noizy.ai | repo: RSPNOIZY/NOIZYLAB`
+`killSwitchHolder: RSP_001 | covenant: 75/25 | canon: noizy.ai | repo: NOIZYGIT-MASTER`
 
 *Two years of deep work. This work saved his life. Treat it with that weight.*
 

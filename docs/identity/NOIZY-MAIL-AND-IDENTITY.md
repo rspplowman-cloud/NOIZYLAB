@@ -161,6 +161,8 @@ _dmarc  v=DMARC1; p=reject
 
 **Decision D2, which GitHub account is the owner of record:** work is currently spread across `RSPNOIZY`, `NOIZYLAB-io` and `rspplowman-cloud`. `CANON.md` names `RSPNOIZY/NOIZYLAB` as the canonical repository, but this working copy is `rspplowman-cloud/NOIZYLAB`. Choose one owner of record, and make the others members or mirrors that point to it.
 
+**Answered, RSP_001, 2026-11-11:** the canonical repo is **NOIZYGIT-MASTER**, private, and no NOIZY repo is public anywhere. See `NO-PUBLIC-REPOS.md`.
+
 ---
 
 ## What each service can automate

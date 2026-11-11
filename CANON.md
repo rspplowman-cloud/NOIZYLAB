@@ -1,4 +1,4 @@
-# CANON.md — RSPNOIZY/NOIZYLAB is the Canonical Repository
+# CANON.md — NOIZYGIT-MASTER is the Canonical Repository
 
 > **This is the single source of truth for the entire NOIZY Empire codebase.**
 
@@ -6,7 +6,9 @@
 
 ## Declaration
 
-`RSPNOIZY/NOIZYLAB` is the **canonical, authoritative repository** for all NOIZY Empire code, doctrine, shared modules, and infrastructure tooling.
+**NOIZYGIT-MASTER** (private) is the **canonical, authoritative repository** for all NOIZYWORLD code, doctrine, shared modules, and infrastructure tooling.
+
+> **Decision, RSP_001, 2026-11-11:** no public repos anywhere. NOIZYGIT-MASTER replaces `RSPNOIZY/NOIZYLAB` as canon. Every other repo below becomes private, then a mirror or an archive. Steps: `docs/identity/NO-PUBLIC-REPOS.md`.
 
 All other repositories in the NOIZY Empire either:
 - Feed **into** this repo (via PR or sync)
@@ -19,7 +21,8 @@ All other repositories in the NOIZY Empire either:
 
 | Status | Repo | Relationship to Canon |
 |--------|------|-----------------------|
-| ✅ CANONICAL | `RSPNOIZY/NOIZYLAB` | **THIS REPO — source of truth** |
+| ✅ CANONICAL | `NOIZYGIT-MASTER` (private) | **THIS REPO — source of truth** |
+| 🔒 FORMER CANON | `RSPNOIZY/NOIZYLAB` | Make private, then archive |
 | 🔁 SYNCS HERE | `NOIZYLAB-io/NOIZYLAB` | Org-level mirror — PRs merge into canon |
 | 📖 BRAND REPO | `RSPNOIZY/FISHMUSICINC` | Brand identity + doctrine — code lives here |
 | 📖 BRAND REPO | `RSPNOIZY/NOIZYFISH` | Brand identity — successor to FISHMUSICINC |
@@ -110,7 +113,7 @@ RSPNOIZY/NOIZYLAB/
 
             ## Contribution Protocol
 
-            1. **All PRs** must target `RSPNOIZY/NOIZYLAB:main`
+            1. **All PRs** must target `NOIZYGIT-MASTER:main`
             2. **Branch naming**: `feat/`, `fix/`, `chore/`, `docs/` prefixes required
             3. **Commit format**: `type(scope): description` (e.g. `feat(voice): add consent oracle v2`)
             4. **Never Clauses apply to code too** — no commits that violate the 9 Never Clauses
@@ -130,4 +133,4 @@ RSPNOIZY/NOIZYLAB/
 
             ---
 
-            `killSwitchHolder: RSP_001 | covenant: 75/25 | canon: noizy.ai | repo: RSPNOIZY/NOIZYLAB`
+            `killSwitchHolder: RSP_001 | covenant: 75/25 | canon: noizy.ai | repo: NOIZYGIT-MASTER`

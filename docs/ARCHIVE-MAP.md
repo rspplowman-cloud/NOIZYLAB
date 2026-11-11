@@ -15,7 +15,7 @@ A Notion page (NOIZY MCP & API Stack Map, 2026-10-28) records a **12 TB drive th
 
 | Source | Account | What is there | Reached? |
 |---|---|---|---|
-| **GitHub** `rspplowman-cloud/NOIZYLAB` | rspplowman-cloud | The canonical code, doctrine and docs | Yes |
+| **GitHub** `NOIZYGIT-MASTER` (private; today `rspplowman-cloud/NOIZYLAB`) | rspplowman-cloud | The canonical code, doctrine and docs | Yes |
 | **Notion** | RSPNOIZY workspace | The richest record: Documents database (imported Claude work, Oct 2026), NOIZY TREE, NOIZYHIVE (Projects, Sessions), Domain Portfolio, NoizyVault, Chat Archive, Agent Operating Guide, Task Intake | Yes |
 | **Slack** | noizyfishcom workspace | Build logs and decisions from March 2026: status updates, Cloudflare consolidation, health checks | Yes |
 | **Gmail** | the connected personal Gmail | Identity Contract v1.0 (21 Sep 2026), GoDaddy exit request (30 May 2026), bounce notices | Yes |

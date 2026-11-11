@@ -149,6 +149,19 @@ jobs:
       - run: npm ci --no-audit --no-fund
       - run: npm run typecheck
       - run: npm test   # never-to-AI gate, phone key, HALT fails closed
+  sovereign-git:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    defaults: { run: { working-directory: scripts/sovereign-git } }
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version: "22"
+          cache: npm
+          cache-dependency-path: scripts/sovereign-git/package-lock.json
+      - run: npm ci --no-audit --no-fund
+      - run: npm test   # HALT fails closed, name repairs, mirrors stay private
   ledger:
     runs-on: ubuntu-latest
     timeout-minutes: 10
