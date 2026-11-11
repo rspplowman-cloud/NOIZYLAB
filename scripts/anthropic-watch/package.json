@@ -1,0 +1,15 @@
+{
+  "name": "noizy-anthropic-watch",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Read-only weekly check that GABRIEL's Anthropic SDKs and model IDs are current.",
+  "license": "AGPL-3.0-or-later",
+  "scripts": {
+    "watch": "node anthropic_watch.mjs",
+    "test": "node --test test/*.test.mjs"
+  },
+  "dependencies": {
+    "@anthropic-ai/sdk": "^0.134.0"
+  }
+}

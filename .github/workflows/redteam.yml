@@ -162,3 +162,17 @@ jobs:
           cache-dependency-path: voice/package-lock.json
       - run: npm ci --no-audit --no-fund
       - run: npm test   # typecheck the pipeline + the voice MCP server starts and answers
+  anthropic-watch:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    defaults: { run: { working-directory: scripts/anthropic-watch } }
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version: "22"
+          cache: npm
+          cache-dependency-path: scripts/anthropic-watch/package-lock.json
+      - run: npm ci --no-audit --no-fund
+      - run: npm test
+      - run: bash -n m2ultra-tune-up.sh

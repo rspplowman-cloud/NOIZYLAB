@@ -1,0 +1,32 @@
+# Anthropic watch: every Monday, checks that GABRIEL's Anthropic SDKs and model IDs are current.
+# Read-only. Nothing is upgraded: the report goes to the job summary, and upgrades go through
+# a pull request that RSP_001 approves. Fails (red) only when code names a model the API no
+# longer lists, because that breaks live calls.
+name: anthropic-watch
+on:
+  schedule:
+    - cron: "17 13 * * 1"   # Mondays 13:17 UTC (09:17 Toronto in summer)
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency: { group: anthropic-watch, cancel-in-progress: false }
+jobs:
+  watch:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    defaults: { run: { working-directory: scripts/anthropic-watch } }
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version: "22"
+          cache: npm
+          cache-dependency-path: scripts/anthropic-watch/package-lock.json
+      - name: HALT check (when HALT_URL is set; fails closed)
+        working-directory: .
+        env: { HALT_URL: "${{ secrets.HALT_URL }}" }
+        run: if [ -n "$HALT_URL" ]; then bash scripts/halt/halt_check.sh; else echo "HALT_URL not set yet — read-only job, continuing"; fi
+      - run: npm ci --no-audit --no-fund
+      - name: Check SDKs and models
+        env: { ANTHROPIC_API_KEY: "${{ secrets.ANTHROPIC_API_KEY }}" }
+        run: node anthropic_watch.mjs
