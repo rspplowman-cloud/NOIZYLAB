@@ -12,12 +12,14 @@
 #   - NEVER the clicking drive: refuses any source listed in ~/.noizy/skip-volumes.txt.
 #   - HALT first on --apply (unset or unreachable = stop).
 #   - RAIN: limited to 20 MB/s from 08:00 to 23:00, full speed overnight. Override with CLOUD_RESCUE_BWLIMIT.
+#   - GOOGLE DAILY LIMIT: Google allows 750 GB of uploads a day. Hitting it stops the run cleanly; run it again
+#     the next day and it carries on where it stopped.
 #   - VERIFIED: after upload, "rclone check --one-way" compares every file; the log says how many match.
 #   - No keys on the command line: rclone keeps them in its own config (set up once with "rclone config").
 set -uo pipefail
 here="$(cd "$(dirname "$0")" && pwd)"
 src="${1:-}"; dst="${2:-}"; mode="${3:-}"
-[ -n "$src" ] && [ -n "$dst" ] || { sed -n '2,20p' "$0"; exit 2; }
+[ -n "$src" ] && [ -n "$dst" ] || { sed -n '2,22p' "$0"; exit 2; }
 command -v rclone >/dev/null || { echo "rclone is not installed. In Warp: brew install rclone"; exit 2; }
 [ -d "$src" ] || { echo "Not a folder: $src"; exit 2; }
 
@@ -40,7 +42,7 @@ fi
 log_dir="$HOME/.noizy/cloud-rescue"; mkdir -p "$log_dir"
 log="$log_dir/$(date -u +%Y-%m-%dT%H%M%S).log"
 bw="${CLOUD_RESCUE_BWLIMIT:-08:00,20M 23:00,off}"
-common=(copy "$real_src" "$dst" --immutable --checksum --transfers 4 --checkers 8 --bwlimit "$bw"
+common=(copy "$real_src" "$dst" --immutable --checksum --transfers 4 --checkers 8 --bwlimit "$bw" --drive-stop-on-upload-limit
         --exclude ".Spotlight-V100/**" --exclude ".fseventsd/**" --exclude ".Trashes/**" --exclude ".DS_Store"
         --log-file "$log" --log-level INFO --stats-one-line --stats 60s)
 

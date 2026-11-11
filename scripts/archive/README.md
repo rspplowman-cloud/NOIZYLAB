@@ -118,3 +118,29 @@ encrypted `crypt` remote. Names only, never addresses, in this public repo: `gdr
 Set up each one with `rclone config` (it opens the browser to sign in; nothing is typed on a command line),
 then a `crypt` remote on top of it, then `bash cloud_rescue.sh <folder> <crypt-remote>:<name>`.
 **Never** put a full account in the plan: a full Google account stops Gmail too.
+
+### Libraries on Google Workspace (shared drives)
+
+`workspace_plan.py` plans how each library (samples, voices, music, video) spreads over **Google Workspace shared
+drives**. It only measures and writes a plan; the upload is still `cloud_rescue.sh` (encrypted, add-only, verified).
+
+- **One shared drive per library**, named `NOIZY-<LIBRARY>`. A library with more than 320,000 files and folders
+  is split by its top-level folders into `NOIZY-<LIBRARY>-1`, `-2`, and so on. Google's hard limit is 400,000 items
+  per shared drive; the plan keeps 20% spare.
+- **Folder depth:** shared drives allow 20 levels. Deeper paths are listed under "Fix first".
+- **Daily limit:** Google allows 750 GB of uploads a day per person. The plan sets out the days.
+  `cloud_rescue.sh` stops cleanly at the limit; run it again the next day and it carries on.
+- **Storage is pooled:** seats × 2 TB on Business Standard, seats × 5 TB on Business Plus. The plan says how many
+  seats the libraries need.
+- **Sealed drives:** names with consent, kidz, family, vault or voice models get their own shared drive with
+  RSP_001 as the only member. Every file is encrypted on M2Ultra first, so Google's AI features can never read it.
+
+Steps for RSP_001 (Warp or Ghostty):
+
+1. Check the Workspace subscription is active (admin.google.com → Billing).
+2. Plan: `python3 scripts/archive/workspace_plan.py <library> <library> ... --plan standard`
+3. Read the plan: `~/.noizy/workspace-plan/<date>.md`.
+4. Make the shared drives it lists (admin.google.com or drive.google.com → Shared drives → New).
+5. `rclone config`: one `drive` remote per shared drive (answer yes to "Configure this as a Shared Drive?"),
+   then a `crypt` remote on top, named as in the plan. The crypt password goes into Proton Pass.
+6. Dry run, then `--apply`: `bash scripts/archive/cloud_rescue.sh <library> <crypt remote>:`

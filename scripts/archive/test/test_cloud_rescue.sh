@@ -31,6 +31,7 @@ H=$!; for _ in $(seq 50); do [ -s "$T/port" ] && break; sleep 0.1; done
 : > "$T/calls.log"
 expect "apply with HALT clear" "$(HALT_URL="http://127.0.0.1:$(cat "$T/port")" run "$T/src" vault:r --apply)" 0
 grep -q "^rclone copy .*--immutable" "$T/calls.log" && echo "ok   copies with --immutable" || { echo "FAIL no immutable copy"; fail=1; }
+grep -q -- "--drive-stop-on-upload-limit" "$T/calls.log" && echo "ok   stops cleanly at Google's daily limit" || { echo "FAIL no daily-limit stop"; fail=1; }
 grep -q "^rclone check .*--one-way" "$T/calls.log" && echo "ok   verifies with check --one-way" || { echo "FAIL no check"; fail=1; }
 grep -Eq "^rclone (sync|move|moveto|delete|purge|deletefile)" "$T/calls.log" && { echo "FAIL destructive command"; fail=1; } || echo "ok   never sync/move/delete"
 exit $fail
