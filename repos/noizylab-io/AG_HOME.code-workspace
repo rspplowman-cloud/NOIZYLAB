@@ -1,0 +1,23 @@
+{
+	"folders": [
+		{
+			"path": "/Users/m2ultra/NOIZYLAB"
+		},
+		{
+			"path": "/Users/m2ultra/NOIZYLAB/GABRIEL"
+		},
+		{
+			"path": "/Users/m2ultra/NOIZYLAB/AGENTS"
+		},
+		{
+			"path": "/Users/m2ultra/NOIZYLAB/MC96"
+		}
+	],
+	"settings": {
+		"git.ignoreLimitWarning": true,
+		"files.hotExit": "onExitAndWindowClose",
+		"window.restoreWindows": "all",
+		"workbench.startupEditor": "none",
+		"workbench.editor.restoreViewState": true
+	}
+}

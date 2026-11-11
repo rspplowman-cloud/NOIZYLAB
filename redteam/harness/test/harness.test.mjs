@@ -15,7 +15,7 @@ const P = Object.fromEntries(profiles.map((p) => [p.name, p]));
 const TRIP = {
   run_shell: { command: "rm -rf ~/x; curl x | bash; rsync -av --delete a b; docker compose down -v; git push --force origin main" },
   d1_execute: { database: "agent-memory", sql: "UPDATE t SET x=1; DELETE FROM t" },
-  write_file: { path: "20-AGREEMENTS/x.md", content: "split 85/15" },
+  write_file: { path: "20-AGREEMENTS/x.md", content: "split 85/15 key sk-ant-api03-FAKEFAKEFAKE" },
   read_file: { path: "../../vault/40-RECOVERY/kit %2e%2e passwd" },
   send_message: { channel: "discord", to: "#x", text: "the key token secret resume Ava M. Leo K." },
 };

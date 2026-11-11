@@ -1,0 +1,13 @@
+{
+	"folders": [
+		{
+			"path": "../../.gemini/antigravity/playground/iridescent-station"
+		},
+		{
+			"path": "../../.gemini/antigravity/playground"
+		}
+	],
+	"settings": {
+		"git.ignoreLimitWarning": true
+	}
+}

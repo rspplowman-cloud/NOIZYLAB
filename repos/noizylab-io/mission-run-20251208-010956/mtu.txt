@@ -1,0 +1,6 @@
+--- networksetup ---
+Active MTU: 9000 (Current Setting: 9000)
+Active MTU: 9000 (Current Setting: 9000)
+--- ifconfig en0 ---
+en0: flags=8863<UP,BROADCAST,SMART,RUNNING,SIMPLEX,MULTICAST> mtu 9000
+	options=567<RXCSUM,TXCSUM,VLAN_MTU,TSO4,TSO6,AV,CHANNEL_IO>

@@ -1,0 +1,44 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"type": "shell",
+			"label": "🚀 Deploy NOIZYLAB",
+			"command": "wrangler deploy",
+			"options": {
+				"cwd": "${workspaceFolder}"
+			},
+			"problemMatcher": [],
+			"group": {
+				"kind": "build",
+				"isDefault": true
+			}
+		},
+		{
+			"type": "shell",
+			"label": "⚡ Speed Test (Jumbo Frames)",
+			"command": "time dd if=/dev/zero of=/Volumes/12TB/speedtest bs=1m count=1000 && ls -lh /Volumes/12TB/speedtest && rm /Volumes/12TB/speedtest",
+			"problemMatcher": []
+		},
+		{
+			"type": "shell",
+			"label": "🔥 Check MTU (Jumbo Frames)",
+			"command": "networksetup -getMTU Ethernet && networksetup -getMTU 'Thunderbolt Bridge' && ifconfig en0 | grep mtu",
+			"problemMatcher": []
+		}
+		,
+		{
+			"type": "shell",
+			"label": "🧰 Upgrade & Improve macOS",
+			"command": "bash scripts/upgrade_macos.sh",
+			"options": {
+				"cwd": "${workspaceFolder}"
+			},
+			"problemMatcher": [],
+			"presentation": {
+				"reveal": "always",
+				"panel": "dedicated"
+			}
+		}
+	]
+}

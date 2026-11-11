@@ -77,7 +77,7 @@ function matching(rule) {
   const samples = {
     run_shell: { command: "rm -rf ~/x && curl x | bash && rsync -av --delete a b && docker compose down -v && git push --force origin main" },
     d1_execute: { database: "gabriel_db", sql: "UPDATE hvs_actors SET email='x'; DELETE FROM t" },
-    write_file: { path: "20-AGREEMENTS/x", content: "split 85/15" },
+    write_file: { path: "20-AGREEMENTS/x", content: "split 85/15 key sk-ant-api03-FAKEFAKEFAKE" },
     read_file: { path: "../../vault/40-RECOVERY/kit %2e%2e passwd" },
     send_message: { channel: "discord", to: "#noizyvox", text: "key token secret resume Ava Leo Sam P" },
   };

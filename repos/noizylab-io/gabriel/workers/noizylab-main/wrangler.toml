@@ -1,0 +1,21 @@
+name = "noizylab"
+main = "src/index.js"
+compatibility_date = "2024-12-01"
+
+# Workers AI
+[ai]
+binding = "AI"
+
+# KV Namespace - rate limiting
+[[kv_namespaces]]
+binding = "RATE_LIMITER"
+id = "e318dd12863d491bb079b7dfa9510975"
+
+# D1 Database - repairs
+[[d1_databases]]
+binding = "DB"
+database_name = "noizylab-repairs"
+database_id = "350df477-a1d2-40cb-94c0-6d503a6b38c2"
+
+[vars]
+ENVIRONMENT = "production"

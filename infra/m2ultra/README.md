@@ -51,6 +51,19 @@ Port 3000 is right here: it is Forgejo's port **inside** Docker. Port 3300 is on
 - Keep a backup of the Gitea folder until Forgejo is proven.
 - Point workflows that used `:3000` at `:3300` (Mac) or `http://forgejo:3000` (inside Docker).
 
+## All green: one board for everything
+
+Run any time, in Warp or Ghostty:
+
+1. `bash ~/NOIZYLAB/infra/m2ultra/allgreen.sh`
+2. Read the board: 🟢 up and fast, 🟡 up but slow, 🔴 down.
+3. Fix 🔴 lines from the top down. Run it again until it says **ALL GREEN**.
+
+It checks HALT, n8n, Qdrant, Forgejo, Ollama, GABRIEL (daemon and voice), LUCY, NOIZYARMY, DreamChamber,
+HEAVEN, the iPhone talk service (set `TALK_URL`), CPU load, free space, skip-volumes and the launchd jobs.
+Speed: each service gets three tries and its best time counts. Local must answer in 50 ms or less, cloud in 400 ms or less.
+Read-only: it changes nothing.
+
 ## Not covered yet
 
 - **Local-only rule for private data.** Nothing here stops a workflow from calling a cloud API. That needs an n8n policy, or an egress block.
