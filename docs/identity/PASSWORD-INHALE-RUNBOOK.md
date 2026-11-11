@@ -1,7 +1,7 @@
-# Password Inhale Runbook (M2 Ultra → Proton Pass)
+# Password Inhale Runbook (M2Ultra → Proton Pass)
 
 **Owner:** Robert Stephen Plowman (RSP_001)
-**Asked for:** "Inhale all of the passwords on the M2 Ultra" and align them with Proton Pass.
+**Asked for:** "Inhale all of the passwords on the M2Ultra" and align them with Proton Pass.
 **Builds on:** `NOIZY-VAULT-SPEC.md` (secrets live in Proton Pass only).
 
 ---
@@ -16,7 +16,7 @@
 
 ## 2. Find where the passwords are (Claude Code can run this)
 
-- Run the inventory script on the M2 Ultra:
+- Run the inventory script on the M2Ultra:
   1. `brew install gitleaks` (once).
   2. `cd NOIZYLAB`
   3. `scripts/vault/inhale_inventory.sh`

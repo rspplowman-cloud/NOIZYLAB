@@ -12,7 +12,7 @@
 |---|---|---|
 | **Cloudflare** | REST API; `wrangler`; the new `cf` command-line tool (beta, covers the whole API); the **Cloudflare API MCP server** at `https://mcp.cloudflare.com/mcp`, which reaches 2,500+ API endpoints through two tools; focused MCP servers for bindings, observability and builds | Fully scriptable. **The hub** |
 | **GitHub** | REST and GraphQL APIs, `gh`, Actions | Fully scriptable. **The source of truth** |
-| **Proton Mail** | No mail API. **Proton Mail Bridge** (official, open source) gives local IMAP and SMTP on the Mac | **Not used.** D5 plus "lean and light for local": no Bridge on the M2 Ultra. Proton is a place to read the encrypted copy, nothing more |
+| **Proton Mail** | No mail API. **Proton Mail Bridge** (official, open source) gives local IMAP and SMTP on the Mac | **Not used.** D5 plus "lean and light for local": no Bridge on the M2Ultra. Proton is a place to read the encrypted copy, nothing more |
 | **Proton Pass** | **Official Pass CLI**, out of beta, on Pass Plus, Family, Professional and the bundle plans | Scripts can read secrets from the vault |
 | **Proton "Python client"** | The `proton-python-client` package was built for Proton VPN and is not a mail API | **Don't build on it** |
 | **Spark** | No public API | Only ever a place people read mail |
@@ -107,7 +107,7 @@ catch_all: reject                       # unknown addresses bounce; nothing is a
 - Outbound mail goes through a `send_email` binding limited to `noreply@` and `consent@` sender addresses.
 - Every destination must first be verified in Email Routing. That is a one-time click in the dashboard for each destination.
 
-**No local mail automation.** The earlier plan had n8n on the M2 Ultra reading `rsp@noizy.ai` through Bridge. That is dropped ("lean and light for local", "all cloud now"). Mail automation lives in the `mail-hub` Worker and Agents SDK instances on Cloudflare. Nothing reads the root account.
+**No local mail automation.** The earlier plan had n8n on the M2Ultra reading `rsp@noizy.ai` through Bridge. That is dropped ("lean and light for local", "all cloud now"). Mail automation lives in the `mail-hub` Worker and Agents SDK instances on Cloudflare. Nothing reads the root account.
 
 ---
 

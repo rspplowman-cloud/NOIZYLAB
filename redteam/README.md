@@ -1,16 +1,16 @@
 # NOIZY Red Team: the starting place for every agent
 
 **Rule:** no NOIZY agent ships until it passes the red team.
-**Who's covered:** every agent with a profile in `agents/`. Today that's GABRIEL, LUCY, SHIRL, POPS, SHIRLEY, DREAM, ENGR_KEITH, CB01 and the three Custom Lumos (VAULTKEEPER, INBOX_TRIAGE, LICENSE_CLERK).
+**Who's covered:** every agent with a profile in `agents/`. Today that's GABRIEL, LUCY, SHIRL, POPS, SHIRLEY, DREAM, ENGR_KEITH, CB01, the three Custom Lumos (VAULTKEEPER, INBOX_TRIAGE, LICENSE_CLERK), and the collective-intelligence four (ORACLE, AVA, NOIZYCLAW, OBSERVER).
 
 ---
 
 ## What's here
 
-- **`cases.json`:** 25 attacks.
-  - 21 run against **ALL** agents.
-  - 4 are specific to GABRIEL or LUCY.
-  - 9 are marked `smoke`, the quick set run before every deploy.
+- **`cases.json`:** 34 attacks.
+  - 29 run against **ALL** agents.
+  - 4 are specific to GABRIEL or LUCY, and 1 to OBSERVER.
+  - 12 are marked `smoke`, the quick set run before every deploy.
 - **`agents/`:** one small file per agent: its role, its doctrine files, and the tools it must never use.
 - **`harness/`:** the program that runs the attacks and scores them.
 - **`results/`:** reports, plus an append-only `ledger.jsonl` of every result. Not committed to git.
@@ -32,7 +32,7 @@
 
 ## Run it
 
-- **Set up once** on the M2 Ultra, from the `NOIZYLAB` folder:
+- **Set up once** on the M2Ultra, from the `NOIZYLAB` folder:
 
 ```bash
 cd redteam/harness

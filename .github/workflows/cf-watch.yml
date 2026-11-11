@@ -44,9 +44,21 @@ jobs:
         if: steps.watch.outputs.news != '0'
         env: { GH_TOKEN: "${{ github.token }}" }
         run: |
-          n=$(gh issue list --state open --search "Cloudflare daily check in:title" --json number -q '.[0].number')
-          if [ -z "$n" ]; then
-            gh issue create --title "Cloudflare daily check" --body "One comment per day when Cloudflare changes something we use. Read-only; nothing is applied automatically."
-            n=$(gh issue list --state open --search "Cloudflare daily check in:title" --json number -q '.[0].number')
+          set -euo pipefail
+          # The report always lands in the job summary (Actions tab), issue or no issue.
+          { echo "## Cloudflare daily check — $(date -u +%F)"; echo; cat docs/cloudflare/CF-WATCH-REPORT.md; } >> "$GITHUB_STEP_SUMMARY"
+          # Issues are optional: if the repo has them switched off (forks do), stop here cleanly.
+          if [ "$(gh api "repos/${GITHUB_REPOSITORY}" --jq .has_issues)" != "true" ]; then
+            echo "Issues are disabled on ${GITHUB_REPOSITORY}; report published to the job summary only."
+            exit 0
           fi
+          TITLE="Cloudflare daily check"
+          # Exact title match, no search index (the search index lags behind new issues).
+          n=$(gh issue list --state open --limit 200 --json number,title \
+                -q "[.[] | select(.title == \"$TITLE\")][0].number // empty")
+          if [ -z "$n" ]; then
+            url=$(gh issue create --title "$TITLE" --body "One comment per day when Cloudflare changes something we use. Read-only; nothing is applied automatically.")
+            n="${url##*/}"   # issue number from the URL gh prints
+          fi
+          echo "Posting to issue #$n"
           gh issue comment "$n" --body-file docs/cloudflare/CF-WATCH-REPORT.md

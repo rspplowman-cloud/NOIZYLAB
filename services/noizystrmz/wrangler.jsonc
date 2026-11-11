@@ -1,0 +1,17 @@
+// NOIZYSTRMZ — deploy on the NOIZY.AI Cloudflare account, the one that runs HEAVEN.
+// HALT_URL must be set (HALT worker base URL) or every join is refused as halted.
+// Red team smoke must pass before deploy (CLAUDE.md).
+{
+  "name": "noizystrmz",
+  "main": "src/index.ts",
+  "compatibility_date": "2026-10-01",
+  "durable_objects": {
+    "bindings": [{ "name": "ROOMS", "class_name": "StrmzRoom" }]
+  },
+  "migrations": [{ "tag": "v1", "new_sqlite_classes": ["StrmzRoom"] }],
+  "vars": {
+    "MAX_PEERS": "8",
+    "HALT_URL": ""
+  }
+  // Secret (never in git): npx wrangler secret put STRMZ_SECRET   (store it in Proton Pass, VAULT-OPS)
+}

@@ -1,0 +1,20 @@
+{
+  "name": "noizy-voice",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "NOIZY voice pipeline (engine, router, consent, DAZEFLOW) and its MCP server for GABRIEL.",
+  "license": "AGPL-3.0-or-later",
+  "scripts": {
+    "typecheck": "tsc --noEmit -p tsconfig.json",
+    "mcp": "node mcp/voice-mcp-server.js",
+    "test": "npm run typecheck && node --test test/*.test.mjs"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.32.2"
+  },
+  "devDependencies": {
+    "@types/node": "^22.0.0",
+    "typescript": "^5.6.0"
+  }
+}

@@ -328,7 +328,12 @@ export class ConsentOracle {
     body?: unknown,
   ): Promise<HeavenResponse> {
     const headers: Record<string, string> = { "Content-Type": "application/json" };
-    if (this.noizyApiKey) headers["Authorization"] = `Bearer ${this.noizyApiKey}`;
+    if (this.noizyApiKey) {
+      // HEAVEN reads X-NOIZY-Key (heaven/README.md, heaven-mcp, the iOS app). Bearer is kept
+      // alongside so any route that already accepted it keeps working.
+      headers["X-NOIZY-Key"] = this.noizyApiKey;
+      headers["Authorization"] = `Bearer ${this.noizyApiKey}`;
+    }
 
     const res = await fetch(`${this.heavenUrl}${path}`, {
       method,

@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+  <!-- Install: cp com.noizy.lucy-link.plist ~/Library/LaunchAgents/ && launchctl load ~/Library/LaunchAgents/com.noizy.lucy-link.plist -->
+  <key>Label</key>
+  <string>com.noizy.lucy-link</string>
+
+  <key>ProgramArguments</key>
+  <array>
+    <string>/usr/bin/python3</string>
+    <string>/Users/m2ultra/noizy/contact/lucy_link.py</string>
+  </array>
+
+  <!-- Non-secret config only. The machine token lives in the Keychain (see README). -->
+  <key>EnvironmentVariables</key>
+  <dict>
+    <key>CONTACT_URL</key>
+    <string>wss://noizy-contact.REPLACE_WITH_SUBDOMAIN.workers.dev</string>
+    <key>MACHINE</key>
+    <string>M2Ultra</string>
+    <key>CONTACT_HOME</key>
+    <string>/Users/m2ultra/noizy/contact</string>
+    <key>GABRIEL_HEALTH_URL</key>
+    <string>https://heaven.rsp-5f3.workers.dev/api/health</string>
+  </dict>
+
+  <key>RunAtLoad</key>
+  <true/>
+  <key>KeepAlive</key>
+  <true/>
+  <key>ThrottleInterval</key>
+  <integer>10</integer>
+
+  <key>StandardOutPath</key>
+  <string>/Users/m2ultra/noizy/contact/lucy_link.log</string>
+  <key>StandardErrorPath</key>
+  <string>/Users/m2ultra/noizy/contact/lucy_link.err</string>
+</dict>
+</plist>

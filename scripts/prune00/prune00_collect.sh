@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# prune00_collect.sh — READ-ONLY licence inventory for the M2 Ultra (macOS).
+# prune00_collect.sh — READ-ONLY licence inventory for the M2Ultra (macOS).
 # Steps 1–2 of docs/prune00/PRUNE00-LICENSE-STAGE.md: collect + detect.
 # Moves, deletes and clones nothing. Output goes to a new timestamped folder.
 #

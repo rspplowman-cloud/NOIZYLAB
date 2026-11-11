@@ -318,7 +318,7 @@ html,body{
     <div class="gabriel-info">
       <div class="gabriel-name-sm">GABRIEL — ACTIVE</div>
       <div class="gabriel-desc">WARRIOR EXECUTOR · GABRIEL_V3 · GORUNFREE</div>
-      <div class="gabriel-machine">GOD.local · M2 Ultra 192GB · 10.90.90.10 · CF: 5f36aa9795348ea681d0b21910dfc82a</div>
+      <div class="gabriel-machine">M2Ultra.local · M2 Ultra 192GB · 10.90.90.10 · CF: 5f36aa9795348ea681d0b21910dfc82a</div>
     </div>
     <div style="display:flex;flex-direction:column;gap:6px;align-items:flex-end">
       <div class="g-badge wait" id="gabrielBadge">⬤ CHECKING</div>
@@ -430,7 +430,7 @@ html,body{
           <div class="deploy-icon">🤖</div>
           <div class="deploy-info">
             <div class="deploy-name">Gemma3 MCP</div>
-            <div class="deploy-desc">GOD.local · Ollama · 10 tools</div>
+            <div class="deploy-desc">M2Ultra.local · Ollama · 10 tools</div>
           </div>
           <div class="deploy-tag live" id="deployGemma3">LIVE</div>
         </div>
@@ -438,7 +438,7 @@ html,body{
           <div class="deploy-icon">🎙️</div>
           <div class="deploy-info">
             <div class="deploy-name">Voice Bridge</div>
-            <div class="deploy-desc">GOD.local:8080 · express</div>
+            <div class="deploy-desc">M2Ultra.local:8080 · express</div>
           </div>
           <div class="deploy-tag pending" id="deployBridge">CHECKING</div>
         </div>
@@ -482,9 +482,9 @@ html,body{
 
 <script>
 // ── CONFIG ──────────────────────────────────────────────────
-const GOD = 'http://localhost';
-const BRIDGE = `${GOD}:8080`;
-const OLLAMA = `${GOD}:11434`;
+const M2Ultra = 'http://localhost';
+const BRIDGE = `${M2Ultra}:8080`;
+const OLLAMA = `${M2Ultra}:11434`;
 let sessionSecs = 0;
 let recognizing = false;
 let recognition = null;
@@ -497,7 +497,7 @@ const ORDERS = [
   { text: 'Cloudflare Tunnel → voice.noizy.ai', done: false },
   { text: 'Teams on iPhone → NOIZY Dream Chamber', done: false },
   { text: 'Audio Hijack → arm Recording Stop script', done: false },
-  { text: 'mlx-whisper install on GOD.local', done: false },
+  { text: 'mlx-whisper install on M2Ultra.local', done: false },
   { text: 'pm2 start ecosystem.config.cjs', done: false },
   { text: 'GitHub Enterprise restructure — ARCHIVE/ ✓', done: true },
   { text: 'CF account 5f36aa97… locked in ✓', done: true },
@@ -573,8 +573,8 @@ renderOrders();
 // ── LOG ───────────────────────────────────────────────────────
 const logItems = [
   { ts:'13:27', msg:'iPad satellite dashboard — initialized', cls:'ok' },
-  { ts:'13:26', msg:'GABRIEL relocated to GOD.local (M2 Ultra)', cls:'ok' },
-  { ts:'13:24', msg:'NOIZY BEAST workspace rules loaded', cls:'ok' },
+  { ts:'13:26', msg:'GABRIEL relocated to M2Ultra.local (Mac Studio M2 Ultra)', cls:'ok' },
+  { ts:'13:24', msg:'NOIZYBEAST workspace rules loaded', cls:'ok' },
   { ts:'13:21', msg:'CF account corrected: 2446d788…', cls:'ok' },
   { ts:'13:16', msg:'Gemma3 MCP server — running', cls:'ok' },
   { ts:'13:09', msg:'HEAVEN Worker (TypeScript) — deploy pending', cls:'warn' },
@@ -677,8 +677,8 @@ async function sendToTower(tower) {
       showToast('⚠️ Voice Bridge not responding');
     }
   } catch {
-    addLog('Cannot reach GOD.local:8080 — Voice Bridge offline', 'warn');
-    showToast('⚠️ GOD.local:8080 offline');
+    addLog('Cannot reach M2Ultra.local:8080 — Voice Bridge offline', 'warn');
+    showToast('⚠️ M2Ultra.local:8080 offline');
   }
 }
 
@@ -705,7 +705,7 @@ const ACTION_PROMPTS = {
   'deploy':          { text: 'Run the deploy script for the HEAVEN Cloudflare Worker. What command do I run?', tower: 'code' },
   'status':          { text: 'Give me a full NOIZY Empire status — what is live, what is pending, what is blocked?', tower: 'max' },
   'dreamchamber':    { text: 'Check DreamChamber status. Is it running? How do I start it?', tower: 'code' },
-  'whisper':         { text: 'How do I test mlx-whisper on the M2 Ultra with a sample audio file?', tower: 'code' },
+  'whisper':         { text: 'How do I test mlx-whisper on the M2Ultra with a sample audio file?', tower: 'code' },
   'gabriel-status':  { text: 'GABRIEL status check. Voice Bridge, Ollama, Gemma3, MCP servers — what is online?', tower: 'max' },
   'wrangler-login':  { text: 'I need to run wrangler login to authenticate Cloudflare. What is the exact command?', tower: 'code' },
 };

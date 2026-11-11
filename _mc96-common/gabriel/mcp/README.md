@@ -70,4 +70,4 @@ Settings, all optional, all read from the environment:
 
 - **DreamChamber** now has its own home: `dreamchamber/` (room API + `dreamchamber-mcp`, 13 tools). The **audio** routing into Logic Pro still needs the audio code from the drives.
 - **HEAVEN `h17_gabriel`, `h17_kpi`, `h17_audit` + 4 more**: listed in `rules/agents.md`, but their endpoints aren't in `heaven/README.md`. They are not guessed.
-- **Note:** `voice/consent/ConsentOracle.ts` sends `Authorization: Bearer`, but HEAVEN's README specifies `X-NOIZY-Key`. One of the two is wrong. Check against the live Worker.
+- **Fixed 2026-11-11:** `voice/consent/ConsentOracle.ts` now sends `X-NOIZY-Key` (what HEAVEN reads), plus `Authorization: Bearer` for compatibility. Confirm once against the live Worker.

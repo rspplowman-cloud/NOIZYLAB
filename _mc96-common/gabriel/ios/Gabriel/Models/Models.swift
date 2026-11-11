@@ -129,10 +129,10 @@ enum Portal: String, CaseIterable, Identifiable {
 
     var displayName: String {
         switch self {
-        case .noizyvox: return "NOIZY VOX"
-        case .noizyfish: return "NOIZY FISH"
-        case .noizykidz: return "NOIZY KIDZ"
-        case .noizylab: return "NOIZY LAB"
+        case .noizyvox: return "NOIZYVOX"
+        case .noizyfish: return "NOIZYFISH"
+        case .noizykidz: return "NOIZYKIDZ"
+        case .noizylab: return "NOIZYLAB"
         case .wisdom: return "WISDOM"
         case .myfamily: return "myFAMILY"
         }
