@@ -10,6 +10,7 @@ import type { BossContext } from "./types.js";
 const HEAVEN_BASE = env.HEAVEN_BASE_URL ?? "https://heaven.rsp-5f3.workers.dev";
 const NOIZY_API_KEY = env.NOIZY_API_KEY ?? "";
 const ARMY_BASE = env.NOIZYARMY_BASE_URL ?? "http://127.0.0.1:9333";
+const ARMY_KEY = env.NOIZYARMY_KEY || NOIZY_API_KEY;
 const VOICE_BASE = env.NOIZY_VOICE_URL ?? "http://127.0.0.1:9799";
 
 // One-time warning flags (reset per daemon process).
@@ -83,7 +84,10 @@ export function createBossContext(): BossContext {
       try {
         const res = await fetch(`${ARMY_BASE}/task`, {
           method: "POST",
-          headers: { "Content-Type": "application/json" },
+          headers: {
+            "Content-Type": "application/json",
+            ...(ARMY_KEY ? { Authorization: `Bearer ${ARMY_KEY}` } : {}),
+          },
           body: JSON.stringify(task),
         });
         if (!res.ok) {

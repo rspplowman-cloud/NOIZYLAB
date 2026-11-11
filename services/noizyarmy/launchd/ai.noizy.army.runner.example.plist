@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<!-- RAIN: the soldiers. Background priority, so they never delay a voice command.
+     Keys are NOT in this file: they live in ~/.noizy/army.env (chmod 600, values from Proton Pass, VAULT-OPS).
+     Install: cp to ~/Library/LaunchAgents/ai.noizy.army.runner.plist, then
+              launchctl bootstrap gui/$(id -u) ~/Library/LaunchAgents/ai.noizy.army.runner.plist -->
+<plist version="1.0">
+<dict>
+  <key>Label</key>             <string>ai.noizy.army.runner</string>
+  <key>ProgramArguments</key>
+  <array>
+    <string>/bin/bash</string>
+    <string>-c</string>
+    <string>set -a; . "$HOME/.noizy/army.env"; set +a; cd "$HOME/NOIZYLAB/services/noizyarmy" &amp;&amp; exec /opt/homebrew/bin/node src/runner.mjs</string>
+  </array>
+  <key>RunAtLoad</key>         <true/>
+  <key>KeepAlive</key>         <true/>
+  <key>ThrottleInterval</key>  <integer>30</integer>
+  <key>ProcessType</key>       <string>Background</string>
+  <key>Nice</key>              <integer>15</integer>
+  <key>LowPriorityIO</key>     <true/>
+  <key>StandardOutPath</key>   <string>/Users/m2ultra/NOIZYBEAST/logs/ai.noizy.army.runner.log</string>
+  <key>StandardErrorPath</key> <string>/Users/m2ultra/NOIZYBEAST/logs/ai.noizy.army.runner.log</string>
+</dict>
+</plist>

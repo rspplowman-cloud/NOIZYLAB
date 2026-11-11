@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<!-- THUNDER: the orchestrator GABRIEL dispatches to. Normal priority, always on.
+     Keys are NOT in this file: they live in ~/.noizy/army.env (chmod 600, values from Proton Pass, VAULT-OPS).
+     Install: cp to ~/Library/LaunchAgents/ai.noizy.army.plist, then
+              launchctl bootstrap gui/$(id -u) ~/Library/LaunchAgents/ai.noizy.army.plist -->
+<plist version="1.0">
+<dict>
+  <key>Label</key>             <string>ai.noizy.army</string>
+  <key>ProgramArguments</key>
+  <array>
+    <string>/bin/bash</string>
+    <string>-c</string>
+    <string>set -a; . "$HOME/.noizy/army.env"; set +a; cd "$HOME/NOIZYLAB/services/noizyarmy" &amp;&amp; exec /opt/homebrew/bin/node src/server.mjs</string>
+  </array>
+  <key>RunAtLoad</key>         <true/>
+  <key>KeepAlive</key>         <true/>
+  <key>ThrottleInterval</key>  <integer>30</integer>
+  <key>ProcessType</key>       <string>Standard</string>
+  <key>Nice</key>              <integer>5</integer>
+  <key>StandardOutPath</key>   <string>/Users/m2ultra/NOIZYBEAST/logs/ai.noizy.army.log</string>
+  <key>StandardErrorPath</key> <string>/Users/m2ultra/NOIZYBEAST/logs/ai.noizy.army.log</string>
+</dict>
+</plist>

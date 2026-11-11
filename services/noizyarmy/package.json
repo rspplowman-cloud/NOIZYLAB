@@ -1,0 +1,17 @@
+{
+  "name": "noizyarmy",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "NOIZYARMY: the orchestrator on :9333 GABRIEL dispatches to, and the runner whose soldiers are the NOIZY MCP servers.",
+  "license": "AGPL-3.0-or-later",
+  "engines": { "node": ">=22.5" },
+  "scripts": {
+    "start": "node src/server.mjs",
+    "runner": "node src/runner.mjs",
+    "test": "node --test test/*.test.mjs"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.32.2"
+  }
+}
