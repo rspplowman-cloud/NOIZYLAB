@@ -201,3 +201,45 @@ test("infomaniak-mcp: HALT first, Bearer token, refuses never-to-AI content, nev
     assert.equal(seen.length, before);
   } finally { await client.close(); srv.close(); }
 });
+
+test("heaven-mcp Cloudflare side: read only, token sent never shown, no binding values, rollback is only a plan", async () => {
+  const seen = [];
+  const ok = (result) => JSON.stringify({ success: true, errors: [], result });
+  const srv = createServer((req, res) => {
+    seen.push({ m: req.method, u: req.url, auth: req.headers.authorization });
+    res.setHeader("content-type", "application/json");
+    const u = req.url;
+    if (u === "/accounts/acc1/workers/scripts") return res.end(ok([{ id: "heaven", created_on: "2026-04-01", modified_on: "2026-10-29" }, { id: "halt" }]));
+    if (u === "/accounts/acc1/workers/scripts/heaven/deployments") return res.end(ok({ deployments: [{ id: "dep2", strategy: "percentage", versions: [{ version_id: "v2", percentage: 100 }], annotations: { "workers/message": "v18.1" } }] }));
+    if (u === "/accounts/acc1/workers/scripts/heaven/versions") return res.end(ok({ items: [{ id: "v2", number: 2 }, { id: "v1", number: 1, annotations: { "workers/message": "stable" } }] }));
+    if (u === "/accounts/acc1/workers/scripts/heaven/settings") return res.end(ok({ compatibility_date: "2026-04-01", bindings: [{ name: "DB", type: "d1", id: "secret-db-id" }, { name: "API_KEY", type: "secret_text", text: "super-secret" }] }));
+    if (u === "/accounts/acc1/d1/database") return res.end(ok([{ name: "agent-memory", uuid: "b5b58cc9" }]));
+    if (u === "/accounts/acc1/storage/kv/namespaces") return res.end(ok([{ title: "GABRIEL_KV", id: "f205b56a" }]));
+    res.statusCode = 404; res.end(JSON.stringify({ success: false, errors: [{ message: "not found" }] }));
+  });
+  await new Promise((r) => srv.listen(0, "127.0.0.1", r));
+  const base = `http://127.0.0.1:${srv.address().port}`;
+
+  const bare = await open("heaven-mcp", {});
+  try { const r = await bare.call("h17_cf_worker"); assert.equal(r.error, true); assert.match(r.text, /CLOUDFLARE_API_TOKEN and CLOUDFLARE_ACCOUNT_ID/); }
+  finally { await bare.client.close(); }
+
+  const { client, call, names } = await open("heaven-mcp", { CLOUDFLARE_API_BASE: base, CLOUDFLARE_ACCOUNT_ID: "acc1", CLOUDFLARE_API_TOKEN: "cf-secret-token" });
+  try {
+    for (const n of ["h17_cf_worker", "h17_cf_versions", "h17_cf_bindings", "h17_cf_data", "h17_cf_rollback_plan"]) assert.ok(names.includes(n), n);
+    const w = (await call("h17_cf_worker")).json;
+    assert.equal(w.found, true); assert.deepEqual(w.live_deployment.versions, [{ version_id: "v2", percentage: 100 }]);
+    assert.equal(seen.at(-1).auth, "Bearer cf-secret-token");
+    assert.deepEqual((await call("h17_cf_versions")).json.map((v) => v.id), ["v2", "v1"]);
+    const b = await call("h17_cf_bindings");
+    assert.deepEqual(b.json.bindings, [{ name: "DB", type: "d1" }, { name: "API_KEY", type: "secret_text" }]);
+    assert.ok(!b.text.includes("super-secret") && !b.text.includes("secret-db-id"), "binding values never shown");
+    assert.deepEqual((await call("h17_cf_data")).json.d1, [{ name: "agent-memory", id: "b5b58cc9" }]);
+    const plan = (await call("h17_cf_rollback_plan", { version_id: "v1" })).json;
+    assert.equal(plan.deploys, false); assert.deepEqual(plan.request.body.versions, [{ version_id: "v1", percentage: 100 }]);
+    assert.equal((await call("h17_cf_rollback_plan", { version_id: "not-a-version" })).error, true);
+    const st = await call("h17_status");
+    assert.equal(st.json.cloudflare.token, "set"); assert.ok(!st.text.includes("cf-secret-token"));
+    assert.ok(seen.every((s) => s.m === "GET"), "the Cloudflare side only ever reads");
+  } finally { await client.close(); srv.close(); }
+});
