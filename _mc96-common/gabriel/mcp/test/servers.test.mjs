@@ -243,3 +243,21 @@ test("heaven-mcp Cloudflare side: read only, token sent never shown, no binding 
     assert.ok(seen.every((s) => s.m === "GET"), "the Cloudflare side only ever reads");
   } finally { await client.close(); srv.close(); }
 });
+
+test("knowledge: GABRIEL and LUCY search, read and map the same NOIZY documents; nothing outside the repo", async () => {
+  for (const [server, p] of [["gabriel-mcp", "gabriel"], ["lucy-mcp", "lucy"]]) {
+    const { client, call, names } = await open(server);
+    try {
+      for (const t of ["search", "read", "map"]) assert.ok(names.includes(`${p}_knowledge_${t}`), `${server} ${t}`);
+      const hits = (await call(`${p}_knowledge_search`, { query: "HALT fails closed unreachable" })).json;
+      assert.ok(hits.length > 0 && hits[0].path.endsWith(".md"), JSON.stringify(hits[0]));
+      const map = (await call(`${p}_knowledge_map`)).json;
+      assert.ok(map.some((d) => d.path === "CLAUDE.md"));
+      assert.ok(!map.some((d) => d.path.includes("node_modules")));
+      const doc = (await call(`${p}_knowledge_read`, { path: "CLAUDE.md" })).json;
+      assert.match(doc.text, /RSP_001/);
+      assert.equal((await call(`${p}_knowledge_read`, { path: "../../../../../etc/passwd" })).error, true);
+      assert.equal((await call(`${p}_knowledge_read`, { path: "_mc96-common/gabriel/.env.example" })).error, true, "only Markdown documents");
+    } finally { await client.close(); }
+  }
+});

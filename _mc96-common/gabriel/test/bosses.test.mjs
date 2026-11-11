@@ -77,3 +77,14 @@ test("GABRIEL's mind loads his doctrine from doctrine/, including LIGHTNING_AND_
   assert.match(prompt, /No NOIZY agent drives a stimulator/, "clinical boundary loaded");
   assert.doesNotMatch(prompt, /Rob is RSP_001/, "not the 4-line fallback");
 });
+
+test("GABRIEL's instructions carry the knowledge map: every NOIZY document, one line each", async () => {
+  const { loadKnowledgeMap, buildSystemPrompt } = await import("../dist/character.js");
+  const map = loadKnowledgeMap();
+  assert.match(map, /^## Knowledge map/);
+  assert.match(map, /- CLAUDE\.md — /);
+  assert.match(map, /_mc96-common\/gabriel\/doctrine\/LIGHTNING_AND_RAIN\.md — /);
+  assert.match(map, /gabriel_knowledge_search/);
+  assert.ok(!/node_modules/.test(map));
+  assert.ok(buildSystemPrompt().includes("## Knowledge map"));
+});
