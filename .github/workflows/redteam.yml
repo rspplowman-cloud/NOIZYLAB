@@ -230,6 +230,7 @@ jobs:
         with: { python-version: "3.12" }
       - run: python3 -m unittest discover -s scripts/archive/test -v   # TaleSpin finder + deck reader, read-only proofs
       - run: python3 -m unittest discover -s scripts/organize/test -v  # app map, Spotlight tags, video sort
+      - run: python3 -m unittest discover -s services/covenant-math/test -v  # 75/25 math
   gabriel-voice:
     runs-on: ubuntu-latest
     timeout-minutes: 10
