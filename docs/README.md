@@ -29,6 +29,7 @@ Every doc in `docs/`, by area. Add a line here when you add a doc.
 | Voice | [services/gabriel-voice/README.md](../services/gabriel-voice/README.md) | GABRIEL speaks in RSP_001's consented voice, cloned locally; the voice service on 9799 |
 | Talk (iPhone) | [services/talk/README.md](../services/talk/README.md) | Talk to GABRIEL and LUCY hands-free with Siri, replies in Kate; read-only, HALT first |
 | Apple and LUNA | [apple/APPLE-INTELLIGENCE-AND-LUNA.md](apple/APPLE-INTELLIGENCE-AND-LUNA.md) | App Intents, Foundation Models (Claude included), Creator Studio AI, and UA LUNA 3.0 (no API) |
+| Where things live | [identity/WHERE-EVERYTHING-LIVES.md](identity/WHERE-EVERYTHING-LIVES.md) | Every site, platform, project and GitHub account found on 2026-11-11, and what only RSP_001 can unlock |
 | Archive | [scripts/archive/README.md](../scripts/archive/README.md) | TaleSpin finder and deck reader (every .pptx, one JSON per slide); read only, skips the clicking drive |
 | Pipeline | [PIPELINE-V5.md](./pipeline/PIPELINE-V5.md) | Pipeline v5 |
 | Prune00 | [PRUNE00-LICENSE-STAGE.md](./prune00/PRUNE00-LICENSE-STAGE.md) | Prune00 licence stage |
