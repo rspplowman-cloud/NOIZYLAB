@@ -64,6 +64,27 @@ HEAVEN, the iPhone talk service (set `TALK_URL`), CPU load, free space, skip-vol
 Speed: each service gets three tries and its best time counts. Local must answer in 50 ms or less, cloud in 400 ms or less.
 Read-only: it changes nothing.
 
+## Local models: one script
+
+Brings Ollama and the Gemma 4 set up to date. Run in Warp or Ghostty:
+
+1. `cd ~/NOIZYLAB/infra/m2ultra`
+2. See the plan first, nothing downloads: `DRY_RUN=1 bash models-pull.sh`
+3. Pull the models: `bash models-pull.sh`
+
+| Model | Job | Size |
+|---|---|---|
+| `gemma4:31b` | Flagship | about 20 GB |
+| `gemma4:26b` | Fast MoE | about 19 GB |
+| `embeddinggemma-2` | Multimodal embeddings | about 1 GB |
+| `ripple-preview` | Agentic coder (65B) | about 39 GB |
+
+- **About 80 GB in total.** The script stops if less than 90 GB is free.
+- **It checks HALT first,** then the Ollama version (0.40.16 or newer), then that the server answers.
+- **It upgrades Ollama only if Homebrew installed it.** The Mac app updates itself from the menu-bar icon.
+- **For the explicit MLX builds** of Gemma 4, run `MLX=1 bash models-pull.sh`.
+- **Other Macs:** the same script works on any Mac with this repo, Ollama and `HALT_URL` set. Check free space and memory first; `ripple-preview` is large.
+
 ## Not covered yet
 
 - **Local-only rule for private data.** Nothing here stops a workflow from calling a cloud API. That needs an n8n policy, or an egress block.

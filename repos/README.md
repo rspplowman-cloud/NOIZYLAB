@@ -22,3 +22,4 @@
 - **Names repaired** in Markdown: 38 (NOIZY.AI, NOIZYBEAST, NOIZYWORLD, M2Ultra).
 - **Not yet reached:** RSPNOIZY/THE-GATHERING, THE-AQUARIUM, NOIZYANTHROPIC (private; need the Claude GitHub app on RSPNOIZY).
 - Exact source commits: `IMPORT-MANIFEST.json`.
+- **Edited after import (2026-11-11):** the WhatsApp channel line (THE GATHERING OF NOIZYFISH) was added under the brand table in each imported README that has one.
