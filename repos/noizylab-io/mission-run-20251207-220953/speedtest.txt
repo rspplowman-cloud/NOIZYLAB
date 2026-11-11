@@ -1,0 +1,5 @@
+1024+0 records in
+1024+0 records out
+17179869184 bytes transferred in 1247.231374 secs (13774404 bytes/sec)
+dd if=/dev/zero of=/Volumes/12TB/speedtest bs=16m count=1024 oflag=direct  0.01s user 14.54s system 1% cpu 20:47.35 total
+-rw-r--r--@ 1 m2ultra  staff    16G Dec  7 22:30 /Volumes/12TB/speedtest

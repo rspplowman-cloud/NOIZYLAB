@@ -18,6 +18,7 @@
 - **Files only, no history.** NOIZYLAB-io's history holds a leaked Anthropic key (red-team case I-04), so its history stays out.
 - **Left out:** `noizylab-io/gabriel/golang/` (791 files of the vendored Go standard library, not NOIZY code).
 - **Checked:** no secrets in any imported file; all JSON valid; all Python compiles (one syntax error fixed).
+- **Confirmed 2026-11-11:** all 566 source files present: 523 byte-identical, 31 repaired on purpose (names, one syntax fix), 12 run logs added with `git add -f`.
 - **Names repaired** in Markdown: 38 (NOIZY.AI, NOIZYBEAST, NOIZYWORLD, M2Ultra).
 - **Not yet reached:** RSPNOIZY/THE-GATHERING, THE-AQUARIUM, NOIZYANTHROPIC (private; need the Claude GitHub app on RSPNOIZY).
 - Exact source commits: `IMPORT-MANIFEST.json`.

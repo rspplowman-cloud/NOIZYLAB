@@ -1,0 +1,40 @@
+
+ ⛅️ wrangler 4.53.0
+───────────────────
+Getting User settings...
+👋 You are logged in with an OAuth Token, associated with the email rsplowman@icloud.com.
+┌──────────────┬──────────────────────────────────┐
+│ Account Name │ Account ID                       │
+├──────────────┼──────────────────────────────────┤
+│ RSP_NOIZYLAB │ 1323e14ace0c8d7362612d5b5c0d41bb │
+└──────────────┴──────────────────────────────────┘
+🔓 Token Permissions:
+Scope (Access)
+- account (read)
+- user (read)
+- workers (write)
+- workers_kv (write)
+- workers_routes (write)
+- workers_scripts (write)
+- workers_tail (read)
+- d1 (write)
+- pages (write)
+- zone (read)
+- ssl_certs (write)
+- ai (write)
+- queues (write)
+- pipelines (write)
+- secrets_store (write)
+- containers (write)
+- cloudchamber (write)
+- connectivity (admin)
+- offline_access 
+
+ ⛅️ wrangler 4.53.0
+───────────────────
+Total Upload: 0.50 KiB / gzip: 0.33 KiB
+Your Worker has access to the following bindings:
+Binding               Resource                  
+env.ENV ("prod")      Environment Variable      
+
+--dry-run: exiting now.
