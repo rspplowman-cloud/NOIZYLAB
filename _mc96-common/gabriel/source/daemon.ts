@@ -20,7 +20,8 @@ import chalk from "chalk";
 import { dispatch, listBosses, type Intent, type BossName } from "./bosses/index.js";
 
 const PORT = Number(env.GABRIEL_DAEMON_PORT ?? env.GABRIEL_PORT ?? 9777);
-const HOST = env.GABRIEL_DAEMON_HOST ?? "127.0.0.1";
+const HOST = env.GABRIEL_DAEMON_HOST ?? env.GABRIEL_BIND ?? "127.0.0.1";
+const LOOPBACK = new Set(["127.0.0.1", "::1", "localhost"]);
 const NOIZY_API_KEY = env.NOIZY_API_KEY ?? "";
 const AUTH_OPTIONAL = !NOIZY_API_KEY;
 
@@ -77,6 +78,44 @@ function authOk(req: IncomingMessage): boolean {
   return timingSafeEqual(token, NOIZY_API_KEY);
 }
 
+/**
+ * Refuse requests a web page made on the viewer's behalf (CSRF). Browsers label every
+ * request: Sec-Fetch-Site "cross-site"/"same-site" or a foreign Origin means some other
+ * site asked. Typing the address yourself ("none"), curl and the agents send neither.
+ */
+// Pages served through the Cloudflare Tunnel (behind Access) that may call the daemon,
+// e.g. GABRIEL_ALLOWED_ORIGINS=https://gabriel.noizy.ai
+const ALLOWED_ORIGINS = new Set(
+  (env.GABRIEL_ALLOWED_ORIGINS ?? "").split(",").map((o) => o.trim().replace(/\/+$/, "")).filter(Boolean),
+);
+
+function fromAnotherSite(req: IncomingMessage): boolean {
+  const origin = req.headers["origin"] ? String(req.headers["origin"]).replace(/\/+$/, "") : "";
+  if (origin && ALLOWED_ORIGINS.has(origin)) return false;
+  const site = req.headers["sec-fetch-site"];
+  if (site === "same-origin") return false;
+  if (site && site !== "none") return true;
+  if (!origin) return false;
+  try {
+    return !LOOPBACK.has(new URL(origin).hostname);
+  } catch {
+    return true;
+  }
+}
+
+/** HALT, fail closed: unset, unreachable or unreadable all count as halted. */
+async function haltClear(): Promise<{ clear: boolean; reason?: string }> {
+  const url = env.HALT_URL;
+  if (!url) return { clear: false, reason: "HALT_URL is not set (treated as halted)" };
+  try {
+    const body = await (await fetch(`${url.replace(/\/+$/, "")}/status`, { signal: AbortSignal.timeout(10_000) })).text();
+    if (body.includes('"halted":false')) return { clear: true };
+    return { clear: false, reason: body.includes('"halted":true') ? "HALTED" : "unreadable HALT status (treated as halted)" };
+  } catch (err) {
+    return { clear: false, reason: `HALT unreachable (treated as halted): ${(err as Error).message}` };
+  }
+}
+
 function isValidBoss(s: unknown): s is BossName {
   return typeof s === "string" && (VALID_BOSSES as string[]).includes(s);
 }
@@ -107,9 +146,18 @@ function handleListBosses(res: ServerResponse): void {
  * Uses execFile (not exec) to avoid shell injection. Output streamed back so
  * a browser tab shows the manifest live.
  */
-function handleGabrielSync(req: IncomingMessage, res: ServerResponse): void {
+async function handleGabrielSync(req: IncomingMessage, res: ServerResponse): Promise<void> {
   const url = new URL(req.url ?? "/", `http://${HOST}:${PORT}`);
   const mode = url.searchParams.get("mode") ?? "dry";
+  // A dry run or scan only reads. A push changes 6 repos: it needs the Bearer key,
+  // a POST (a link or image can't trigger it), and HALT clear.
+  if (mode === "push") {
+    if (AUTH_OPTIONAL) return send(res, 403, { ok: false, error: "push needs NOIZY_API_KEY set on the daemon and sent as Bearer" });
+    if (!authOk(req)) return send(res, 401, { ok: false, error: "unauthorized" });
+    if (req.method !== "POST") return send(res, 405, { ok: false, error: "push needs POST" });
+    const halt = await haltClear();
+    if (!halt.clear) return send(res, 423, { ok: false, error: `push refused: ${halt.reason}` });
+  }
   const args: string[] = ["/Users/m2ultra/NOIZYANTHROPIC/ops/gabriel-to-all-brands.sh"];
   if (mode === "push") args.push("--push");
   if (mode === "scan") args.push("--scan-only");
@@ -177,17 +225,24 @@ async function handleIntent(req: IncomingMessage, res: ServerResponse): Promise<
 // ── Server ──────────────────────────────────────────────────
 
 function startDaemon(): http.Server {
+  if (AUTH_OPTIONAL && !LOOPBACK.has(HOST)) {
+    throw new Error(`Refusing to listen on ${HOST} without NOIZY_API_KEY: an open daemon must stay on 127.0.0.1.`);
+  }
   const server = http.createServer(async (req, res) => {
     try {
       const url = new URL(req.url ?? "/", `http://${HOST}:${PORT}`);
       const path = url.pathname;
 
       if (req.method === "GET" && path === "/healthz") return handleHealth(res);
+
+      // Nothing below may be triggered by another website (CSRF), auth or not.
+      if (fromAnotherSite(req)) return send(res, 403, { ok: false, error: "refused: request came from another website" });
+
       if (req.method === "GET" && path === "/bosses") return handleListBosses(res);
 
-      // ── Browser / zero-friction Gabriel sync trigger ────────────────────
-      // 127.0.0.1-bound only. Dry-run is safe; push requires explicit ?mode=push.
-      // Placed ABOVE auth for zero-click browser triggers (open http://127.0.0.1:9777/ops/gabriel-sync).
+      // ── Gabriel sync trigger ────────────────────────────────────────────
+      // Dry run / scan: open the address yourself (http://127.0.0.1:9777/ops/gabriel-sync).
+      // Push: POST with the Bearer key, and only when HALT is clear (see handleGabrielSync).
       if (path === "/ops/gabriel-sync") return handleGabrielSync(req, res);
 
       if (!authOk(req)) {

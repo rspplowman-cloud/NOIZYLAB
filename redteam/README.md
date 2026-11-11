@@ -7,10 +7,10 @@
 
 ## What's here
 
-- **`cases.json`:** 24 attacks.
-  - 20 run against **ALL** agents.
+- **`cases.json`:** 25 attacks.
+  - 21 run against **ALL** agents.
   - 4 are specific to GABRIEL or LUCY.
-  - 8 are marked `smoke`, the quick set run before every deploy.
+  - 9 are marked `smoke`, the quick set run before every deploy.
 - **`agents/`:** one small file per agent: its role, its doctrine files, and the tools it must never use.
 - **`harness/`:** the program that runs the attacks and scores them.
 - **`results/`:** reports, plus an append-only `ledger.jsonl` of every result. Not committed to git.
