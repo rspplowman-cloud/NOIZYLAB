@@ -82,7 +82,7 @@ Mic → Loopback NOIZY_BUS (9ch) → Audio Hijack
 
 ## Contribution Protocol
 
-1. All PRs target RSPNOIZY/NOIZYLAB:main
+1. All PRs target NOIZYGIT-MASTER:main
 2. Branch naming: feat/, fix/, chore/, docs/
 3. Commit format: type(scope): description
 4. Never Clauses apply to code

@@ -13,7 +13,7 @@
 | **FISHMUSICINC** | [fishmusicinc.com](https://fishmusicinc.com) | `RSPNOIZY/FISHMUSICINC` | Original label entity — succeeded by NOIZYFISH | 🟡 Legacy/Active |
 | **NOIZYKIDZ** | [noizykidz.com](https://noizykidz.com) | `RSPNOIZY/NOIZYKIDZ` | Haptic music education — Deaf-first | 🟡 In Development |
 | **NOIZYVOX** | [noizyvox.com](https://noizyvox.com) | `RSPNOIZY/NOIZYVOX` (missing) | Sovereign voice consent platform | 🔴 Repo Missing |
-| **NOIZYLAB** | [noizylab.ca](https://noizylab.ca) | `RSPNOIZY/NOIZYLAB` ⭐ CANONICAL | Research + shared tooling core | 🟢 Live |
+| **NOIZYLAB** | [noizylab.ca](https://noizylab.ca) | `NOIZYGIT-MASTER` ⭐ CANONICAL (private) | Research + shared tooling core | 🟢 Live |
 | **DREAMCHAMBER** | [dream.noizy.ai](https://dream.noizy.ai) | `RSPNOIZY/DREAMCHAMBER` | 500-Year Creative Sanctuary | 🟢 Live |
 | **THE-OLD-GUARD** | [theoldguard.noizy.ai](https://theoldguard.noizy.ai) | `RSPNOIZY/THE-OLD-GUARD` | ResurrectionOS + Charitable Deployment | 🟢 Live |
 | **NOIZYWORLD** | [noizyworld.com](https://noizyworld.com) | `RSPNOIZY/NOIZYWORLD` | 10-Year Sovereign Commerce System | 🟡 In Development |

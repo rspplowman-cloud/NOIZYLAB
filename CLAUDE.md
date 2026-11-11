@@ -35,6 +35,7 @@
 
 ## Safety
 
+- **No public repos anywhere** (RSP_001, 2026-11-11). Every NOIZY repo is private. The master repo is **NOIZYGIT-MASTER** (`docs/identity/NO-PUBLIC-REPOS.md`).
 - **Never push straight to `main`.** Use a branch and a pull request.
 - **Never commit secrets.** Keep them in Proton Pass (VAULT-OPS).
 - **Check HALT before any automated job,** and treat "unreachable" as halted.

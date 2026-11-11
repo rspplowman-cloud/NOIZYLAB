@@ -1,6 +1,6 @@
 # sovereign-git: every repo and every Notion page, home on M2Ultra
 
-**Why:** the public NOIZYLAB repo is a fork, and GitHub keeps forks of public repos public.
+**Rule:** no public repos anywhere (RSP_001, 2026-11-11). NOIZYGIT-MASTER is canon; Forgejo holds the sovereign private copy of every repo.
 Private material (Notion vault, board packs, NOIZYKIDZ) needs a private home. **Forgejo on M2Ultra** is that home:
 it is already in `infra/m2ultra/docker-compose.yml` at `git.noizylab.ca`.
 
