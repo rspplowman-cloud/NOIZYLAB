@@ -1,4 +1,4 @@
-# Archive tools: TaleSpin finder and deck reader
+# Archive tools: TaleSpin finder, project finder, deck reader and chronology
 
 Read only. Standard library Python (comes with macOS). Background priority.
 
@@ -34,6 +34,19 @@ All TaleSpin audio (the 2020 VR project) is RSP_001's IP.
 3. Output: `~/.noizy/decks/run-<time>/`, one folder per deck, `slide-001.json` and so on, plus `index.json`.
 4. Keynote (`.key`) and old `.ppt` files are listed. To read them: Keynote → File → Export To → PowerPoint, then run again.
 
+## Chronology (every session, audio and document file, oldest first)
+
+1. Open **Warp** or **Ghostty** in `~/NOIZYLAB`.
+2. Try it on one small folder first: `python3 scripts/archive/chronology.py "/Volumes/<drive>/<folder>" --hash`
+3. Read the ledger in `~/.noizy/chronology/` (JSON).
+4. Files that could not be read are listed under `errors` in the same file. Nothing is dropped.
+
+- **Times are UTC, to the millisecond.** The raw nanosecond value is kept beside each one.
+- **"created" is when this copy landed on this drive.** Copying a file gives it a new created time. It is not proof of when the work was made.
+- **"modified" usually survives a copy.** It is often the older, more useful date.
+- **The fingerprint proves what a file contains,** not when it was made.
+- **A whole drive with `--hash` takes a long time** (every byte is read). Leave `--hash` off for a quick first pass. On a spinning drive use `--workers 1`.
+
 ## Tests
 
-`python3 -m unittest discover -s scripts/archive/test` (3 tests: CLAC matching incl. names with underscores, and look-alikes left out; slide order, notes, Keynote listing, skip-volumes, TaleSpin matching, duplicates, and proof that no source file changed).
+`python3 -m unittest discover -s scripts/archive/test` (CLAC matching incl. names with underscores, and look-alikes left out; slide order, notes, Keynote listing, skip-volumes, TaleSpin matching, duplicates, and proof that no source file changed; chronology: true UTC times, oldest-first order, unreadable files reported, ledger never written into the source).
