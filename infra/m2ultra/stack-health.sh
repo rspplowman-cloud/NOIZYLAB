@@ -19,7 +19,8 @@ cloudflared="$(running cloudflared)"
 ollama="$(http http://127.0.0.1:11434/api/version)"
 lucy="$(tcp 9778)"      # LUCY MCP server
 gabriel="$(tcp 9777)"   # GABRIEL local daemon
-heaven="$(http https://heaven.rsp-5f3.workers.dev/api/health)"
+# HEAVEN documents /health; older notes use /api/health. Either answering counts as up.
+heaven="$(http https://heaven.rsp-5f3.workers.dev/health)"; [ "$heaven" = up ] || heaven="$(http https://heaven.rsp-5f3.workers.dev/api/health)"
 
 printf '%-12s %s\n' n8n "$n8n" Qdrant "$qdrant" Forgejo "$forgejo" cloudflared "$cloudflared" \
   Ollama "$ollama" LUCY "$lucy" GABRIEL "$gabriel" HEAVEN "$heaven"

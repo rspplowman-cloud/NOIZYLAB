@@ -62,6 +62,8 @@ const DREAMCHAMBER_URL =
   process.env.DREAMCHAMBER_URL || "http://localhost:7777";
 const HEAVEN_URL =
   process.env.HEAVEN_URL || "https://heaven.rsp-5f3.workers.dev";
+// The NOIZY voice service (services/gabriel-voice) on :9799: POST /speak {agent, text}.
+const VOICE_URL = (process.env.NOIZY_VOICE_URL || "http://127.0.0.1:9799").replace(/\/+$/, "");
 
 function ensureState() {
   for (const dir of [STATE_DIR, CACHE_DIR, HANDOFF_DIR]) {
@@ -498,24 +500,26 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
       }
 
       case "gabriel_announce": {
+        // Spoken through the NOIZY voice service (services/gabriel-voice): RSP_001's consented
+        // clone when it is ready, else GABRIEL's macOS voice. HALT and consent are checked there.
         try {
-          await apiCall("POST", "/api/gabriel/announce", {
-            text: args.text,
+          const res = await fetch(`${VOICE_URL}/speak`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ agent: "gabriel", text: args.text }),
+            signal: AbortSignal.timeout(6000),
           });
-          return {
-            content: [
-              {
-                type: "text",
-                text: `✓ Announced: "${args.text}"`,
-              },
-            ],
-          };
+          const data = await res.json().catch(() => ({}));
+          if (!res.ok) {
+            return { content: [{ type: "text", text: `⚠ Not spoken: ${data.error || res.status}. Text: "${args.text}"` }] };
+          }
+          return { content: [{ type: "text", text: `✓ Announced in ${data.voice || "GABRIEL's voice"}: "${args.text}"` }] };
         } catch {
           return {
             content: [
               {
                 type: "text",
-                text: `⚠ DreamChamber not running — TTS unavailable. Text: "${args.text}"`,
+                text: `⚠ Voice service not running on ${VOICE_URL} (start services/gabriel-voice). Text: "${args.text}"`,
               },
             ],
           };
