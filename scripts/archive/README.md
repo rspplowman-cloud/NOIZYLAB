@@ -17,6 +17,16 @@ All TaleSpin audio (the 2020 VR project) is RSP_001's IP.
 3. Read the manifest in `~/.noizy/talespin/` (JSON and CSV).
 4. To record voice takes in the ledger, use `services/ledger` voice intake on the folder.
 
+## Project finder (any named project)
+
+1. See the projects: `python3 scripts/archive/project_finder.py --list`
+2. **CLAC (Cook Like A Chef, for GUSTO, about 11 tracks):**
+   `python3 scripts/archive/project_finder.py clac "/Volumes/<drive>" --hash`
+3. Read the manifest in `~/.noizy/projects/clac/`: audio, sessions (Logic, Pro Tools ...), video, documents.
+4. Add a new project by adding one line to `PROJECTS` in `project_finder.py`.
+
+**Before CLAC is released anywhere:** confirm who holds the rights (check the agreement, invoices and emails first).
+
 ## Deck reader (every .pptx, one JSON per slide)
 
 1. Open **Warp** or **Ghostty** in `~/NOIZYLAB`.
@@ -26,4 +36,4 @@ All TaleSpin audio (the 2020 VR project) is RSP_001's IP.
 
 ## Tests
 
-`python3 -m unittest discover -s scripts/archive/test` (2 tests: slide order, notes, Keynote listing, skip-volumes, TaleSpin matching, duplicates, and proof that no source file changed).
+`python3 -m unittest discover -s scripts/archive/test` (3 tests: CLAC matching incl. names with underscores, and look-alikes left out; slide order, notes, Keynote listing, skip-volumes, TaleSpin matching, duplicates, and proof that no source file changed).

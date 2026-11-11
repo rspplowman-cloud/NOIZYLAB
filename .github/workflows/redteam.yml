@@ -202,3 +202,19 @@ jobs:
       - uses: actions/setup-python@v6
         with: { python-version: "3.12" }
       - run: python3 -m unittest discover -s scripts/archive/test -v   # TaleSpin finder + deck reader, read-only proofs
+  gabriel-voice:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version: "22"
+          cache: npm
+          cache-dependency-path: services/ledger/package-lock.json
+      - uses: actions/setup-python@v6
+        with: { python-version: "3.12" }
+      - run: npm ci --no-audit --no-fund
+        working-directory: services/ledger
+      - run: python3 -m unittest discover -s test -v   # consent gate, HALT, ledger chain across Python and Node, the 9799 service
+        working-directory: services/gabriel-voice

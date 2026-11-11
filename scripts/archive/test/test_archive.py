@@ -76,5 +76,26 @@ class Archive(unittest.TestCase):
         self.assertNotIn("unrelated.wav", [f["file"] for f in files])
         self.assertTrue(all(len(f["sha256"]) == 64 for f in files))
 
+    def test_project_finder_clac(self):
+        chef = os.path.join(self.src, "2019 Cook Like A Chef", "Bounces"); os.makedirs(chef)
+        for f in ("Track 01.wav", "Track 02.wav"): open(os.path.join(chef, f), "wb").write(f.encode())
+        logic = os.path.join(self.src, "Projects", "GUSTO cue 3.logicx", "Alternatives", "000"); os.makedirs(logic)
+        open(os.path.join(logic, "ProjectData"), "wb").write(b"logic")
+        open(os.path.join(self.src, "Chris Knight invoice.pdf"), "wb").write(b"%PDF")
+        open(os.path.join(self.src, "CLAC_theme_v2.aif"), "wb").write(b"FORM")
+        open(os.path.join(self.src, "clackers.wav"), "wb").write(b"not this")        # must NOT match \bclac\b
+        open(os.path.join(self.src, "Gustonian.wav"), "wb").write(b"not this either")
+        open(os.path.join(self.skip, "Cook Like A Chef on bad drive.wav"), "wb").write(b"x")
+        before = tree_hash(self.src)
+        code, out = run("project_finder.py", ["clac", self.src, self.skip, "--hash"], self.env)
+        self.assertEqual(code, 0, out)
+        self.assertEqual(tree_hash(self.src), before)
+        self.assertIn("5 file(s)", out); self.assertIn("audio 3", out); self.assertIn("session 1", out); self.assertIn("document 1", out)
+        man = [f for f in os.listdir(os.path.join(self.out, "projects", "clac")) if f.endswith(".json")][0]
+        files = [f["file"] for f in json.load(open(os.path.join(self.out, "projects", "clac", man)))["files"]]
+        self.assertNotIn("clackers.wav", files); self.assertNotIn("Gustonian.wav", files)
+        self.assertEqual(run("project_finder.py", ["nope", self.src], self.env)[0], 2)
+        self.assertIn("clac", run("project_finder.py", ["--list"], self.env)[1])
+
 if __name__ == "__main__":
     unittest.main()

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<!-- THUNDER: the NOIZY voice service on 127.0.0.1:9799. Normal priority: a spoken reply answers RSP_001.
+     Settings (HALT_URL, NOIZY_LEDGER_DIR, GABRIEL_VOICE_TAKES) live in ~/.noizy/voice.env (chmod 600), not here.
+     Install: cp to ~/Library/LaunchAgents/ai.noizy.voice.plist, then
+              launchctl bootstrap gui/$(id -u) ~/Library/LaunchAgents/ai.noizy.voice.plist -->
+<plist version="1.0">
+<dict>
+  <key>Label</key>             <string>ai.noizy.voice</string>
+  <key>ProgramArguments</key>
+  <array>
+    <string>/bin/bash</string>
+    <string>-c</string>
+    <string>set -a; . "$HOME/.noizy/voice.env"; set +a; cd "$HOME/NOIZYLAB/services/gabriel-voice" &amp;&amp; exec .venv/bin/python -m gabriel_voice.server</string>
+  </array>
+  <key>RunAtLoad</key>         <true/>
+  <key>KeepAlive</key>         <true/>
+  <key>ThrottleInterval</key>  <integer>30</integer>
+  <key>ProcessType</key>       <string>Standard</string>
+  <key>Nice</key>              <integer>5</integer>
+  <key>StandardOutPath</key>   <string>/Users/m2ultra/NOIZYBEAST/logs/ai.noizy.voice.log</string>
+  <key>StandardErrorPath</key> <string>/Users/m2ultra/NOIZYBEAST/logs/ai.noizy.voice.log</string>
+</dict>
+</plist>

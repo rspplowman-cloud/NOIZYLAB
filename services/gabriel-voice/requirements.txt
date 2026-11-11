@@ -1,0 +1,5 @@
+# GABRIEL's voice on M2Ultra (Python 3.10+). Install inside a virtual environment.
+# Qwen/Qwen3-TTS-12Hz-0.6B-Base, Apache-2.0: https://huggingface.co/Qwen/Qwen3-TTS-12Hz-0.6B-Base
+qwen-tts
+soundfile
+torch

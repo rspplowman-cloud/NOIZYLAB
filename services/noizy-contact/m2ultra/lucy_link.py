@@ -125,7 +125,14 @@ def act_mc96_status(_args: dict, _req: dict) -> dict:
 def act_gabriel_health(_args: dict, _req: dict) -> dict:
     if not GABRIEL_HEALTH_URL:
         return {"configured": False, "note": "set GABRIEL_HEALTH_URL to HEAVEN's health route"}
-    return http_get(GABRIEL_HEALTH_URL)
+    first = http_get(GABRIEL_HEALTH_URL)
+    if first.get("status") == 200:
+        return first
+    # HEAVEN documents /health; older notes use /api/health. Try the other one before reporting down.
+    alt = GABRIEL_HEALTH_URL.replace("/api/health", "/health") if GABRIEL_HEALTH_URL.endswith("/api/health") \
+        else GABRIEL_HEALTH_URL.rstrip("/").rsplit("/health", 1)[0] + "/api/health"
+    second = http_get(alt)
+    return second if second.get("status") == 200 else {**first, "also_tried": alt, "also_status": second.get("status")}
 
 
 def act_say(args: dict, req: dict) -> dict:
