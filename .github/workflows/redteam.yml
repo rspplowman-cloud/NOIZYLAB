@@ -107,3 +107,17 @@ jobs:
           cache-dependency-path: dreamchamber/package-lock.json
       - run: npm ci --no-audit --no-fund
       - run: npm test
+  noizystrmz:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    defaults: { run: { working-directory: services/noizystrmz } }
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version: "22"
+          cache: npm
+          cache-dependency-path: services/noizystrmz/package-lock.json
+      - run: npm ci --no-audit --no-fund
+      - run: npm run typecheck
+      - run: npm test   # join tokens + the HALT gate (fails closed)

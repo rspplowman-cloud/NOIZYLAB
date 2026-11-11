@@ -1,0 +1,18 @@
+{
+  "name": "noizystrmz",
+  "version": "0.1.0",
+  "private": true,
+  "description": "NOIZYSTRMZ: real-time audio co-creation rooms (WebRTC signaling on Durable Objects). Media goes peer to peer; the server only passes signals.",
+  "license": "AGPL-3.0-or-later",
+  "scripts": {
+    "typecheck": "tsc --noEmit -p tsconfig.json",
+    "test": "node --test test/*.test.mjs",
+    "dev": "wrangler dev",
+    "deploy": "wrangler deploy"
+  },
+  "devDependencies": {
+    "@cloudflare/workers-types": "^5.20261029.1",
+    "typescript": "^5.6.0",
+    "wrangler": "^4.156.0"
+  }
+}
