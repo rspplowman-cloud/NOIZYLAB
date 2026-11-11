@@ -26,4 +26,4 @@ NC_POLITICAL | NC_SEXUAL | NC_WEAPONS | NC_DECEPTION | NC_HATE | NC_TRANSFER | N
 killSwitchHolder: RSP_001 | covenant: 75/25 | canon: noizy.ai
 
 ## Community
-**Community:** [THE GATHERING OF NOIZYFISH](https://whatsapp.com/channel/0029VbC8Ujq96H4OSUbWQA0G) — the WhatsApp channel. Follow for news from every brand.
+[THE GATHERING OF NOIZYFISH](https://whatsapp.com/channel/0029VbC8Ujq96H4OSUbWQA0G) — the WhatsApp channel. Follow for news from every brand.
