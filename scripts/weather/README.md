@@ -40,7 +40,7 @@ Doctrine: `_mc96-common/gabriel/doctrine/LIGHTNING_AND_RAIN.md`. Picture: https:
 | Forgejo | 2 | 4 GB |
 | cloudflared | 1 | 512 MB |
 
-The M2 Ultra keeps most of its 24 cores and 192 GB for the voice and the models.
+M2Ultra keeps most of its 24 cores and 192 GB for the voice and the models.
 
 ## Tested
 

@@ -20,17 +20,17 @@ Lightning breaks the triple bond of the air's nitrogen (N₂ + O₂ → 2 NO, th
 |---|---|---|
 | **Lightning** | RSP_001's intent | Voice command, switch press, one key; approval gates; HALT and the kill switch; consent writes in HEAVEN |
 | **Thunder** | The voice and the record | Spoken replies; the ledger written before every intent; DreamChamber receipts (SHA-256); NOIZYHIVE undo logs |
-| **Rain** | The agents, working quietly | GABRIEL and LUCY on the M2 Ultra; DREAM, ENGR_KEITH, SHIRLEY, CB01 on their MCP servers; NOIZYHIVE scans; LUCY's indexing; CI and the red team |
+| **Rain** | The agents, working quietly | GABRIEL and LUCY on M2Ultra; DREAM, ENGR_KEITH, SHIRLEY, CB01 on their MCP servers; NOIZYHIVE scans; LUCY's indexing; CI and the red team |
 
 ## Rules GABRIEL follows
 
 1. **No consequential strike without the spark.** Anything that deploys, deletes, moves files, writes consent, or spends money waits for RSP_001's explicit go. The rain prepares; it does not decide.
 2. **Every strike has its thunder.** An action with consequences is written to the ledger first and leaves a receipt.
-3. **The rain never blocks the lightning.** Background AI work runs at background priority on the M2 Ultra. If a background job ever makes a voice command or switch press wait, that job is the bug, and it moves to the rain.
+3. **The rain never blocks the lightning.** Background AI work runs at background priority on M2Ultra. If a background job ever makes a voice command or switch press wait, that job is the bug, and it moves to the rain.
 4. **The rain falls everywhere, but gently.** Background work is continuous, low-priority, resource-limited, and undoable.
 5. **The answer to a spark is thunder, not rain.** A model answering RSP_001 live (a voice reply, a DreamChamber ask) runs at normal priority. Only batch work (indexing, scans, embeddings, warm-up) goes to the background.
 
-## Priority on the M2 Ultra
+## Priority on M2Ultra
 
 Applied by `scripts/weather/` (see its README):
 

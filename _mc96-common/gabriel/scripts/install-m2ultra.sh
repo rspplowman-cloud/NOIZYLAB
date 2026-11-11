@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# GABRIEL · install-m2ultra.sh — GABRIEL on the M2 Ultra, from a fresh clone to a running daemon.
+# GABRIEL · install-m2ultra.sh — GABRIEL on M2Ultra, from a fresh clone to a running daemon.
 #
 #   bash _mc96-common/gabriel/scripts/install-m2ultra.sh            # dry run: shows every step, changes nothing
 #   bash _mc96-common/gabriel/scripts/install-m2ultra.sh --apply    # does it
@@ -26,7 +26,7 @@ no()   { printf '   ✗ %s\n' "$*" >&2; exit 1; }
 plan() { if [ "$APPLY" = 1 ]; then "$@"; else printf '   would run: %s\n' "$*"; fi; }
 envset() { grep -qE "^$1=.+" "$GABRIEL/.env" 2>/dev/null; }
 
-echo "GABRIEL on the M2 Ultra · $( [ "$APPLY" = 1 ] && echo APPLY || echo 'DRY RUN (add --apply to do it)' )"
+echo "GABRIEL on M2Ultra · $( [ "$APPLY" = 1 ] && echo APPLY || echo 'DRY RUN (add --apply to do it)' )"
 echo "repo: $REPO"
 
 say "1. Preflight"

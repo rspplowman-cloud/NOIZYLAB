@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# inhale_inventory.sh — find every place on the M2 Ultra that holds passwords, before
+# inhale_inventory.sh — find every place on the M2Ultra that holds passwords, before
 # they are moved into Proton Pass. Spec: docs/identity/PASSWORD-INHALE-RUNBOOK.md.
 #
 #   ./inhale_inventory.sh                 # scan, write a report

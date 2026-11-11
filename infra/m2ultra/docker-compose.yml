@@ -1,4 +1,4 @@
-# NOIZY M2 Ultra stack — n8n + Qdrant + Forgejo + Cloudflare Tunnel
+# NOIZY M2Ultra stack — n8n + Qdrant + Forgejo + Cloudflare Tunnel
 # Model inference (Ollama / LM Studio) runs NATIVELY on macOS for Metal GPU.
 # It is deliberately not a container here. Containers reach it at
 # http://host.docker.internal:11434.

@@ -32,7 +32,7 @@
 
 ## Run it
 
-- **Set up once** on the M2 Ultra, from the `NOIZYLAB` folder:
+- **Set up once** on the M2Ultra, from the `NOIZYLAB` folder:
 
 ```bash
 cd redteam/harness

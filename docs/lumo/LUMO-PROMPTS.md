@@ -96,7 +96,7 @@ destination. Propose the minimal change for each.
 **6. Recovery drill** (NOIZY COUNSEL)
 ```
 Walk me through recovering the noizyworld@proton.me root if I lose (a) my phone,
-(b) one hardware key, (c) both keys, (d) access to the M2 Ultra. For each: what I
+(b) one hardware key, (c) both keys, (d) access to the M2Ultra. For each: what I
 need physically in hand, the steps, and what must be prepared today so it works.
 Do not ask me for any secret.
 ```

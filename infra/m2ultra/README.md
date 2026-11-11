@@ -1,4 +1,4 @@
-# M2 Ultra stack
+# M2Ultra stack
 
 n8n, Qdrant and Forgejo in Docker. Cloudflare Tunnel for HTTPS. Models run natively on the Mac.
 
