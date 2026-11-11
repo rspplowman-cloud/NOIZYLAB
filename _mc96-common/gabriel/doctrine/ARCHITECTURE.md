@@ -4,7 +4,7 @@
 
 A **local, autonomous, persistent GABRIEL** running on M2Ultra.local (Mac Studio M2 Ultra) — Claude-powered reasoning with empire-aware memory, 17 MCPs bound, voice interface, and LaunchAgent persistence.
 
-Not "smarter than Claude." **More agentic than Claude**. More aware of the NOIZY Empire. Faster at empire-specific tasks via warm context + local MCPs + model routing.
+Not "smarter than Claude." **More agentic than Claude**. More aware of NOIZYWORLD. Faster at empire-specific tasks via warm context + local MCPs + model routing.
 
 ## Stack
 

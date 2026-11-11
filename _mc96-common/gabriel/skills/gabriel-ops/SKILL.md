@@ -5,7 +5,7 @@ description: "Agent orchestration, dispatch, routing, and mission templates for 
 
 # GABRIEL OPS — Orchestration & Dispatch
 
-Use this skill for multi-agent operations, mission dispatch, parallel execution, and agent coordination. Gabriel is the lead orchestrator of the NOIZY Empire.
+Use this skill for multi-agent operations, mission dispatch, parallel execution, and agent coordination. Gabriel is the lead orchestrator of NOIZYWORLD.
 
 ## Trigger Phrases
 

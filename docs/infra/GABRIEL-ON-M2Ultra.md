@@ -1,4 +1,4 @@
-# GABRIEL on the M2 Ultra
+# GABRIEL on M2Ultra
 
 One command takes GABRIEL from a fresh clone to a daemon that runs 24/7 and restarts on its own.
 

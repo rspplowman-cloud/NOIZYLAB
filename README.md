@@ -1,8 +1,8 @@
 # NOIZYLAB ⭐ CANONICAL REPOSITORY
 
-> *Experimental research lab and shared tooling core for the NOIZY Empire.*
+> *Experimental research lab and shared tooling core for NOIZYWORLD.*
 > 
-> **This is the single source of truth for all NOIZY Empire code, doctrine, and infrastructure.**
+> **This is the single source of truth for all NOIZYWORLD code, doctrine, and infrastructure.**
 
 See [CANON.md](./CANON.md) for the full canonical declaration.
 
@@ -87,7 +87,7 @@ RSPNOIZY/NOIZYLAB/
 
 ---
 
-## Part of the NOIZY Empire
+## Part of NOIZYWORLD
 
 | Brand | Domain | Role |
 |-------|--------|------|

@@ -1,4 +1,4 @@
-# BRAND_MAP.md — NOIZY Empire Complete Brand Directory
+# BRAND_MAP.md — NOIZYWORLD Complete Brand Directory
 
 > All 10 brands. One doctrine. Zero compromises.
 

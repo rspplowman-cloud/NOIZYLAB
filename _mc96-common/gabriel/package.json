@@ -1,7 +1,7 @@
 {
   "name": "gabriel",
   "version": "3.0.0",
-  "description": "GABRIEL — Generative Adaptive Bridge for Intelligent Expression and Learning. Local autonomous Claude-powered orchestrator for the NOIZY Empire.",
+  "description": "GABRIEL — Generative Adaptive Bridge for Intelligent Expression and Learning. Local autonomous Claude-powered orchestrator for NOIZYWORLD.",
   "type": "module",
   "main": "dist/index.js",
   "bin": {
