@@ -1,0 +1,17 @@
+{
+  "name": "sovereign-git",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Bring every NOIZY repo and Notion page home to Forgejo on M2Ultra. HALT first, dry run by default.",
+  "license": "AGPL-3.0-or-later",
+  "type": "module",
+  "scripts": {
+    "test": "node --test test/*.test.mjs",
+    "mirror": "node forgejo_mirror.mjs",
+    "notion": "node notion_export.mjs"
+  },
+  "dependencies": {
+    "@notionhq/client": "^5.31.1",
+    "notion-to-md": "^3.1.9"
+  }
+}

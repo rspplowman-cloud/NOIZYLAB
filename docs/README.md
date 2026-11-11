@@ -30,6 +30,7 @@ Every doc in `docs/`, by area. Add a line here when you add a doc.
 | Talk (iPhone) | [services/talk/README.md](../services/talk/README.md) | Talk to GABRIEL and LUCY hands-free with Siri, replies in Kate; read-only, HALT first |
 | Apple and LUNA | [apple/APPLE-INTELLIGENCE-AND-LUNA.md](apple/APPLE-INTELLIGENCE-AND-LUNA.md) | App Intents, Foundation Models (Claude included), Creator Studio AI, and UA LUNA 3.0 (no API) |
 | Where things live | [identity/WHERE-EVERYTHING-LIVES.md](identity/WHERE-EVERYTHING-LIVES.md) | Every site, platform, project and GitHub account found on 2026-11-11, and what only RSP_001 can unlock |
+| Sovereign git | [../scripts/sovereign-git/README.md](../scripts/sovereign-git/README.md) | Every repo and Notion page mirrored privately to Forgejo on M2Ultra; n8n, GitLens, GitKraken `gk` and Kepler roles |
 | Archive | [scripts/archive/README.md](../scripts/archive/README.md) | TaleSpin finder and deck reader (every .pptx, one JSON per slide); read only, skips the clicking drive |
 | Pipeline | [PIPELINE-V5.md](./pipeline/PIPELINE-V5.md) | Pipeline v5 |
 | Prune00 | [PRUNE00-LICENSE-STAGE.md](./prune00/PRUNE00-LICENSE-STAGE.md) | Prune00 licence stage |
