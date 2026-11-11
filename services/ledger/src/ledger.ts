@@ -62,3 +62,49 @@ export function lltSpend(balance: number, what: string, cost: number, holder: { 
   if (holder.minor && (!holder.guardian || !holder.guardianApproved)) throw new Error("a minor's spend needs guardian approval");
   return balance - cost;
 }
+
+// ── Anchoring ──────────────────────────────────────────────────────────────
+// Proves to the outside world that the chain head existed at a moment in time.
+// Provider-agnostic: TODAQ (TODA files) is the planned first provider, after the
+// meeting with Alex P. Graham. Until then nothing is sent anywhere; these are
+// pure functions that prepare the payload and record the receipt that comes back.
+
+/** Who can anchor. "manual" = RSP_001 published the hash somewhere by hand. */
+export const ANCHOR_PROVIDERS = ["todaq", "manual"] as const;
+export type AnchorProvider = typeof ANCHOR_PROVIDERS[number];
+
+/** What gets sent to an anchor provider: the head of the chain, nothing else. No bodies, no personal data. */
+export async function anchorPayload(head: Entry): Promise<{ catalog: string; seq: number; hash: string; digest: string }> {
+  if (head.kind === "anchor") throw new Error("anchor the last real entry, not an anchor record");
+  const p = { catalog: head.catalog, seq: head.seq, hash: head.hash };
+  return { ...p, digest: await sha256hex(canonical(p)) };
+}
+
+/** Record a provider's receipt as an "anchor" entry on the chain. */
+export async function recordAnchor(
+  prev: Entry,
+  receipt: { provider: AnchorProvider; anchored_seq: number; anchored_hash: string; ref: string; at: string },
+): Promise<Entry> {
+  if (!(ANCHOR_PROVIDERS as readonly string[]).includes(receipt.provider)) throw new Error(`unknown anchor provider "${receipt.provider}"`);
+  if (!/^[0-9a-f]{64}$/.test(receipt.anchored_hash)) throw new Error("anchored_hash must be a sha256 hex string");
+  if (!receipt.ref || typeof receipt.ref !== "string") throw new Error("ref (the provider's receipt id) is required");
+  if (Number.isNaN(Date.parse(receipt.at))) throw new Error("at must be an ISO date");
+  if (receipt.anchored_seq > prev.seq) throw new Error("cannot anchor an entry that does not exist yet");
+  return makeEntry(prev.catalog, prev, "anchor", receipt);
+}
+
+/**
+ * Check every anchor entry points at a real, earlier, non-anchor entry whose hash matches.
+ * Returns the seq of the first bad anchor, or -1. Run verifyChain first: this trusts the links.
+ */
+export function verifyAnchors(entries: Entry[]): number {
+  const bySeq = new Map(entries.map((e) => [e.seq, e]));
+  for (const e of entries) {
+    if (e.kind !== "anchor") continue;
+    let r: { anchored_seq?: number; anchored_hash?: string };
+    try { r = JSON.parse(e.body); } catch { return e.seq; }
+    const target = bySeq.get(r.anchored_seq as number);
+    if (!target || target.seq >= e.seq || target.kind === "anchor" || target.hash !== r.anchored_hash) return e.seq;
+  }
+  return -1;
+}

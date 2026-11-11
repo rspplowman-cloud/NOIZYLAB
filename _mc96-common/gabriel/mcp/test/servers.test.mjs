@@ -142,3 +142,62 @@ test("gabriel-mcp alias starts GABRIEL's server", async () => {
   try { assert.ok(names.includes("gabriel_speak") && names.includes("gabriel_cache_start")); }
   finally { await client.close(); }
 });
+
+test("infomaniak-mcp: HALT first, Bearer token, refuses never-to-AI content, never echoes the token", async () => {
+  const seen = []; let halted = false;
+  const srv = createServer((req, res) => {
+    let body = ""; req.on("data", (c) => (body += c)); req.on("end", () => {
+      res.setHeader("content-type", "application/json");
+      if (req.url === "/halt/status") return res.end(JSON.stringify({ halted }));
+      seen.push({ m: req.method, u: req.url, auth: req.headers.authorization, body });
+      if (req.url === "/ai/models") return res.end(JSON.stringify({ data: [{ id: "swiss-model-a" }, { id: "swiss-model-b" }] }));
+      if (req.url === "/ai/chat/completions") {
+        const b = JSON.parse(body);
+        return res.end(JSON.stringify({ model: b.model, choices: [{ message: { content: `echo: ${b.messages.at(-1).content}` } }], usage: { total_tokens: 7 } }));
+      }
+      res.statusCode = 404; res.end("{}");
+    });
+  });
+  await new Promise((r) => srv.listen(0, "127.0.0.1", r));
+  const url = `http://127.0.0.1:${srv.address().port}`;
+
+  // Not configured: refuses before any network call, says what is missing, no secret shown.
+  const bare = await open("infomaniak-mcp", { HALT_URL: `${url}/halt` });
+  try {
+    const st = (await bare.call("infomaniak_status")).json;
+    assert.equal(st.configured, false);
+    assert.deepEqual(st.missing, ["INFOMANIAK_TOKEN", "INFOMANIAK_AI_PRODUCT_ID"]);
+    const r = await bare.call("infomaniak_models");
+    assert.equal(r.error, true); assert.match(r.text, /not configured/);
+    assert.equal(seen.length, 0);
+  } finally { await bare.client.close(); }
+
+  const { client, call, names } = await open("infomaniak-mcp",
+    { HALT_URL: `${url}/halt`, INFOMANIAK_TOKEN: "ik-secret-token", INFOMANIAK_AI_BASE_URL: `${url}/ai/` });
+  try {
+    assert.deepEqual(names.sort(), ["infomaniak_ask", "infomaniak_models", "infomaniak_status"]);
+    const st = await call("infomaniak_status");
+    assert.equal(st.json.configured, true); assert.ok(!st.text.includes("ik-secret-token"));
+
+    assert.deepEqual((await call("infomaniak_models")).json.models, ["swiss-model-a", "swiss-model-b"]);
+    assert.equal(seen.at(-1).auth, "Bearer ik-secret-token");
+
+    const a = (await call("infomaniak_ask", { prompt: "Summarise the release notes", content_class: "work" })).json;
+    assert.equal(a.model, "swiss-model-a"); assert.equal(a.answer, "echo: Summarise the release notes");
+
+    // Never-to-AI material is refused before it leaves the machine.
+    const before = seen.length;
+    for (const [prompt, cls] of [["Here is the consent record for actor 12", "work"], ["Plan for NOIZYKIDZ parents", "public"],
+      ["anything", "family"], ["anything", "vault"]]) {
+      const r = await call("infomaniak_ask", { prompt, content_class: cls });
+      assert.equal(r.error, true, `${prompt} / ${cls}`); assert.match(r.text, /refused/);
+    }
+    assert.equal(seen.length, before, "refused prompts must not reach the network");
+
+    // HALT on: nothing goes out.
+    halted = true;
+    const h = await call("infomaniak_ask", { prompt: "hello", content_class: "public" });
+    assert.equal(h.error, true); assert.match(h.text, /HALTED/);
+    assert.equal(seen.length, before);
+  } finally { await client.close(); srv.close(); }
+});

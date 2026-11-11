@@ -1,7 +1,7 @@
 {
   "name": "gabriel-mcp",
   "version": "1.0.0",
-  "description": "MCP servers for the NOIZY agent family: GABRIEL, LUCY, ENGR_KEITH, DREAM, CB01, SHIRLEY, FAMILY (POPS + SHIRL), HEAVEN",
+  "description": "MCP servers for the NOIZY agent family: GABRIEL, LUCY, ENGR_KEITH, DREAM, CB01, SHIRLEY, FAMILY (POPS + SHIRL), HEAVEN, plus the Infomaniak Swiss model provider",
   "type": "module",
   "main": "index.js",
   "scripts": {

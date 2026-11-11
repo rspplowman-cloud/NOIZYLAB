@@ -5,6 +5,7 @@ Every doc in `docs/`, by area. Add a line here when you add a doc.
 | Area | Doc | What it is |
 |---|---|---|
 | Operations | [OPERATIONS_MANUAL.md](./OPERATIONS_MANUAL.md) | Quick reference and deploy commands |
+| Stack | [SOVEREIGN-STACK.md](./SOVEREIGN-STACK.md) | One page: Proton, Infomaniak, Cloudflare and TODAQ, each with one job; what material may go where; every NOIZY brand and FISH |
 | Cloudflare | [CF-SDKS-AND-APIS.md](./cloudflare/CF-SDKS-AND-APIS.md) | Full list of Cloudflare SDKs, APIs and tools |
 | Cloudflare | [cf-watch.json](./cloudflare/cf-watch.json) | Watch list read by `scripts/cf-watch/cf_watch.mjs` |
 | Consent | [UNION-BEST-PRACTICES.md](./consent/UNION-BEST-PRACTICES.md) | Union best practices for performers in the AI era |
@@ -21,6 +22,7 @@ Every doc in `docs/`, by area. Add a line here when you add a doc.
 | Infra | [REPAIR-PLAN.md](./infra/REPAIR-PLAN.md) | M2Ultra repair plan: gates, evidence, n8n guardrail, manifest |
 | Infra | [infra/m2ultra/README.md](../infra/m2ultra/README.md) | M2Ultra Docker stack: start-up steps |
 | Lumo | [LUMO-PROMPTS.md](./lumo/LUMO-PROMPTS.md) | Lumo role and prompts |
+| Infomaniak | [INFOMANIAK-AI.md](./infomaniak/INFOMANIAK-AI.md) | Swiss-hosted AI models (OpenAI-compatible API), Euria, kMeet; the infomaniak-mcp server |
 | Pipeline | [PIPELINE-V5.md](./pipeline/PIPELINE-V5.md) | Pipeline v5 |
 | Prune00 | [PRUNE00-LICENSE-STAGE.md](./prune00/PRUNE00-LICENSE-STAGE.md) | Prune00 licence stage |
 | Red team | [REDTEAM-GABRIEL-LUCY.md](./redteam/REDTEAM-GABRIEL-LUCY.md) | Red-teaming GABRIEL and LUCY |
