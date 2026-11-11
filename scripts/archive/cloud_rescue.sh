@@ -26,8 +26,8 @@ command -v rclone >/dev/null || { echo "rclone is not installed. In Warp: brew i
 real_src="$(cd "$src" && pwd -P)"
 skips=()
 [ -f "$HOME/.noizy/skip-volumes.txt" ] && while IFS= read -r l; do [ -n "$l" ] && [ "${l#\#}" = "$l" ] && skips+=("$l"); done < "$HOME/.noizy/skip-volumes.txt"
-IFS=':' read -ra envskips <<< "${NOIZY_SKIP_VOLUMES:-}"; skips+=("${envskips[@]}")
-for s in "${skips[@]}"; do
+IFS=':' read -ra envskips <<< "${NOIZY_SKIP_VOLUMES:-}"; skips+=(${envskips[@]+"${envskips[@]}"})   # bash 3.2 safe
+for s in ${skips[@]+"${skips[@]}"}; do
   [ -z "$s" ] && continue
   case "$real_src/" in "$s"/*|"$s/") echo "REFUSED: $src is on a skip-volume ($s). The clicking drive goes to a cleanroom lab, never to the cloud directly."; exit 3;; esac
 done

@@ -152,7 +152,8 @@ const CONVERSATION_TYPES = {
 
 // Shared NOIZY knowledge (same index LUCY uses): search, read, map.
 import { knowledgeTools } from "./lib/knowledge.js";
-const KNOWLEDGE = new Map(knowledgeTools("gabriel").map((t) => [t.name, t]));
+import { filesTools } from "./lib/files.js";
+const KNOWLEDGE = new Map([...knowledgeTools("gabriel"), ...filesTools("gabriel")].map((t) => [t.name, t]));
 
 const server = new Server(
   { name: "gabriel-mcp", version: "2.0.0" },
