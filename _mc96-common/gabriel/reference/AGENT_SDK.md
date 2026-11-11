@@ -1,7 +1,7 @@
 # Claude Agent SDK — Canonical Reference (NOIZY edition)
 
 **Captured:** 2026-04-20 from <https://code.claude.com/docs> (index at `/docs/llms.txt`).
-**Scope:** Single-file reference for building any Claude-powered agent inside the NOIZY Empire using `@anthropic-ai/claude-agent-sdk`.
+**Scope:** Single-file reference for building any Claude-powered agent inside NOIZYWORLD using `@anthropic-ai/claude-agent-sdk`.
 **Companion:** [`AGENT_SDK_CUSTOM_TOOLS.md`](./AGENT_SDK_CUSTOM_TOOLS.md) covers the custom-tool authoring patterns in full detail.
 **NOIZY doctrine it inherits:** `.claude/rules/*` (consent kernel, coding standards, hooks, mcp-builder, identity, contact).
 

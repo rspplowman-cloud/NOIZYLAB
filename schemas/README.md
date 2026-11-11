@@ -1,6 +1,6 @@
 # schemas/ — MC96 + Consent Protocol Schemas
 
-This folder contains the canonical TypeScript schema definitions for the NOIZY Empire's MC96 envelope protocol and consent token system.
+This folder contains the canonical TypeScript schema definitions for NOIZYWORLD's MC96 envelope protocol and consent token system.
 
 ## Files
 
@@ -15,7 +15,7 @@ This folder contains the canonical TypeScript schema definitions for the NOIZY E
 
 ## MC96 Envelope
 
-Every inter-system message in the NOIZY Empire routes through the MC96 envelope:
+Every inter-system message in NOIZYWORLD routes through the MC96 envelope:
 
 ```typescript
 interface MC96Envelope {

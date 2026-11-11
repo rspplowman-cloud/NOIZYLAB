@@ -2,7 +2,7 @@
 ## Global Music & Sound Access Program
 
 > *"Sound is a human right. We find it, restore it, share it — and we pay people for every step of that journey."*
-> — RSP_001, NOIZY Empire
+> — RSP_001, NOIZYWORLD
 
 ---
 
@@ -202,7 +202,7 @@ Restore Apple devices — iPhones, iPads, MacBooks, iPods — as dedicated music
                                    - Instrument upgrades
                                      - Apple device accessories
                                        - myFAMILY.AI premium features
-                                         - NOIZY Empire brand merchandise
+                                         - NOIZYWORLD brand merchandise
                                            - Additional AI compute credits (GABRIEL usage)
 
                                            ### Token Tiers

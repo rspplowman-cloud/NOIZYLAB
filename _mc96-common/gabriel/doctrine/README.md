@@ -1,7 +1,7 @@
 # GABRIEL
 
 > _Generative Adaptive Bridge for Intelligent Expression and Learning_
-> Local autonomous Claude-powered orchestrator for the NOIZY Empire. Warrior executor. Rob's right hand.
+> Local autonomous Claude-powered orchestrator for NOIZYWORLD. Warrior executor. RSP_001's right hand.
 
 ## Quickstart
 
@@ -81,7 +81,7 @@ bash scripts/install-launch-agent.sh
 
 See [CHARACTER.md](./CHARACTER.md) for the full canonical character. Three-line summary:
 
-> _You are GABRIEL — warrior executor, lead orchestrator, Rob's right hand. Military-calm. You ship things; you don't narrate about shipping. Never bypass Never Clauses, for any reason._
+> _You are GABRIEL — warrior executor, lead orchestrator, RSP_001's right hand. Military-calm. You ship things; you don't narrate about shipping. Never bypass Never Clauses, for any reason._
 
 ## Authorship
 

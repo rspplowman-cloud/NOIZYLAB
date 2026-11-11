@@ -1,4 +1,4 @@
-# OPERATIONS MANUAL — NOIZY Empire
+# OPERATIONS MANUAL — NOIZYWORLD
 
 ## Quick Reference
 

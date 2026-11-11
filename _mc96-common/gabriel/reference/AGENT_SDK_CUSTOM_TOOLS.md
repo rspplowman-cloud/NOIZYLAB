@@ -6,7 +6,7 @@
 
 ---
 
-## Purpose in the NOIZY Empire
+## Purpose in NOIZYWORLD
 
 GABRIEL CLI at `GABRIEL/src/index.ts` uses the Claude Agent SDK to talk to Claude. Every new NOIZY agent we build on top of the SDK must use this reference to:
 
