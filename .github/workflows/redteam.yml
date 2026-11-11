@@ -176,3 +176,21 @@ jobs:
       - run: npm ci --no-audit --no-fund
       - run: npm test
       - run: bash -n m2ultra-tune-up.sh
+  noizyarmy:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version: "22"
+          cache: npm
+          cache-dependency-path: |
+            services/noizyarmy/package-lock.json
+            _mc96-common/gabriel/mcp/package-lock.json
+      - run: npm ci --no-audit --no-fund
+        working-directory: _mc96-common/gabriel/mcp
+      - run: npm ci --no-audit --no-fund
+        working-directory: services/noizyarmy
+      - run: npm test   # rules, GABRIEL's contract, keys, HALT, and a real soldier end to end
+        working-directory: services/noizyarmy
