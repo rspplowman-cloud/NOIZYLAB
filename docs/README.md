@@ -5,6 +5,7 @@ Every doc in `docs/`, by area. Add a line here when you add a doc.
 | Area | Doc | What it is |
 |---|---|---|
 | Operations | [OPERATIONS_MANUAL.md](./OPERATIONS_MANUAL.md) | Quick reference and deploy commands |
+| Stack | [SOVEREIGN-STACK.md](./SOVEREIGN-STACK.md) | One page: Proton, Infomaniak, Cloudflare and TODAQ, each with one job; what material may go where; every NOIZY brand and FISH |
 | Cloudflare | [CF-SDKS-AND-APIS.md](./cloudflare/CF-SDKS-AND-APIS.md) | Full list of Cloudflare SDKs, APIs and tools |
 | Cloudflare | [cf-watch.json](./cloudflare/cf-watch.json) | Watch list read by `scripts/cf-watch/cf_watch.mjs` |
 | Consent | [UNION-BEST-PRACTICES.md](./consent/UNION-BEST-PRACTICES.md) | Union best practices for performers in the AI era |

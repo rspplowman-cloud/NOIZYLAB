@@ -48,3 +48,30 @@ test("a minor's spend needs a guardian's approval", () => {
   assert.throws(() => L.lltSpend(50, "class", 10, { minor: true, guardian: "PARENT1", guardianApproved: false }));
   assert.equal(L.lltSpend(50, "class", 10, { minor: true, guardian: "PARENT1", guardianApproved: true }), 40);
 });
+
+test("anchoring: payload is the head only, receipt is recorded and verified", async () => {
+  const c = await chain(); const head = c.at(-1);
+  const p = await L.anchorPayload(head);
+  assert.deepEqual(Object.keys(p).sort(), ["catalog", "digest", "hash", "seq"]);
+  assert.equal(p.hash, head.hash); assert.match(p.digest, /^[0-9a-f]{64}$/);
+  assert.ok(!JSON.stringify(p).includes("vocal take"), "no entry bodies leave the ledger");
+
+  const a = await L.recordAnchor(head, { provider: "todaq", anchored_seq: head.seq, anchored_hash: head.hash, ref: "toda:demo-1", at: "2026-11-11T18:00:00Z" });
+  assert.equal(a.kind, "anchor"); assert.equal(a.seq, head.seq + 1);
+  const all = [...c, a];
+  assert.equal(await L.verifyChain(all), -1);
+  assert.equal(L.verifyAnchors(all), -1);
+  await assert.rejects(L.anchorPayload(a));
+});
+test("anchoring: wrong hash, future entry, unknown provider and bad receipts are refused", async () => {
+  const c = await chain(); const head = c.at(-1);
+  const ok = { provider: "todaq", anchored_seq: 1, anchored_hash: c[1].hash, ref: "r1", at: "2026-11-11T18:00:00Z" };
+  await assert.rejects(L.recordAnchor(head, { ...ok, provider: "blockchain-x" }));
+  await assert.rejects(L.recordAnchor(head, { ...ok, anchored_hash: "zz" }));
+  await assert.rejects(L.recordAnchor(head, { ...ok, ref: "" }));
+  await assert.rejects(L.recordAnchor(head, { ...ok, at: "not a date" }));
+  await assert.rejects(L.recordAnchor(head, { ...ok, anchored_seq: 99 }));
+  // A receipt whose hash doesn't match the entry it claims is caught by verifyAnchors.
+  const bad = await L.recordAnchor(head, { ...ok, anchored_hash: c[2].hash });
+  assert.equal(L.verifyAnchors([...c, bad]), bad.seq);
+});
