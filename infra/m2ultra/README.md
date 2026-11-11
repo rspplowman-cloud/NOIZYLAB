@@ -68,3 +68,5 @@ Read-only: it changes nothing.
 
 - **Local-only rule for private data.** Nothing here stops a workflow from calling a cloud API. That needs an n8n policy, or an egress block.
 - **The n8n workflows.** The three workflow definitions and their credentials must already be in `N8N_DATA_DIR`, or be imported.
+  The two file-catalog workflows are in this repo: import `infra/n8n/workflows/*.json` and follow `scripts/catalog/README.md`
+  (they need `ollama pull nomic-embed-text` and the Qdrant service above). Run everything at once with `scripts/party/party.sh`.
