@@ -26,6 +26,7 @@ Every doc in `docs/`, by area. Add a line here when you add a doc.
 | Lumo | [LUMO-PROMPTS.md](./lumo/LUMO-PROMPTS.md) | Lumo role and prompts |
 | Infomaniak | [INFOMANIAK-AI.md](./infomaniak/INFOMANIAK-AI.md) | Swiss-hosted AI models (OpenAI-compatible API), Euria, kMeet; the infomaniak-mcp server |
 | NOIZYARMY | [services/noizyarmy/README.md](../services/noizyarmy/README.md) | The orchestrator on :9333 GABRIEL dispatches to; soldiers are the NOIZY MCP servers; built only from battle-tested parts |
+| Archive | [scripts/archive/README.md](../scripts/archive/README.md) | TaleSpin finder and deck reader (every .pptx, one JSON per slide); read only, skips the clicking drive |
 | Pipeline | [PIPELINE-V5.md](./pipeline/PIPELINE-V5.md) | Pipeline v5 |
 | Prune00 | [PRUNE00-LICENSE-STAGE.md](./prune00/PRUNE00-LICENSE-STAGE.md) | Prune00 licence stage |
 | Red team | [REDTEAM-GABRIEL-LUCY.md](./redteam/REDTEAM-GABRIEL-LUCY.md) | Red-teaming GABRIEL and LUCY |

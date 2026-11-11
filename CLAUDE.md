@@ -20,6 +20,13 @@
   - "M2 Ultra" (with a space) only for Apple's chip, e.g. "Mac Studio M2 Ultra".
   - ALL_CAPS constant and secret names keep caps, e.g. `MACHINE_TOKEN_M2ULTRA`.
 
+## How things run (RSP_001, 2026-11-11)
+
+- **Never the macOS Terminal app.** Steps for RSP_001 say **Warp** or **Ghostty**.
+- **No tokens on a command line.** Keys come from an env file (chmod 600) or Proton Pass, never typed or pasted into a command.
+- **Fully automated runs** go to **Google Cloud Shell** (or CI), not RSP_001's machine.
+- **Claude Cowork** for hands-on sessions with RSP_001.
+
 ## Safety
 
 - **Never push straight to `main`.** Use a branch and a pull request.

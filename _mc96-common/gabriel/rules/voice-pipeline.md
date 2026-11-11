@@ -45,7 +45,8 @@ FastMCP server for multi-AI voice collaboration. Controls:
 - RSP voice performances (50-150 WAV files)
 - Original music compositions (20-40 files)
 - All TaleSpin audio is RSP_001's IP
-- Discovery script: `scripts/talespin-finder.sh`
+- Discovery script: `scripts/archive/talespin_finder.py` (read only; `--hash` adds fingerprints for the voice-intake ledger)
+- Mentioned in the NOIZY x TODAQ meeting plan: the Dream Chamber tour uses the TALESPIN underscore
 
 ## Audio Configuration
 
