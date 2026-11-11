@@ -68,3 +68,12 @@ test("GABRIEL ask goes through DreamChamber and fails closed without HALT", asyn
   assert.equal(r.ok, false);
   assert.match(r.error, /HALT_URL is not set/);
 });
+
+test("GABRIEL's mind loads his doctrine from doctrine/, including LIGHTNING_AND_RAIN", async () => {
+  const { buildSystemPrompt } = await import("../dist/character.js");
+  const prompt = buildSystemPrompt();
+  assert.match(prompt, /OC-0/, "Never Clauses loaded");
+  assert.match(prompt, /The rain never blocks the lightning/, "LIGHTNING_AND_RAIN loaded");
+  assert.match(prompt, /No NOIZY agent drives a stimulator/, "clinical boundary loaded");
+  assert.doesNotMatch(prompt, /Rob is RSP_001/, "not the 4-line fallback");
+});

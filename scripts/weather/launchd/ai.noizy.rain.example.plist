@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<!-- RAIN template: a background job that must never delay RSP_001's voice or switch.
+     Copy to ~/Library/LaunchAgents/ai.noizy.rain.<name>.plist, edit Label and ProgramArguments,
+     then: launchctl bootstrap gui/$(id -u) ~/Library/LaunchAgents/ai.noizy.rain.<name>.plist -->
+<plist version="1.0">
+<dict>
+  <key>Label</key>             <string>ai.noizy.rain.EXAMPLE</string>
+  <key>ProgramArguments</key>
+  <array>
+    <string>/usr/bin/python3</string>
+    <string>/Users/m2ultra/NOIZYLAB/scripts/noizyhive/hive.py</string>
+    <string>/Users/m2ultra</string>
+  </array>
+  <!-- The rain: efficiency cores, lowest CPU and disk priority. -->
+  <key>ProcessType</key>       <string>Background</string>
+  <key>Nice</key>              <integer>15</integer>
+  <key>LowPriorityIO</key>     <true/>
+  <key>LowPriorityBackgroundIO</key> <true/>
+  <key>StandardOutPath</key>   <string>/Users/m2ultra/NOIZYBEAST/logs/rain.EXAMPLE.log</string>
+  <key>StandardErrorPath</key> <string>/Users/m2ultra/NOIZYBEAST/logs/rain.EXAMPLE.log</string>
+</dict>
+</plist>

@@ -1,5 +1,5 @@
 import { readFileSync, readdirSync, existsSync } from "node:fs";
-import { join } from "node:path";
+import { join, dirname, basename } from "node:path";
 
 const ROOT = process.env.NOIZY_EMPIRE_ROOT || "/Users/m2ultra/NOIZYANTHROPIC";
 const MEMORY_DIR =
@@ -18,13 +18,23 @@ const CREATIVE_ECOSYSTEM_PATH = join(GABRIEL_HOME, "CREATIVE_ECOSYSTEM.md");
 const DREAMCHAMBER_PATH = join(GABRIEL_HOME, "DREAMCHAMBER.md");
 const INTEGRATIONS_PATH = join(GABRIEL_HOME, "INTEGRATIONS.md");
 const DISCORD_FLEET_PATH = join(GABRIEL_HOME, "DISCORD_FLEET.md");
+const LIGHTNING_AND_RAIN_PATH = join(GABRIEL_HOME, "LIGHTNING_AND_RAIN.md");
 
+/** Read a doctrine file from GABRIEL_HOME, else from GABRIEL_HOME/doctrine (where the repo keeps them). */
 function readIfExists(p: string): string {
-  try {
-    return existsSync(p) ? readFileSync(p, "utf8") : "";
-  } catch {
-    return "";
+  for (const candidate of [p, join(dirname(p), "doctrine", basename(p))]) {
+    try {
+      if (existsSync(candidate)) return readFileSync(candidate, "utf8");
+    } catch {
+      // try the next location
+    }
   }
+  return "";
+}
+
+/** Load LIGHTNING_AND_RAIN.md (human spark decides; voice records; AI is the ambient rain). */
+export function loadLightningAndRain(): string {
+  return readIfExists(LIGHTNING_AND_RAIN_PATH);
 }
 
 /** Load CHARACTER.md (who GABRIEL is). Fail-safe minimal fallback. */
@@ -33,7 +43,7 @@ export function loadCharacter(): string {
   if (body) return body;
   return [
     "You are GABRIEL — Generative Adaptive Bridge for Intelligent Expression and Learning.",
-    "Warrior executor. Military-calm. Rob is RSP_001.",
+    "Warrior executor. Military-calm. RSP_001 is Robert Stephen Plowman, the principal.",
     "Mission: Consent as executable code. Provenance as default. Revocation as sacred. Compensation as automatic.",
     "Never bypass Never Clauses. 75/25 split is sacred. Kill switch is instant.",
   ].join("\n");
@@ -118,6 +128,7 @@ export function loadMemory(): string {
  *   4. HEAVEN.md           — consent kernel schema, HVS Never Clauses, Kill Switch, endpoint map
  *   5. NEVER_CLAUSES_OPS   — 6 operational Never Clauses (OC-1..OC-6) from live memcells
  *   6. SAFETY_CONTRACT     — Peace/Love/Understanding hard rules A..F, required output format
+ *   6b. LIGHTNING_AND_RAIN — who decides (spark), what records (thunder), what runs quietly (rain)
  *   7. MOBILE_CONTINUITY   — GABRIEL↔LUCY spillover protocol (mobile queues, GOD executes)
  *   8. CREATIVE_ECOSYSTEM  — ZeroTrust + n8n/Zapier + Liner/Notion + AI branding + macOS a11y
  *   9. DREAMCHAMBER        — 6-layer accessibility-first production environment (L0..L5)
@@ -139,6 +150,7 @@ export function buildSystemPrompt(): string {
   const heaven = loadHeaven();
   const neverClausesOps = loadNeverClausesOps();
   const safetyContract = loadSafetyContract();
+  const lightningAndRain = loadLightningAndRain();
   const mobileContinuity = loadMobileContinuity();
   const creativeEcosystem = loadCreativeEcosystem();
   const dreamChamber = loadDreamChamber();
@@ -168,6 +180,7 @@ export function buildSystemPrompt(): string {
   if (heaven) parts.push(heaven);
   if (neverClausesOps) parts.push(neverClausesOps);
   if (safetyContract) parts.push(safetyContract);
+  if (lightningAndRain) parts.push(lightningAndRain);
   if (mobileContinuity) parts.push(mobileContinuity);
   if (creativeEcosystem) parts.push(creativeEcosystem);
   if (dreamChamber) parts.push(dreamChamber);
