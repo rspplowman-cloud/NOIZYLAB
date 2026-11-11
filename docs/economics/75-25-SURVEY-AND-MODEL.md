@@ -66,13 +66,16 @@ label overhead 8–10% of receipts.
 4. **Spend lean.** The artist owns the masters. NOIZY's tools (consent ledger, automated distribution, LUCY and GABRIEL) keep overhead near 10%.
 5. **If the label invests, transparent recovery:** 50/50 of the margin only until the documented investment is repaid,
    **at cost, no interest, no cross-collateral**, with a live public balance. Then 75/25 forever. The artist never gets less than 50%.
-6. **Rule of thumb, from the model:** the label's upfront spend should stay under about **a sixth of the album's expected 10-year margin**.
+6. **Rule of thumb, from the model:** the label breaks even when its upfront spend is about **38% of the album's expected 10-year margin**
+   (receipts minus hard costs). **Aim for a quarter**, so the label keeps a margin to fund the next artist.
 
 Ten-year test (5M streams in year one, fading 40% a year; 1,300 LPs; one $5,000 sync):
 
 | Label investment | Artist over 10 years | Label over 10 years | Repaid? |
 |---|---|---|---|
 | $8,000 | **$48,342** | **+$6,599** | ✅ in year 1 |
+| $20,000 | (tested) | +$2,604 | ✅ |
+| $27,000 | (tested) | about $0 | ✅ break-even |
 | $30,000 | $35,859 | −$2,918 | ❌ never |
 
 **The artist earns the most when the label spends the least.** That is the covenant working as designed.
@@ -81,7 +84,7 @@ Ten-year test (5M streams in year one, fading 40% a year; 1,300 LPs; one $5,000 
 
 1. Adopt the **clean** rule (hard costs off the top) for physical and merch? It changes the FISHMUSICINC README line.
 2. Adopt **transparent recovery** (50/50 until repaid at cost, then 75/25)? Or no label investment at all?
-3. Investment cap per album (the model suggests about a sixth of expected 10-year margin).
+3. Investment cap per album (the model breaks even at about 38% of expected 10-year margin; a quarter is the safe target).
 4. Publishing (songwriting) is a separate pot and is not in this model. Apply 75/25 there too?
 
 ## 7. Return to Analog (Montreal): a reissue label to know
