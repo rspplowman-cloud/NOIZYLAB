@@ -5,13 +5,20 @@
   "license": "AGPL-3.0-or-later",
   "private": true,
   "type": "module",
-  "bin": { "noizy-redteam": "./src/cli.js" },
+  "bin": {
+    "noizy-redteam": "./src/cli.js"
+  },
   "scripts": {
     "test": "node --test test/*.test.mjs",
     "selftest": "node src/cli.js --target mock-good && node src/cli.js --target mock-bad --expect-fail",
     "smoke": "node src/cli.js --target claude --smoke",
     "full": "node src/cli.js --target claude --judge"
   },
-  "dependencies": { "@anthropic-ai/sdk": "^0.134.0", "zod": "^3.25.0" },
-  "engines": { "node": ">=22" }
+  "dependencies": {
+    "@anthropic-ai/sdk": "^1.8.0",
+    "zod": "^3.25.0"
+  },
+  "engines": {
+    "node": ">=22"
+  }
 }

@@ -28,6 +28,21 @@ The brand sites are served by **Netlify** (one team, five sites). Cloudflare han
 | **Firebase / Google Cloud** | `THE GATHERING-3474` | billing turned on 30 Oct 2026 |
 | **Dropbox** | account "RSPNOIZY", opened 27 Sep 2026 | **empty**; no files were ever added |
 | **Google Drive** | the Google account was renamed on 9 Nov 2026 | the Drive connector returns nothing since; reconnect under the new name |
+| **HEAVEN** (Cloudflare Worker) | consent kernel, v18.1.0, production | public health at `/api/health`; `/health` needs the key since v18 |
+| **Canva** | 6 designs (Shader Wallpapers, a 2-page programme, 3 untitled, Canva's starter deck) | no NOIZY brand kit yet |
+| **Figma** | handle `NoizyFish`, team "Fish Music - Music & Sounds By R.S Plowman" | admin, but a View seat: upgrade the seat to edit |
+| **Asana** | one workspace | empty (3 sample tasks) |
+| **Confluence** | site `rspnoizy-34741963` | starter templates only; the connector uses Atlassian's old endpoint (re-add it before 1 Mar 2027) |
+| **Google Workspace** | Business Standard | **cancelled 1 Sep 2026** after declined payments; CA$100 paid 9 Oct. Check admin.google.com, Billing |
+
+## 2b. Channels (where NOIZY talks to people)
+
+| Channel | Name | Note |
+|---|---|---|
+| **WhatsApp channel** | **THE GATHERING OF NOIZYFISH** (whatsapp.com/channel/0029VbC8Ujq96H4OSUbWQA0G) | 5 followers. "LIFE IS NOT A DRESS REHEARSAL! GORUNFREE! THE FUTURE IS UNWRITTEN!" Posts only show in the WhatsApp app. |
+| **YouTube** | **Fish Music - Music & Sounds By R.S Plowman** | monthly creator reviews arrive by mail |
+| **Slack** | workspace **THE-GATHERING** | Pro trial ended 17 Oct 2026; now on the free plan (90 days of history visible) |
+| **Facebook** | a page (reminder mail only) | name not confirmed yet |
 
 **"-3474" names** (`AQUARIUM-3474`, `THE GATHERING-3474`, `NOIZYFISH-3474`) are cloud **project IDs**, not GitHub accounts.
 

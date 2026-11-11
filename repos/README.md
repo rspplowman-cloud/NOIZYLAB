@@ -23,3 +23,9 @@
 - **Not yet reached:** RSPNOIZY/THE-GATHERING, THE-AQUARIUM, NOIZYANTHROPIC (private; need the Claude GitHub app on RSPNOIZY).
 - Exact source commits: `IMPORT-MANIFEST.json`.
 - **Edited after import (2026-11-11):** the WhatsApp channel line (THE GATHERING OF NOIZYFISH) was added under the brand table in each imported README that has one.
+
+## After the INHALE pass (NOI-116)
+
+- Read `INHALE-REPORT.md`: what is kept, what was removed, and why.
+- Three stale `_mc96-common` copies removed (older versions of the live tree; nothing lost).
+- 16 risky scripts quarantined: `noizylab-io/QUARANTINE.md`.

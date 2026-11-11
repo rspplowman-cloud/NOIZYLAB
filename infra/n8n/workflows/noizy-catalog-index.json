@@ -1,0 +1,372 @@
+{
+  "name": "NOIZY Catalog: index files (Forgejo -> Ollama -> Qdrant)",
+  "nodes": [
+    {
+      "id": "443545d0-5109-5903-93eb-aa8fa3abcdf8",
+      "name": "Daily",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        0,
+        0
+      ],
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "triggerAtHour": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "691b50ab-6618-5998-a591-91892922eeb7",
+      "name": "Forgejo push",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        0,
+        200
+      ],
+      "webhookId": "11ba73b1-d47a-57e3-a60c-1f381a73ca44",
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "noizy-catalog-push",
+        "authentication": "headerAuth",
+        "options": {}
+      },
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "",
+          "name": "Forgejo webhook secret"
+        }
+      }
+    },
+    {
+      "id": "05d9fab9-3905-5fcf-aecf-4f140e2a69c9",
+      "name": "Config",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        220,
+        100
+      ],
+      "parameters": {
+        "jsCode": "// Fill these in once after import. Nothing secret here: tokens live in n8n credentials.\nreturn [{ json: {\n  HALT_URL: 'https://SET-ME',            // the HALT worker base URL (same as HALT_URL in ~/.noizy env)\n  FORGEJO: 'http://forgejo:3000',        // Forgejo inside Docker\n  REPO: 'NOIZY/NOIZY-CATALOG',\n  QDRANT: 'http://qdrant:6333',\n  OLLAMA: 'http://host.docker.internal:11434',\n  MODEL: 'nomic-embed-text',             // 768-dimension local embedding model (ollama pull nomic-embed-text)\n  COLLECTION: 'noizy_files',\n} }];"
+      }
+    },
+    {
+      "id": "c10e79c2-8880-5904-80bc-b995c0b65a57",
+      "name": "HALT status",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        440,
+        100
+      ],
+      "parameters": {
+        "method": "GET",
+        "url": "={{ $json.HALT_URL }}/status",
+        "options": {}
+      },
+      "onError": "continueRegularOutput"
+    },
+    {
+      "id": "ff6796c5-e96c-5a0f-9c55-10bab566b4a2",
+      "name": "HALT gate",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        660,
+        100
+      ],
+      "parameters": {
+        "jsCode": "// Fails closed: unset, unreachable, unreadable or halted = stop the whole run.\nconst cfg = $('Config').first().json;\nconst r = $input.first().json;\nif (!cfg.HALT_URL || cfg.HALT_URL.includes('SET-ME')) throw new Error('HALT_URL not set in Config: stopping (fail closed).');\nif (r.error || r.halted !== false) throw new Error('HALT is set or unreachable: stopping.');\nreturn [{ json: cfg }];"
+      }
+    },
+    {
+      "id": "698e3aee-96cc-5feb-8068-6ae0cef69d52",
+      "name": "Get catalog",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        880,
+        100
+      ],
+      "parameters": {
+        "method": "GET",
+        "url": "={{ $json.FORGEJO }}/api/v1/repos/{{ $json.REPO }}/raw/files.jsonl",
+        "options": {
+          "response": {
+            "response": {
+              "responseFormat": "text"
+            }
+          }
+        },
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth"
+      },
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "",
+          "name": "Forgejo read token"
+        }
+      }
+    },
+    {
+      "id": "88c35363-2763-515b-8a2a-7fb40c5878ca",
+      "name": "Parse and seal",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1100,
+        100
+      ],
+      "parameters": {
+        "jsCode": "// files.jsonl -> batches of 64 records. Sealed records (consent, kidz, family, vault, voice models) and records\n// without a \"text\" field are dropped HERE, so they never reach the model. Point ids are stable UUIDs.\nconst raw = String($input.first().json.data ?? '');\nconst uuidOf = (id) => {\n  const [type, hex] = id.split('-');\n  const h = ((type === 'lib' ? '1' : '2') + '0'.repeat(31 - hex.length) + hex).slice(0, 32);\n  return `${h.slice(0,8)}-${h.slice(8,12)}-${h.slice(12,16)}-${h.slice(16,20)}-${h.slice(20)}`;\n};\nconst recs = [];\nfor (const line of raw.split('\\n')) {\n  if (!line.trim()) continue;\n  let r; try { r = JSON.parse(line); } catch { continue; }\n  if (r.sealed === true || !r.text || !r.id) continue;\n  const { text, ...payload } = r;\n  recs.push({ id: uuidOf(r.id), text, payload });\n}\nconst out = [];\nfor (let i = 0; i < recs.length; i += 64) out.push({ json: { batch: recs.slice(i, i + 64) } });\nreturn out;"
+      }
+    },
+    {
+      "id": "99929a14-98be-55ee-9ad2-3c2a0ac46a8e",
+      "name": "Fresh collection: delete",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1320,
+        100
+      ],
+      "parameters": {
+        "method": "DELETE",
+        "url": "={{ $('Config').first().json.QDRANT }}/collections/{{ $('Config').first().json.COLLECTION }}",
+        "options": {}
+      },
+      "onError": "continueRegularOutput",
+      "executeOnce": true
+    },
+    {
+      "id": "13553504-50db-516a-960d-e290cb1b875d",
+      "name": "Fresh collection: create",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1540,
+        100
+      ],
+      "parameters": {
+        "method": "PUT",
+        "url": "={{ $('Config').first().json.QDRANT }}/collections/{{ $('Config').first().json.COLLECTION }}",
+        "options": {},
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify({ vectors: { size: 768, distance: \"Cosine\" } }) }}"
+      },
+      "executeOnce": true
+    },
+    {
+      "id": "4c41e0c7-ca5b-586e-a5bc-a103cac10e32",
+      "name": "Back to batches",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1760,
+        100
+      ],
+      "parameters": {
+        "jsCode": "return $('Parse and seal').all();"
+      }
+    },
+    {
+      "id": "f10a7684-6fec-571c-a553-a07f355c4914",
+      "name": "Embed (local Ollama)",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1980,
+        100
+      ],
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $('Config').first().json.OLLAMA }}/api/embed",
+        "options": {},
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify({ model: $('Config').first().json.MODEL, input: $json.batch.map(r => r.text) }) }}"
+      }
+    },
+    {
+      "id": "5302876e-75bc-521e-ab86-31ed0a6de765",
+      "name": "Make points",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        2200,
+        100
+      ],
+      "parameters": {
+        "jsCode": "// Pair each embedding with its record. Fails loudly if Ollama returned the wrong count.\nreturn $input.all().map((item, i) => {\n  const batch = $('Parse and seal').all()[i].json.batch;\n  const vecs = item.json.embeddings || [];\n  if (vecs.length !== batch.length) throw new Error(`Ollama returned ${vecs.length} vectors for ${batch.length} records`);\n  return { json: { points: batch.map((r, j) => ({ id: r.id, vector: vecs[j], payload: r.payload })) } };\n});"
+      }
+    },
+    {
+      "id": "9cc68d60-72ab-55b8-ae8e-669a6060ee9d",
+      "name": "Upsert to Qdrant",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        2420,
+        100
+      ],
+      "parameters": {
+        "method": "PUT",
+        "url": "={{ $('Config').first().json.QDRANT }}/collections/{{ $('Config').first().json.COLLECTION }}/points?wait=true",
+        "options": {},
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify({ points: $json.points }) }}"
+      }
+    }
+  ],
+  "connections": {
+    "Daily": {
+      "main": [
+        [
+          {
+            "node": "Config",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Forgejo push": {
+      "main": [
+        [
+          {
+            "node": "Config",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Config": {
+      "main": [
+        [
+          {
+            "node": "HALT status",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HALT status": {
+      "main": [
+        [
+          {
+            "node": "HALT gate",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HALT gate": {
+      "main": [
+        [
+          {
+            "node": "Get catalog",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get catalog": {
+      "main": [
+        [
+          {
+            "node": "Parse and seal",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Parse and seal": {
+      "main": [
+        [
+          {
+            "node": "Fresh collection: delete",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Fresh collection: delete": {
+      "main": [
+        [
+          {
+            "node": "Fresh collection: create",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Fresh collection: create": {
+      "main": [
+        [
+          {
+            "node": "Back to batches",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Back to batches": {
+      "main": [
+        [
+          {
+            "node": "Embed (local Ollama)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Embed (local Ollama)": {
+      "main": [
+        [
+          {
+            "node": "Make points",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Make points": {
+      "main": [
+        [
+          {
+            "node": "Upsert to Qdrant",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "saveDataSuccessExecution": "none"
+  },
+  "active": false,
+  "meta": {
+    "templateCredsSetupCompleted": false
+  },
+  "tags": []
+}

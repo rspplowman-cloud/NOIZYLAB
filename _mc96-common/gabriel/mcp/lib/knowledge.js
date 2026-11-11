@@ -12,6 +12,10 @@ import { relative, resolve, sep } from "node:path";
 import { ROOT, walk, read, ext } from "./noizy-mcp.js";
 
 const SKIP = /(^|\/)(node_modules|results|\.git|dist)(\/|$)/;
+// Imported lineage is history, not current truth: NOIZYLAB-io's old plans use retired names, and it held a
+// third-party agent-instruction file (renamed LEGACY-*). Kept in the repo, kept out of what GABRIEL and LUCY learn.
+// The repo's QUARANTINE notes stay searchable so agents know which scripts must never run.
+const LINEAGE = /^repos\/noizylab-io\/(?!QUARANTINE\.md$)|(^|\/)LEGACY-[^/]*\.md$/;
 const STOP = new Set("a an and are as at be by for from has have in is it its of on or that the this to was were will with you your not no".split(" "));
 const tokens = (s) => s.toLowerCase().normalize("NFKD").replace(/[^a-z0-9_\-/.]+/g, " ").split(/\s+/)
   .map((t) => t.replace(/^[-./]+|[-./]+$/g, "")).filter((t) => t.length > 1 && !STOP.has(t));
@@ -19,7 +23,7 @@ const tokens = (s) => s.toLowerCase().normalize("NFKD").replace(/[^a-z0-9_\-/.]+
 let cache = null;
 function build() {
   const sections = [];
-  for (const p of walk(ROOT).filter((f) => ext(f) === ".md" && !SKIP.test(relative(ROOT, f)))) {
+  for (const p of walk(ROOT).filter((f) => ext(f) === ".md" && !SKIP.test(relative(ROOT, f)) && !LINEAGE.test(relative(ROOT, f).split(sep).join("/")))) {
     const path = relative(ROOT, p).split(sep).join("/");
     const text = read(p);
     const title = (text.match(/^#\s+(.+)$/m) || [, path])[1].trim();
