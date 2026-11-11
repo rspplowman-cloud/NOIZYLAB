@@ -22,3 +22,9 @@
 - **Names repaired** in Markdown: 38 (NOIZY.AI, NOIZYBEAST, NOIZYWORLD, M2Ultra).
 - **Not yet reached:** RSPNOIZY/THE-GATHERING, THE-AQUARIUM, NOIZYANTHROPIC (private; need the Claude GitHub app on RSPNOIZY).
 - Exact source commits: `IMPORT-MANIFEST.json`.
+
+## After the INHALE pass (NOI-116)
+
+- Read `INHALE-REPORT.md`: what is kept, what was removed, and why.
+- Three stale `_mc96-common` copies removed (older versions of the live tree; nothing lost).
+- 16 risky scripts quarantined: `noizylab-io/QUARANTINE.md`.

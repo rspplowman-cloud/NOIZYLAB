@@ -33,7 +33,7 @@ const tools = [
     handler: async ({ urls }) => {
       const list = urls?.length ? urls : (process.env.CB01_HEALTH_URLS?.split(",").map((s) => s.trim()).filter(Boolean) ||
         [process.env.HALT_URL && `${process.env.HALT_URL.replace(/\/+$/, "")}/status`,
-         process.env.HEAVEN_URL && `${process.env.HEAVEN_URL.replace(/\/+$/, "")}/health`].filter(Boolean));
+         process.env.HEAVEN_URL && `${process.env.HEAVEN_URL.replace(/\/+$/, "")}/api/health`].filter(Boolean));
       if (!list.length) return { checked: 0, note: "No URLs: pass 'urls' or set CB01_HEALTH_URLS, HALT_URL or HEAVEN_URL." };
       return Promise.all(list.map(async (url) => {
         const t = Date.now();

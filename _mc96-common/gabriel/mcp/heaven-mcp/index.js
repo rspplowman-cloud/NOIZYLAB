@@ -85,7 +85,7 @@ const cfTools = [
 ];
 
 const tools = [
-  { name: "h17_health", description: "HEAVEN health and counts (no auth).", handler: () => get("/health", false) },
+  { name: "h17_health", description: "HEAVEN health: status, version, portals (no auth). Since v18, /health needs the key; /api/health is public.", handler: () => get("/api/health", false) },
   { name: "h17_actors", description: "List actors.", handler: () => get("/api/v1/actors") },
   { name: "h17_actor", description: "One actor's details.", inputSchema: { type: "object", required: ["actor_id"], properties: { actor_id: { type: "string" } } },
     handler: ({ actor_id }) => get(`/api/v1/actors/${id(actor_id)}`) },

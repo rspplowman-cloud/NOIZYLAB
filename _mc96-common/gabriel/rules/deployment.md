@@ -24,7 +24,7 @@ npx wrangler d1 execute gabriel_db --remote --file seed.sql
 bash smoke_test.sh
 
 # Health check
-curl https://heaven.rsp-5f3.workers.dev/health
+curl https://heaven.rsp-5f3.workers.dev/api/health   # public; /health needs X-NOIZY-Key since v18
 ```
 
 ## DreamChamber (Local on M2Ultra.local)

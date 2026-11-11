@@ -1,0 +1,223 @@
+{
+  "name": "NOIZY Catalog: ask where a file is",
+  "nodes": [
+    {
+      "id": "5dad36ba-6cdd-5684-9472-fadfda22096b",
+      "name": "Ask",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        0,
+        0
+      ],
+      "webhookId": "0e24f938-506f-5304-9fc6-b89e6cc379ac",
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "noizy-files-ask",
+        "authentication": "headerAuth",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "",
+          "name": "NOIZY ask key"
+        }
+      }
+    },
+    {
+      "id": "05d9fab9-3905-5fcf-aecf-4f140e2a69c9",
+      "name": "Config",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        220,
+        0
+      ],
+      "parameters": {
+        "jsCode": "// Fill these in once after import. Nothing secret here: tokens live in n8n credentials.\nreturn [{ json: {\n  HALT_URL: 'https://SET-ME',            // the HALT worker base URL (same as HALT_URL in ~/.noizy env)\n  FORGEJO: 'http://forgejo:3000',        // Forgejo inside Docker\n  REPO: 'NOIZY/NOIZY-CATALOG',\n  QDRANT: 'http://qdrant:6333',\n  OLLAMA: 'http://host.docker.internal:11434',\n  MODEL: 'nomic-embed-text',             // 768-dimension local embedding model (ollama pull nomic-embed-text)\n  COLLECTION: 'noizy_files',\n} }];"
+      }
+    },
+    {
+      "id": "c10e79c2-8880-5904-80bc-b995c0b65a57",
+      "name": "HALT status",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        440,
+        0
+      ],
+      "parameters": {
+        "method": "GET",
+        "url": "={{ $json.HALT_URL }}/status",
+        "options": {}
+      },
+      "onError": "continueRegularOutput"
+    },
+    {
+      "id": "ff6796c5-e96c-5a0f-9c55-10bab566b4a2",
+      "name": "HALT gate",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        660,
+        0
+      ],
+      "parameters": {
+        "jsCode": "// Fails closed: unset, unreachable, unreadable or halted = stop the whole run.\nconst cfg = $('Config').first().json;\nconst r = $input.first().json;\nif (!cfg.HALT_URL || cfg.HALT_URL.includes('SET-ME')) throw new Error('HALT_URL not set in Config: stopping (fail closed).');\nif (r.error || r.halted !== false) throw new Error('HALT is set or unreachable: stopping.');\nreturn [{ json: cfg }];"
+      }
+    },
+    {
+      "id": "f99240c2-9c1b-5f10-81a1-b524120ffd64",
+      "name": "Embed question",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        880,
+        0
+      ],
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $json.OLLAMA }}/api/embed",
+        "options": {},
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify({ model: $('Config').first().json.MODEL, input: [String($('Ask').first().json.body.q || '').slice(0, 500)] }) }}"
+      }
+    },
+    {
+      "id": "fae786ba-f805-5e82-84f5-9e0f85c8dfbc",
+      "name": "Search Qdrant",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1100,
+        0
+      ],
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $('Config').first().json.QDRANT }}/collections/{{ $('Config').first().json.COLLECTION }}/points/search",
+        "options": {},
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify({ vector: $json.embeddings[0], limit: 10, with_payload: true }) }}"
+      }
+    },
+    {
+      "id": "74724f81-b46c-5085-8ad8-16d3014dc6c8",
+      "name": "Answer",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1320,
+        0
+      ],
+      "parameters": {
+        "jsCode": "// Retrieval only: lists where things are. No model writes an answer, so nothing is made up.\nconst hits = $input.first().json.result || [];\nreturn [{ json: {\n  query: $('Ask').first().json.body.q,\n  results: hits.map(h => ({ score: Math.round(h.score * 1000) / 1000, type: h.payload.type, name: h.payload.name,\n    kind: h.payload.kind, vendor: h.payload.vendor, project: h.payload.project, path: h.payload.path,\n    copies: h.payload.copies || [], redownload: h.payload.redownload || null })),\n} }];"
+      }
+    },
+    {
+      "id": "b04ed3d1-ae50-5cf9-bdef-a12d3fc045e2",
+      "name": "Reply",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [
+        1540,
+        0
+      ],
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ JSON.stringify($json) }}",
+        "options": {}
+      }
+    }
+  ],
+  "connections": {
+    "Ask": {
+      "main": [
+        [
+          {
+            "node": "Config",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Config": {
+      "main": [
+        [
+          {
+            "node": "HALT status",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HALT status": {
+      "main": [
+        [
+          {
+            "node": "HALT gate",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HALT gate": {
+      "main": [
+        [
+          {
+            "node": "Embed question",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Embed question": {
+      "main": [
+        [
+          {
+            "node": "Search Qdrant",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Search Qdrant": {
+      "main": [
+        [
+          {
+            "node": "Answer",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Answer": {
+      "main": [
+        [
+          {
+            "node": "Reply",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "saveDataSuccessExecution": "none"
+  },
+  "active": false,
+  "meta": {
+    "templateCredsSetupCompleted": false
+  },
+  "tags": []
+}

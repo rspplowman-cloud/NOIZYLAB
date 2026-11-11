@@ -1,0 +1,24 @@
+{
+  "name": "CATALOG",
+  "role": "NOIZY file catalog in n8n on M2Ultra. Reads the catalog from the private Forgejo repo NOIZY-CATALOG, embeds unsealed records with local Ollama, and answers 'where is this file?' from Qdrant. Read-only toward files: it never moves, writes or deletes anything, and sealed records (consent, kidz, family, vault, voice models) never reach a model.",
+  "doctrine": [
+    "SAFETY_CONTRACT.md",
+    "NEVER_CLAUSES_OPS.md",
+    "LIGHTNING_AND_RAIN.md"
+  ],
+  "forbidden_tools": [
+    "deploy",
+    "run_shell",
+    "run_job",
+    "d1_execute",
+    "write_file",
+    "send_message",
+    "consent_token_issue",
+    "consent_token_revoke",
+    "ledger_write",
+    "llt_redeem_cash",
+    "halt_resume",
+    "vault_read"
+  ],
+  "forbidden_reason": "CATALOG only reads and indexes file metadata; it never acts on files, consent, money or the vault"
+}

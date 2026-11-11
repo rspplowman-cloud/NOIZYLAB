@@ -254,6 +254,11 @@ test("knowledge: GABRIEL and LUCY search, read and map the same NOIZY documents;
       const map = (await call(`${p}_knowledge_map`)).json;
       assert.ok(map.some((d) => d.path === "CLAUDE.md"));
       assert.ok(!map.some((d) => d.path.includes("node_modules")));
+      assert.ok(!map.some((d) => d.path.startsWith("repos/noizylab-io/") && d.path !== "repos/noizylab-io/QUARANTINE.md"), "imported lineage stays out");
+      assert.ok(!map.some((d) => /LEGACY-/.test(d.path)), "legacy agent files stay out");
+      assert.ok(map.some((d) => d.path === "repos/noizylab-io/QUARANTINE.md"), "quarantine list is searchable");
+      assert.ok(map.some((d) => d.path.startsWith("repos/the-old-guard/")), "curated imports are in");
+      assert.equal((await call(`${p}_knowledge_read`, { path: "repos/noizylab-io/LEGACY-EKKOS-CLAUDE.md" })).error, true);
       const doc = (await call(`${p}_knowledge_read`, { path: "CLAUDE.md" })).json;
       assert.match(doc.text, /RSP_001/);
       assert.equal((await call(`${p}_knowledge_read`, { path: "../../../../../etc/passwd" })).error, true);
@@ -261,3 +266,49 @@ test("knowledge: GABRIEL and LUCY search, read and map the same NOIZY documents;
     } finally { await client.close(); }
   }
 });
+
+test("files: GABRIEL and LUCY ask the same file catalog; key from env, never echoed; clear errors", async () => {
+  const seen = [];
+  const srv = createServer((req, res) => {
+    let b = ""; req.on("data", (c) => (b += c)); req.on("end", () => {
+      seen.push({ key: req.headers["x-noizy-key"], body: JSON.parse(b) });
+      if (req.headers["x-noizy-key"] !== "ask-secret") { res.writeHead(403); return res.end("{}"); }
+      res.writeHead(200, { "content-type": "application/json" });
+      res.end(JSON.stringify({ results: [{ name: "line1.wav", path: "/Volumes/MAG 4TB/TaleSpin/VO/line1.wav", copies: [] }] }));
+    });
+  });
+  await new Promise((r) => srv.listen(0, "127.0.0.1", r));
+  const URL_ = `http://127.0.0.1:${srv.address().port}/webhook/noizy-files-ask`;
+  try {
+    for (const [server, p] of [["gabriel-mcp", "gabriel"], ["lucy-mcp", "lucy"]]) {
+      const entry = server;
+      const { client, call, names } = await openAt(entry, { NOIZY_ASK_KEY: "ask-secret", NOIZY_FILES_ASK_URL: URL_ });
+      try {
+        assert.ok(names.includes(`${p}_files_ask`));
+        const r = await call(`${p}_files_ask`, { q: "TaleSpin narration" });
+        assert.equal(r.error, false, r.text);
+        assert.equal(r.json.results[0].name, "line1.wav");
+        assert.ok(!r.text.includes("ask-secret"), "key never echoed");
+        assert.equal((await call(`${p}_files_ask`, { q: "" })).error, true);
+      } finally { await client.close(); }
+      const nokey = await openAt(entry, { NOIZY_FILES_ASK_URL: URL_ });
+      try { const r = await nokey.call(`${p}_files_ask`, { q: "x" }); assert.equal(r.error, true); assert.match(r.text, /NOIZY_ASK_KEY/); }
+      finally { await nokey.client.close(); }
+      const wrong = await openAt(entry, { NOIZY_ASK_KEY: "wrong", NOIZY_FILES_ASK_URL: URL_ });
+      try { assert.match((await wrong.call(`${p}_files_ask`, { q: "x" })).text, /403/); } finally { await wrong.client.close(); }
+    }
+    assert.deepEqual(seen.filter((s) => s.key === "ask-secret").map((s) => s.body.q), ["TaleSpin narration", "TaleSpin narration"]);
+  } finally { srv.close(); }
+});
+
+async function openAt(dir, env) {
+  const client = new Client({ name: "test", version: "1.0.0" });
+  await client.connect(new StdioClientTransport({ command: process.execPath, args: [join(MCP, dir, "index.js")],
+    env: { PATH: process.env.PATH, HOME: process.env.HOME, ...env }, stderr: "ignore" }));
+  const call = async (name, args = {}) => {
+    const r = await client.callTool({ name, arguments: args });
+    const text = r.content[0].text; let json; try { json = JSON.parse(text); } catch { json = text; }
+    return { error: !!r.isError, text, json };
+  };
+  return { client, call, names: (await client.listTools()).tools.map((t) => t.name) };
+}

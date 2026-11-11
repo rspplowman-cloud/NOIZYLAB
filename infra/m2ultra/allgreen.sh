@@ -25,7 +25,7 @@ LUCY|http://127.0.0.1:9778/health|local;\
 GABRIEL voice|http://127.0.0.1:9799/health|local;\
 NOIZYARMY|http://127.0.0.1:9333/healthz|local;\
 DreamChamber|http://127.0.0.1:9790/health|local;\
-HEAVEN|https://heaven.rsp-5f3.workers.dev/health|cloud"
+HEAVEN|https://heaven.rsp-5f3.workers.dev/api/health|cloud"
 TARGETS="${ALLGREEN_TARGETS:-$DEFAULT_TARGETS${TALK_URL:+;talk (iPhone)|$TALK_URL/health|cloud}}"
 
 echo "NOIZY ALL GREEN — $(date '+%Y-%m-%d %H:%M') — $(scutil --get LocalHostName 2>/dev/null || hostname -s)"

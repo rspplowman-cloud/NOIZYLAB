@@ -34,7 +34,7 @@ Two sources disagree about HEAVEN's current state, and they need to be reconcile
 On the Mac, run these two checks first. They don't need any keys:
 
 ```bash
-curl -i https://heaven.rsp-5f3.workers.dev/health   # 200 means alive; 522 means no Worker; 401 means auth applies even to /health
+curl -i https://heaven.rsp-5f3.workers.dev/api/health   # 200 means alive; 522 means no Worker. Since v18.1, /health returns 401 without the key: that is by design
 npx wrangler deployments list --name heaven         # what version is actually deployed, and from which account
 ```
 
