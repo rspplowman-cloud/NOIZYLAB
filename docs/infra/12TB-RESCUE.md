@@ -38,7 +38,8 @@ Get at least two quotes (Montréal or Ottawa, and Toronto).
 
 1. Give the lab a **new drive of at least 14 TB** for the image.
 2. Do **not** work on the returned image directly. Copy it first.
-3. **3 copies, 2 kinds of storage, 1 off-site:** the image, one copy on M2Ultra's storage, one in Proton Drive or another trusted off-site store.
+3. **3 copies, 2 kinds of storage, 1 off-site:** the image, one copy on M2Ultra's storage, and one **encrypted in the cloud** with
+   `bash scripts/archive/cloud_rescue.sh <copy> vault:12TB` (Backblaze B2; see `scripts/archive/README.md`, Cloud rescue).
 4. Fingerprint everything: `python3 scripts/archive/project_finder.py ... --hash` and the TaleSpin finder on the **copy**.
 5. Voice takes go through `scripts/archive/voice_session.py` and the consent ledger.
 6. Only then remove the drive from `skip-volumes.txt`, and only for the **image**, never the broken drive.

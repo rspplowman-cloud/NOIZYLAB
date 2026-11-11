@@ -71,3 +71,34 @@ Send each take:
 
 GABRIEL's voice service only uses a take that is in the ledger, is RSP_001's, has a consent reference,
 is unchanged, and has its transcript. A take with no `.txt` is simply not used.
+
+## Cloud rescue: every healthy drive to the cloud, encrypted
+
+`cloud_rescue.sh` copies a folder or drive to cloud storage with rclone (open source).
+Files are **encrypted on M2Ultra before they leave**. It only **adds** (never deletes or overwrites),
+**verifies every file** afterwards, and **refuses the clicking 12 TB drive** (that goes to a cleanroom lab first;
+see `docs/infra/12TB-RESCUE.md`).
+
+**Where to put it (2026 prices, check before buying):**
+
+| Store | Cost for 12 TB | Role |
+|---|---|---|
+| **Backblaze B2** | about $75–85 a month (about $6–7 per TB) | **Main rescue store.** Cheapest per TB; works well with rclone. |
+| **Cloudflare R2** | more per TB; free downloads | Second copy, inside the NOIZY Cloudflare hub. |
+| **Proton Drive** | largest plan about 3 TB | The **most private, smallest** files only, through Proton's own app. rclone's Proton link is unreliable in 2026. |
+
+**Set up once (M2Ultra, in Warp):**
+1. Install: `brew install rclone`
+2. Make a Backblaze account and a B2 bucket (private). Create an application key; save it in Proton Pass (VAULT-OPS).
+3. Run `rclone config`. Choose **n** (new remote), name it `b2`, type **b2**, and paste the key ID and key **at rclone's prompts** (never on a command line).
+4. Run `rclone config` again. New remote, name it `vault`, type **crypt**, remote `b2:<bucket>/noizy`.
+   Let it **generate** a password and a salt. **Save both in Proton Pass right away.** Without them nothing can ever be read back.
+5. Protect the config: in `rclone config`, choose **s** (set configuration password).
+
+**Each rescue:**
+1. Dry run: `bash cloud_rescue.sh /Volumes/<HealthyDrive> vault:<DriveName>`
+2. Check the list. Then: add `--apply` (HALT must be clear).
+3. It runs slowly by day (20 MB/s) and at full speed at night. If it stops, run the same command again: it resumes.
+4. Wait for **VERIFIED**. Then tick that drive off.
+
+**Do the most important first:** the Voice Vault and voice takes, TaleSpin, CLAC, then everything else.
