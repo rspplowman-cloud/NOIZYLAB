@@ -1,0 +1,22 @@
+{
+  "name": "talk",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Hands-free voice talk with GABRIEL and LUCY from the iPhone (Siri Shortcut + Kate). Read-only: no tools, HALT first.",
+  "license": "AGPL-3.0-or-later",
+  "type": "module",
+  "scripts": {
+    "typecheck": "tsc --noEmit -p tsconfig.json",
+    "test": "node --test test/*.test.mjs",
+    "dev": "wrangler dev",
+    "deploy": "wrangler deploy"
+  },
+  "dependencies": {
+    "@anthropic-ai/sdk": "^1.8.0"
+  },
+  "devDependencies": {
+    "@cloudflare/workers-types": "^5.20261110.1",
+    "typescript": "^5.9.3",
+    "wrangler": "^4.160.1"
+  }
+}
