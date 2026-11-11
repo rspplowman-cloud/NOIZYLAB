@@ -144,3 +144,23 @@ Steps for RSP_001 (Warp or Ghostty):
 5. `rclone config`: one `drive` remote per shared drive (answer yes to "Configure this as a Shared Drive?"),
    then a `crypt` remote on top, named as in the plan. The crypt password goes into Proton Pass.
 6. Dry run, then `--apply`: `bash scripts/archive/cloud_rescue.sh <library> <crypt remote>:`
+
+### Original or commercial? (`library_finder.py`)
+
+Run this **before** the Workspace plan. It looks inside every library and sorts it, with the evidence:
+
+| Kind | What it means | What happens |
+|---|---|---|
+| **Original** | RSP_001's own work: session files (.logicx, .ptx, .als, …) or NOIZY names | Rescue first. |
+| **Mixed** | Your own files next to a bought library (for example your Kontakt patches) | Check by hand. |
+| **Unknown** | No evidence either way | A person decides. |
+| **Commercial** | Bought: maker file types (.nicnt, .nkx, .ewi, .ewc, .ufs, .alp, STEAM) or a maker's folder name | Not uploaded. The report names the maker and where to download the original again. |
+
+Steps (Warp or Ghostty):
+
+1. `python3 scripts/archive/library_finder.py "/Volumes/EW" "/Volumes/MAG 4TB" "/Volumes/4TB Blue Fish" "/Volumes/RED DRAGON"`
+   (name every healthy drive; the clicking 12 TB drive is refused).
+2. Read `~/.noizy/library-finder/<date>.md`.
+3. Give the **Original** and **Mixed** folders to `workspace_plan.py`. It leaves commercial ones out by itself
+   (add `--include-commercial` only if a maker no longer offers the download).
+4. Save the maker account names in Proton Pass (VAULT-OPS), never in this repo.

@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Plan how NOIZY libraries spread over Google Workspace Shared Drives. READ ONLY: it measures and writes a plan.
 
-    python3 workspace_plan.py <library folder> [<library folder> ...] [--plan standard|plus] [--seats N]
+    python3 workspace_plan.py <library folder> [<library folder> ...] [--plan standard|plus] [--seats N] [--include-commercial]
 
 Each folder you name is one library (for example a sample library, a voice library, a music catalogue).
 For each one it counts files, folders, bytes and folder depth, then fits it to Google's Shared Drive limits:
@@ -11,6 +11,9 @@ For each one it counts files, folders, bytes and folder depth, then fits it to G
   - 20 levels of folders inside a shared drive. Deeper paths are listed so they can be fixed first.
   - 750 GB uploaded per person per day. The plan sets out the upload days (740 GB each, to stay under).
   - Storage is pooled: seats x 2 TB (Business Standard) or seats x 5 TB (Business Plus).
+
+Commercial libraries (bought from a maker, see library_finder.py) are left out and listed with where to download
+them again; add --include-commercial to upload them anyway.
 
 Consent material (names with consent, kidz, family, vault, voice-models) goes to its own "sealed" shared drive:
 only RSP_001 as a member. Every upload goes through cloud_rescue.sh, so it is encrypted (rclone crypt) before it
@@ -22,6 +25,7 @@ import json, math, os, re, sys
 from pathlib import Path
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from common import skip_volumes, be_rain, out_dir, stamp
+from library_finder import classify
 
 ITEM_LIMIT = 400_000
 ITEM_SAFE = int(ITEM_LIMIT * 0.8)        # Google warns at 80%; plan to that line, not the cliff
@@ -77,9 +81,9 @@ def split(root, whole):
             parts.append({"folders": [k["name"]], "items": k["items"], "bytes": k["bytes"]})
     return parts, too_big
 
-def plan(roots, tier="standard", seats=None):
+def plan(roots, tier="standard", seats=None, include_commercial=False):
     skip = skip_volumes()
-    libs, refused = [], []
+    libs, refused, redownload = [], [], []
     for r in roots:
         real = str(Path(r).expanduser().resolve())
         if any(real == s or real.startswith(s + os.sep) for s in skip):
@@ -87,6 +91,10 @@ def plan(roots, tier="standard", seats=None):
         if not os.path.isdir(real):
             refused.append({"path": r, "why": "not a folder"}); continue
         name = slug(os.path.basename(real))
+        kind = classify(real)
+        if kind["kind"] == "commercial" and not include_commercial:
+            redownload.append({"library": name, "path": real, "vendor": kind["vendor"], "from": kind["redownload"], "bytes": kind["bytes"]})
+            continue
         m = measure(real)
         sealed = bool(SEALED.search(os.path.basename(real)))
         if m["items"] <= ITEM_SAFE:
@@ -98,7 +106,7 @@ def plan(roots, tier="standard", seats=None):
         for d in drives:
             d["sealed"] = sealed
             d["remote"] = "gwc-" + d["drive"][len("NOIZY-"):].lower()
-        libs.append({"library": name, "path": real, **m, "sealed": sealed, "drives": drives, "split_by_hand": too_big})
+        libs.append({"library": name, "path": real, **m, "kind": kind["kind"], "vendor": kind["vendor"], "sealed": sealed, "drives": drives, "split_by_hand": too_big})
 
     total = sum(l["bytes"] for l in libs)
     per_seat = PER_SEAT[tier]
@@ -118,7 +126,7 @@ def plan(roots, tier="standard", seats=None):
         "made": stamp(), "tier": tier, "seats_given": seats, "seats_needed_for_storage": need,
         "pooled_storage_bytes": (seats or need) * per_seat, "total_bytes": total,
         "fits": total <= (seats or need) * per_seat,
-        "upload_days": len(days), "days": days, "libraries": libs, "refused": refused,
+        "upload_days": len(days), "days": days, "libraries": libs, "refused": refused, "redownload": redownload,
         "limits": {"items_per_drive": ITEM_LIMIT, "planned_items_per_drive": ITEM_SAFE, "folder_depth": DEPTH_LIMIT,
                    "upload_bytes_per_day": DAY_BYTES},
     }
@@ -131,6 +139,9 @@ def markdown(p):
          f"- **Storage:** Business {p['tier'].title()} needs **{p['seats_needed_for_storage']} seat(s)** for this much.",
          f"- **Fits:** {'yes' if p['fits'] else 'NO: add seats or move to Business Plus'}.",
          f"- **Upload time:** about **{p['upload_days']} day(s)** at 740 GB a day.", ""]
+    if p.get("redownload"):
+        L += ["## Not uploaded: commercial, download again from the maker", ""]
+        L += [f"- {r['library']} ({r['vendor']}, {gb(r['bytes'])}): {r['from'] or 'the maker'}" for r in p["redownload"]] + [""]
     if p["refused"]:
         L += ["## Not planned", ""] + [f"- `{r['path']}`: {r['why']}" for r in p["refused"]] + [""]
     L += ["## Shared drives to make", "", "| Shared drive | Library | Items | Size | Sealed | rclone crypt remote |", "|---|---|---|---|---|---|"]
@@ -157,16 +168,17 @@ def markdown(p):
     return "\n".join(L)
 
 def main(argv):
-    tier, seats, roots, i = "standard", None, [], 0
+    tier, seats, roots, i, inc = "standard", None, [], 0, False
     while i < len(argv):
         a = argv[i]
         if a == "--plan": tier = argv[i + 1].lower(); i += 2; continue
         if a == "--seats": seats = int(argv[i + 1]); i += 2; continue
+        if a == "--include-commercial": inc = True; i += 1; continue
         roots.append(a); i += 1
     if not roots or tier not in PER_SEAT:
         print(__doc__); return 2
     be_rain()
-    p = plan(roots, tier, seats)
+    p = plan(roots, tier, seats, inc)
     d = out_dir("workspace-plan")
     (d / f"{p['made']}.json").write_text(json.dumps(p, indent=2))
     (d / f"{p['made']}.md").write_text(markdown(p))
