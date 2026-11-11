@@ -21,6 +21,7 @@ Every doc in `docs/`, by area. Add a line here when you add a doc.
 | Infra | [REPAIR-PLAN.md](./infra/REPAIR-PLAN.md) | M2Ultra repair plan: gates, evidence, n8n guardrail, manifest |
 | Infra | [infra/m2ultra/README.md](../infra/m2ultra/README.md) | M2Ultra Docker stack: start-up steps |
 | Lumo | [LUMO-PROMPTS.md](./lumo/LUMO-PROMPTS.md) | Lumo role and prompts |
+| Infomaniak | [INFOMANIAK-AI.md](./infomaniak/INFOMANIAK-AI.md) | Swiss-hosted AI models (OpenAI-compatible API), Euria, kMeet; the infomaniak-mcp server |
 | Pipeline | [PIPELINE-V5.md](./pipeline/PIPELINE-V5.md) | Pipeline v5 |
 | Prune00 | [PRUNE00-LICENSE-STAGE.md](./prune00/PRUNE00-LICENSE-STAGE.md) | Prune00 licence stage |
 | Red team | [REDTEAM-GABRIEL-LUCY.md](./redteam/REDTEAM-GABRIEL-LUCY.md) | Red-teaming GABRIEL and LUCY |

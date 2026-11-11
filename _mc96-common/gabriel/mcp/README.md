@@ -12,6 +12,7 @@ One MCP server per agent, all in this folder. They share one core (`lib/noizy-mc
 | `shirley-mcp` | SHIRLEY | File inventory, dependency audit (incl. known-bad LiteLLM), code stats, TODOs, format check | No |
 | `family-mcp` | POPS + SHIRL | Grounding line, session check, wins log, wellbeing check, break reminder | Wins log (append) |
 | `heaven-mcp` | HEAVEN | Consent kernel, **GET only**: health, actors, never clauses, consent tokens, ledger, rate table, stats | **Never** |
+| `infomaniak-mcp` | (provider) | Swiss-hosted open models through Infomaniak AI Tools: status, model list, ask. HALT first; refuses consent, NOIZYKIDZ, family and vault material | **Never** |
 
 ## Used by GABRIEL's daemon
 
@@ -35,7 +36,7 @@ Each boss in `source/bosses/` talks to its server here:
 
 1. `cd _mc96-common/gabriel/mcp`
 2. `npm ci`
-3. `npm test` (8 tests start every server over MCP and check its tools and its safety rules)
+3. `npm test` (9 tests start every server over MCP and check its tools and its safety rules)
 
 ## Add to Claude Code
 
@@ -50,7 +51,8 @@ Each boss in `source/bosses/` talks to its server here:
     "shirley-mcp":    { "command": "node", "args": ["_mc96-common/gabriel/mcp/shirley-mcp/index.js"] },
     "family-mcp":     { "command": "node", "args": ["_mc96-common/gabriel/mcp/family-mcp/index.js"] },
     "heaven-mcp":     { "command": "node", "args": ["_mc96-common/gabriel/mcp/heaven-mcp/index.js"],
-                        "env": { "HEAVEN_URL": "https://heaven.rsp-5f3.workers.dev" } }
+                        "env": { "HEAVEN_URL": "https://heaven.rsp-5f3.workers.dev" } },
+    "infomaniak-mcp": { "command": "node", "args": ["_mc96-common/gabriel/mcp/infomaniak-mcp/index.js"] }
   }
 }
 ```
@@ -60,10 +62,12 @@ Settings, all optional, all read from the environment:
 | Variable | Used by | Purpose |
 |---|---|---|
 | `NOIZYLAB_ROOT` | all | Repo root (default: found automatically) |
-| `HALT_URL` | cb01 | HALT worker base URL |
+| `HALT_URL` | cb01, infomaniak | HALT worker base URL |
 | `HEAVEN_URL`, `HEAVEN_KEY` or `NOIZY_API_KEY` | heaven, cb01 | HEAVEN base URL and `X-NOIZY-Key` (from Proton Pass) |
 | `CB01_HEALTH_URLS` | cb01 | Comma-separated URLs to health-check |
 | `GABRIEL_STATE_DIR` | lucy | GABRIEL's state (default `~/NOIZYLAB/gabriel-state`) |
+| `INFOMANIAK_TOKEN`, `INFOMANIAK_AI_PRODUCT_ID` | infomaniak | Infomaniak API token and AI Tools product ID (Proton Pass, VAULT-OPS) |
+| `INFOMANIAK_AI_BASE_URL`, `INFOMANIAK_MODEL` | infomaniak | Optional: endpoint override and default model |
 | `FAMILY_DIR` | family | Wins log and recorded POPS lines (default `~/NOIZYBEAST/family`) |
 
 ## Not built yet
