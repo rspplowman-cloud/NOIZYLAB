@@ -13,6 +13,13 @@ One MCP server per agent, all in this folder. They share one core (`lib/noizy-mc
 | `family-mcp` | POPS + SHIRL | Grounding line, session check, wins log, wellbeing check, break reminder | Wins log (append) |
 | `heaven-mcp` | HEAVEN | Consent kernel, **GET only**: health, actors, never clauses, consent tokens, ledger, rate table, stats | **Never** |
 
+## Used by GABRIEL's daemon
+
+Each boss in `source/bosses/` talks to its server here:
+- `POST /intent {"boss":"lucy","verb":"queue","args":{"request":"..."}}`
+- `{"boss":"gabriel","verb":"delegate","args":{"boss":"dream","verb":"check","args":{"proposal":"..."}}}`
+- `{"boss":"gabriel","verb":"ask","args":{"prompt":"..."}}` (DreamChamber)
+
 ## Rules built in
 
 - **Every agent has a red-team profile** in `redteam/agents/`.
