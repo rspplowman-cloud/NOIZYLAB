@@ -13,6 +13,7 @@ Every doc in `docs/`, by area. Add a line here when you add a doc.
 | Identity | [CONTINUITY-PAGE.md](./identity/CONTINUITY-PAGE.md) | If Robert Stephen Plowman is unreachable |
 | Identity | [MAIL-HUB-SPEC.md](./identity/MAIL-HUB-SPEC.md) | NOIZY Mail Hub spec (v2) |
 | Identity | [NOIZY-MAIL-AND-IDENTITY.md](./identity/NOIZY-MAIL-AND-IDENTITY.md) | Mail and identity architecture |
+| Identity | [NOIZY-AI-SUPERADMIN-AND-COMMS-REBUILD.md](./identity/NOIZY-AI-SUPERADMIN-AND-COMMS-REBUILD.md) | Cloudflare super admin, domains, dead rsp@noizyfish.com, Slack and Discord rebuild for NOIZY.AI |
 | Identity | [NOIZY-VAULT-SPEC.md](./identity/NOIZY-VAULT-SPEC.md) | NOIZY VAULT spec |
 | Identity | [SPARK-MAIL-SETUP.md](./identity/SPARK-MAIL-SETUP.md) | Spark Mail AI setup |
 | Infra | [M2Ultra-CLOUD-NODE.md](./infra/M2Ultra-CLOUD-NODE.md) | M2Ultra (Mac Studio M2 Ultra) as a cloud node |

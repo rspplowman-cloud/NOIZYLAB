@@ -61,14 +61,14 @@ Routes: `noizy.ai/*` and `noizy.ai`
 5. **D1 database ID**: `a31d68e2-f2d4-4203-a803-8039fdff31cb` — verify in `wrangler.toml`
 6. **deploy.sh URL**: must point to `rsp-5f3.workers.dev` (not `rsplowman` or `noizylab`)
 7. **macOS BSD compatibility**: use `sed '$d'` not `head -n -1` in shell scripts
-8. **CLOUDFLARE LOGIN**: Currently `rsp@noizy.ai` (via GoDaddy M365) — MUST change to `rsplowman@icloud.com` BEFORE killing M365
+8. **CLOUDFLARE LOGIN**: Super Administrator `rsp@noizy.ai`, break-glass Super Administrator `noizyworld@proton.me` (RSP_001, 2026-11-11). See `docs/identity/NOIZY-AI-SUPERADMIN-AND-COMMS-REBUILD.md`
 9. **Agent dispatch**: For complex deploys, use `gabriel-ops` skill to dispatch parallel agents
 
 > **Skills**: `noizy-deploy`, `consent-audit`, `empire-status` — use before every deploy.
 
 ## GoDaddy Exit Dependencies
 
-The Cloudflare account login is `rsp@noizy.ai` (M365 via GoDaddy). This email dies when M365 is cancelled. **Step 0 of the GoDaddy exit**: change Cloudflare login to `rsplowman@icloud.com`. Everything else follows.
+Decided 2026-11-11: the Cloudflare Super Administrator is `rsp@noizy.ai`, with `noizyworld@proton.me` as the break-glass Super Administrator (outside Cloudflare, so it survives a noizy.ai DNS or mail failure). **Step 0 of the GoDaddy exit:** change the GoDaddy account contact from the dead `rsp@noizyfish.com` to `rsp@noizy.ai`, then ask for the transfer codes again. Full steps: `docs/identity/NOIZY-AI-SUPERADMIN-AND-COMMS-REBUILD.md`.
 
 ## Environment Variables (Required)
 

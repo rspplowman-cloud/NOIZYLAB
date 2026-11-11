@@ -79,7 +79,7 @@ The working rule is that a person reads two inboxes, and everything else is an a
 
 ## Ring 3: Brand aliases
 
-> **Replaced by `MAIL-HUB-SPEC.md`:** every domain, **including noizy.ai (D7, 2026-10-15)**, goes through the Cloudflare hub, and the alias map lives in git. Proton holds the encrypted copy only. `rsp@noizy.ai` is read in Spark through the brand Gmail; `ops@noizy.ai` still goes to Proton only. The Cloudflare and registrar logins move to `noizyworld@proton.me` first.
+> **Replaced by `MAIL-HUB-SPEC.md`:** every domain, **including noizy.ai (D7, 2026-10-15)**, goes through the Cloudflare hub, and the alias map lives in git. Proton holds the encrypted copy only. `rsp@noizy.ai` is read in Spark through the brand Gmail; `ops@noizy.ai` still goes to Proton only. The Cloudflare and registrar logins move to `noizyworld@proton.me` first. **Updated 2026-11-11:** `rsp@noizy.ai` is the Cloudflare Super Administrator and `noizyworld@proton.me` the break-glass Super Administrator; see `NOIZY-AI-SUPERADMIN-AND-COMMS-REBUILD.md`.
 
 Each of these is an extra address on the `rsp@` user in Proton. It needs no inbox of its own, and you can reply from it.
 
