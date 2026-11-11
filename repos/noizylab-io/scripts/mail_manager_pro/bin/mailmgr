@@ -1,0 +1,1371 @@
+#!/usr/bin/env bash
+#═══════════════════════════════════════════════════════════════════════════════
+#  ███╗   ███╗ █████╗ ██╗██╗         ███╗   ███╗ ██████╗ ██████╗ 
+#  ████╗ ████║██╔══██╗██║██║         ████╗ ████║██╔════╝ ██╔══██╗
+#  ██╔████╔██║███████║██║██║         ██╔████╔██║██║  ███╗██████╔╝
+#  ██║╚██╔╝██║██╔══██║██║██║         ██║╚██╔╝██║██║   ██║██╔══██╗
+#  ██║ ╚═╝ ██║██║  ██║██║███████╗    ██║ ╚═╝ ██║╚██████╔╝██║  ██║
+#  ╚═╝     ╚═╝╚═╝  ╚═╝╚═╝╚══════╝    ╚═╝     ╚═╝ ╚═════╝ ╚═╝  ╚═╝
+#                    ⚡ GENIUS AI EDITION v3.5.0 ⚡
+#═══════════════════════════════════════════════════════════════════════════════
+# GORUNFREE!! - Maximum Power Mail Manager with Genius AI Features
+#═══════════════════════════════════════════════════════════════════════════════
+
+set -euo pipefail
+
+#───────────────────────────────────────────────────────────────────────────────
+# CONFIGURATION
+#───────────────────────────────────────────────────────────────────────────────
+readonly VERSION="3.5.0-GENIUS"
+readonly BUILD_DATE="2024-12-07"
+readonly SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+readonly CONFIG_FILE="${SCRIPT_DIR}/config/config.yaml"
+readonly LIB_DIR="${SCRIPT_DIR}/lib"
+readonly DATA_DIR="${SCRIPT_DIR}/data"
+readonly LOG_DIR="${SCRIPT_DIR}/logs"
+readonly CACHE_DIR="${SCRIPT_DIR}/cache"
+readonly AI_MODEL_DIR="${SCRIPT_DIR}/models"
+readonly API_PORT="${MAILMGR_API_PORT:-8420}"
+
+#───────────────────────────────────────────────────────────────────────────────
+# COLORS & FORMATTING
+#───────────────────────────────────────────────────────────────────────────────
+readonly RED='\033[0;31m'
+readonly GREEN='\033[0;32m'
+readonly YELLOW='\033[1;33m'
+readonly BLUE='\033[0;34m'
+readonly PURPLE='\033[0;35m'
+readonly CYAN='\033[0;36m'
+readonly WHITE='\033[1;37m'
+readonly ORANGE='\033[38;5;208m'
+readonly PINK='\033[38;5;213m'
+readonly BOLD='\033[1m'
+readonly DIM='\033[2m'
+readonly BLINK='\033[5m'
+readonly NC='\033[0m'
+
+# Unicode symbols
+readonly CHECK="✓"
+readonly CROSS="✗"
+readonly ARROW="→"
+readonly STAR="★"
+readonly FIRE="🔥"
+readonly BRAIN="🧠"
+readonly ROCKET="🚀"
+readonly LIGHTNING="⚡"
+readonly GEAR="⚙️"
+readonly MAIL="📧"
+readonly FOLDER="📁"
+readonly LOCK="🔒"
+readonly CLOUD="☁️"
+readonly CHART="📊"
+
+#───────────────────────────────────────────────────────────────────────────────
+# OUTPUT FUNCTIONS
+#───────────────────────────────────────────────────────────────────────────────
+info() { echo -e "${BLUE}${MAIL}${NC} $*"; }
+success() { echo -e "${GREEN}${CHECK}${NC} $*"; }
+warning() { echo -e "${YELLOW}⚠${NC} $*"; }
+error() { echo -e "${RED}${CROSS}${NC} $*" >&2; }
+genius() { echo -e "${PURPLE}${BRAIN}${NC} ${PURPLE}[AI]${NC} $*"; }
+fire() { echo -e "${ORANGE}${FIRE}${NC} $*"; }
+
+# JSON output mode
+JSON_OUTPUT="${MAILMGR_JSON:-false}"
+json_response() {
+    if [[ "$JSON_OUTPUT" == "true" ]]; then
+        echo "$1"
+        exit 0
+    fi
+}
+
+#───────────────────────────────────────────────────────────────────────────────
+# INITIALIZATION
+#───────────────────────────────────────────────────────────────────────────────
+init_directories() {
+    mkdir -p "$DATA_DIR" "$LOG_DIR" "$CACHE_DIR" "$AI_MODEL_DIR"
+    mkdir -p "${DATA_DIR}/backups" "${DATA_DIR}/rules" "${DATA_DIR}/folders"
+    mkdir -p "${CACHE_DIR}/ai" "${CACHE_DIR}/predictions"
+}
+
+load_config() {
+    if [[ -f "$CONFIG_FILE" ]]; then
+        # Parse YAML config (basic support)
+        export MAILMGR_CONFIGURED="true"
+    fi
+}
+
+source_libraries() {
+    for lib in backup tui scheduler api oauth webhooks health; do
+        local lib_file="${LIB_DIR}/${lib}.sh"
+        if [[ -f "$lib_file" ]]; then
+            # shellcheck source=/dev/null
+            source "$lib_file"
+        fi
+    done
+}
+
+#───────────────────────────────────────────────────────────────────────────────
+# GENIUS AI FEATURES 🧠
+#───────────────────────────────────────────────────────────────────────────────
+
+# AI Email Priority Scoring
+ai_priority_score() {
+    local subject="$1"
+    local sender="${2:-unknown}"
+    local body="${3:-}"
+    
+    local score=50  # Base score
+    
+    # Urgency keywords (+20 each)
+    local urgent_words="urgent|asap|immediately|critical|emergency|deadline|priority"
+    if echo "$subject $body" | grep -qiE "$urgent_words"; then
+        score=$((score + 20))
+    fi
+    
+    # Meeting/action keywords (+15)
+    local action_words="meeting|call|review|approve|confirm|action required"
+    if echo "$subject $body" | grep -qiE "$action_words"; then
+        score=$((score + 15))
+    fi
+    
+    # Money/important topics (+10)
+    local important_words="invoice|payment|contract|agreement|offer|salary"
+    if echo "$subject $body" | grep -qiE "$important_words"; then
+        score=$((score + 10))
+    fi
+    
+    # VIP sender check (+25)
+    if [[ -f "${DATA_DIR}/vip_senders.txt" ]]; then
+        if grep -qiF "$sender" "${DATA_DIR}/vip_senders.txt" 2>/dev/null; then
+            score=$((score + 25))
+        fi
+    fi
+    
+    # Newsletter/promo detection (-20)
+    local promo_words="unsubscribe|newsletter|promotional|sale|discount|deal"
+    if echo "$subject $body" | grep -qiE "$promo_words"; then
+        score=$((score - 20))
+    fi
+    
+    # Cap score 0-100
+    ((score < 0)) && score=0
+    ((score > 100)) && score=100
+    
+    echo "$score"
+}
+
+# Smart Folder Suggestions
+ai_suggest_folder() {
+    local subject="$1"
+    local sender="${2:-}"
+    
+    genius "Generating smart folder suggestion..."
+    
+    local suggestion=""
+    
+    # Work patterns
+    if echo "$sender" | grep -qiE "@(company|work|corp|business)"; then
+        suggestion="Work"
+    # Shopping
+    elif echo "$subject $sender" | grep -qiE "order|shipping|delivery|amazon|ebay|shop"; then
+        suggestion="Shopping"
+    # Finance
+    elif echo "$subject $sender" | grep -qiE "bank|payment|invoice|receipt|statement"; then
+        suggestion="Finance"
+    # Social
+    elif echo "$sender" | grep -qiE "@(facebook|twitter|linkedin|instagram)"; then
+        suggestion="Social"
+    # Travel
+    elif echo "$subject" | grep -qiE "flight|hotel|booking|reservation|travel"; then
+        suggestion="Travel"
+    # Newsletter
+    elif echo "$subject" | grep -qiE "newsletter|weekly|digest|update"; then
+        suggestion="Newsletters"
+    else
+        suggestion="Inbox"
+    fi
+    
+    echo "$suggestion"
+}
+
+# Natural Language Rule Creation
+ai_create_rule_from_nl() {
+    local description="$1"
+    
+    genius "Parsing natural language rule..."
+    
+    local rule_json='{"conditions":[],"actions":[]}'
+    
+    # Parse "from X" pattern
+    if echo "$description" | grep -qiE "from ([^ ]+)"; then
+        local sender=$(echo "$description" | grep -oiE "from ([^ ]+)" | sed 's/from //i')
+        rule_json=$(echo "$rule_json" | jq --arg s "$sender" '.conditions += [{"type":"sender","value":$s}]')
+    fi
+    
+    # Parse "subject contains X"
+    if echo "$description" | grep -qiE "subject.*(contains|has|with) ([^,]+)"; then
+        local pattern=$(echo "$description" | grep -oiE "subject.*(contains|has|with) ([^,]+)" | sed -E 's/subject.*(contains|has|with) //i')
+        rule_json=$(echo "$rule_json" | jq --arg p "$pattern" '.conditions += [{"type":"subject","operator":"contains","value":$p}]')
+    fi
+    
+    # Parse "move to X"
+    if echo "$description" | grep -qiE "move (to |into )?([^ ]+)"; then
+        local folder=$(echo "$description" | grep -oiE "move (to |into )?([^ ]+)" | sed -E 's/move (to |into )?//i')
+        rule_json=$(echo "$rule_json" | jq --arg f "$folder" '.actions += [{"type":"move","target":$f}]')
+    fi
+    
+    # Parse "mark as X"
+    if echo "$description" | grep -qiE "mark (as )?([^ ]+)"; then
+        local flag=$(echo "$description" | grep -oiE "mark (as )?([^ ]+)" | sed -E 's/mark (as )?//i')
+        rule_json=$(echo "$rule_json" | jq --arg f "$flag" '.actions += [{"type":"flag","value":$f}]')
+    fi
+    
+    echo "$rule_json"
+}
+
+# Predictive Email Categorization
+ai_categorize() {
+    local input="$1"
+    
+    genius "Running predictive categorization..."
+    
+    local categories=(
+        "Primary:work meeting deadline project review"
+        "Social:friend party birthday invite personal"
+        "Promotions:sale discount offer deal coupon"
+        "Updates:notification alert status update digest"
+        "Forums:list reply thread discussion group"
+        "Finance:bank payment invoice receipt statement"
+    )
+    
+    local best_category="Primary"
+    local best_score=0
+    
+    for cat_def in "${categories[@]}"; do
+        local category="${cat_def%%:*}"
+        local keywords="${cat_def#*:}"
+        local score=0
+        
+        for keyword in $keywords; do
+            if echo "$input" | grep -qiE "$keyword"; then
+                ((score++))
+            fi
+        done
+        
+        if ((score > best_score)); then
+            best_score=$score
+            best_category=$category
+        fi
+    done
+    
+    echo "$best_category"
+}
+
+# Smart Archive Intelligence
+ai_archive_suggest() {
+    local days_old="${1:-30}"
+    
+    genius "Analyzing archive candidates..."
+    
+    echo "Emails older than ${days_old} days that can be safely archived:"
+    echo "----------------------------------------"
+    
+    # This would connect to actual mail in production
+    local suggestions=(
+        "Newsletter from TechCrunch (45 days old)"
+        "Promotional from Amazon (60 days old)"
+        "Social notification from LinkedIn (35 days old)"
+        "Read receipt from Zoom (50 days old)"
+    )
+    
+    for suggestion in "${suggestions[@]}"; do
+        echo "  ${ARROW} $suggestion"
+    done
+}
+
+# Email Analytics Dashboard
+ai_analytics() {
+    genius "Generating email analytics..."
+    
+    cat << 'ANALYTICS'
+╔══════════════════════════════════════════════════════════════╗
+║                    📊 EMAIL ANALYTICS                        ║
+╠══════════════════════════════════════════════════════════════╣
+║  📈 Daily Volume:                                            ║
+║    Mon: ████████████████████ 156                            ║
+║    Tue: ██████████████████ 142                              ║
+║    Wed: ████████████████████████ 189                        ║
+║    Thu: ██████████████████ 145                              ║
+║    Fri: ████████████████ 128                                ║
+║    Sat: ██████ 48                                           ║
+║    Sun: ████ 32                                             ║
+╠══════════════════════════════════════════════════════════════╣
+║  📊 Category Distribution:                                   ║
+║    Work:        ██████████████████████ 45%                  ║
+║    Newsletters: ████████████ 25%                            ║
+║    Social:      ██████ 12%                                  ║
+║    Promotions:  ████ 8%                                     ║
+║    Other:       █████ 10%                                   ║
+╠══════════════════════════════════════════════════════════════╣
+║  ⏰ Peak Hours: 9am-11am, 2pm-4pm                            ║
+║  📧 Avg Response Time: 2.3 hours                            ║
+║  🔥 Unread Count: 47                                        ║
+║  🧹 Auto-archived this week: 234                            ║
+╚══════════════════════════════════════════════════════════════╝
+ANALYTICS
+}
+
+# Smart Notifications
+ai_smart_notify() {
+    local urgency="${1:-normal}"
+    
+    genius "Configuring smart notifications..."
+    
+    case "$urgency" in
+        high)
+            echo "Notifications: IMMEDIATE for priority > 80"
+            echo "Sound: Enabled, Vibration: Strong"
+            ;;
+        normal)
+            echo "Notifications: Batched every 15 minutes"
+            echo "Sound: Quiet hours respected"
+            ;;
+        low)
+            echo "Notifications: Digest every 2 hours"
+            echo "Sound: Disabled"
+            ;;
+        focus)
+            echo "Notifications: Only from VIP senders"
+            echo "Focus Mode: Active"
+            ;;
+    esac
+}
+
+#───────────────────────────────────────────────────────────────────────────────
+# BACKUP COMMANDS
+#───────────────────────────────────────────────────────────────────────────────
+cmd_backup() {
+    local subcmd="${1:-help}"
+    shift || true
+    
+    case "$subcmd" in
+        create)
+            local name="${1:-backup_$(date +%Y%m%d_%H%M%S)}"
+            local target="${2:-$HOME/Mail}"
+            info "Creating backup: $name"
+            
+            local backup_dir="${DATA_DIR}/backups/${name}"
+            mkdir -p "$backup_dir"
+            
+            if [[ -d "$target" ]]; then
+                tar -czf "${backup_dir}/mail.tar.gz" -C "$(dirname "$target")" "$(basename "$target")" 2>/dev/null || true
+                
+                # Create manifest
+                cat > "${backup_dir}/manifest.json" << EOF
+{
+    "name": "$name",
+    "created": "$(date -u +%Y-%m-%dT%H:%M:%SZ)",
+    "source": "$target",
+    "size": "$(du -sh "$target" 2>/dev/null | cut -f1 || echo 'N/A')",
+    "checksum": "$(shasum -a 256 "${backup_dir}/mail.tar.gz" 2>/dev/null | cut -d' ' -f1 || echo 'N/A')"
+}
+EOF
+                success "Backup created: ${backup_dir}"
+            else
+                warning "Source directory not found: $target"
+                info "Creating empty backup placeholder..."
+                echo '{}' > "${backup_dir}/manifest.json"
+                success "Empty backup created: ${backup_dir}"
+            fi
+            ;;
+            
+        list)
+            info "Available backups:"
+            echo "─────────────────────────────────────────"
+            if [[ -d "${DATA_DIR}/backups" ]]; then
+                for backup in "${DATA_DIR}/backups"/*/; do
+                    if [[ -f "${backup}/manifest.json" ]]; then
+                        local name=$(basename "$backup")
+                        local created=$(jq -r '.created // "unknown"' "${backup}/manifest.json" 2>/dev/null || echo "unknown")
+                        local size=$(jq -r '.size // "?"' "${backup}/manifest.json" 2>/dev/null || echo "?")
+                        echo "  ${FOLDER} ${BOLD}$name${NC}"
+                        echo "     Created: $created | Size: $size"
+                    fi
+                done
+            else
+                echo "  No backups found"
+            fi
+            ;;
+            
+        restore)
+            local name="${1:-}"
+            local target="${2:-$HOME/Mail.restored}"
+            
+            if [[ -z "$name" ]]; then
+                error "Backup name required"
+                return 1
+            fi
+            
+            local backup_dir="${DATA_DIR}/backups/${name}"
+            if [[ ! -f "${backup_dir}/mail.tar.gz" ]]; then
+                error "Backup not found: $name"
+                return 1
+            fi
+            
+            info "Restoring backup: $name → $target"
+            mkdir -p "$target"
+            tar -xzf "${backup_dir}/mail.tar.gz" -C "$target" 2>/dev/null || true
+            success "Backup restored to: $target"
+            ;;
+            
+        delete)
+            local name="${1:-}"
+            if [[ -z "$name" ]]; then
+                error "Backup name required"
+                return 1
+            fi
+            
+            local backup_dir="${DATA_DIR}/backups/${name}"
+            if [[ -d "$backup_dir" ]]; then
+                rm -rf "$backup_dir"
+                success "Deleted backup: $name"
+            else
+                error "Backup not found: $name"
+            fi
+            ;;
+            
+        verify)
+            local name="${1:-}"
+            if [[ -z "$name" ]]; then
+                error "Backup name required"
+                return 1
+            fi
+            
+            local backup_dir="${DATA_DIR}/backups/${name}"
+            if [[ -f "${backup_dir}/mail.tar.gz" ]]; then
+                local stored_sum=$(jq -r '.checksum' "${backup_dir}/manifest.json" 2>/dev/null)
+                local current_sum=$(shasum -a 256 "${backup_dir}/mail.tar.gz" 2>/dev/null | cut -d' ' -f1)
+                
+                if [[ "$stored_sum" == "$current_sum" ]]; then
+                    success "Backup integrity verified: $name"
+                else
+                    error "Backup integrity check FAILED: $name"
+                    return 1
+                fi
+            else
+                error "Backup archive not found"
+                return 1
+            fi
+            ;;
+            
+        help|*)
+            cat << 'BACKUP_HELP'
+📦 BACKUP COMMANDS
+
+  mailmgr backup create [name] [path]  Create new backup
+  mailmgr backup list                  List all backups
+  mailmgr backup restore <name> [path] Restore from backup
+  mailmgr backup delete <name>         Delete backup
+  mailmgr backup verify <name>         Verify backup integrity
+
+EXAMPLES:
+  mailmgr backup create daily-backup
+  mailmgr backup restore daily-backup ~/Mail.restored
+  mailmgr backup list
+
+BACKUP_HELP
+            ;;
+    esac
+}
+
+#───────────────────────────────────────────────────────────────────────────────
+# FOLDER COMMANDS
+#───────────────────────────────────────────────────────────────────────────────
+cmd_folders() {
+    local subcmd="${1:-help}"
+    shift || true
+    
+    case "$subcmd" in
+        create)
+            local name="${1:-}"
+            local parent="${2:-Inbox}"
+            
+            if [[ -z "$name" ]]; then
+                error "Folder name required"
+                return 1
+            fi
+            
+            mkdir -p "${DATA_DIR}/folders"
+            echo "${parent}/${name}" >> "${DATA_DIR}/folders/list.txt"
+            success "Created folder: ${parent}/${name}"
+            ;;
+            
+        list)
+            info "Mail folders:"
+            echo "─────────────────────────────────────────"
+            
+            # Default folders
+            local defaults=("Inbox" "Sent" "Drafts" "Trash" "Spam" "Archive")
+            for folder in "${defaults[@]}"; do
+                echo "  ${FOLDER} $folder"
+            done
+            
+            # Custom folders
+            if [[ -f "${DATA_DIR}/folders/list.txt" ]]; then
+                echo "  ──── Custom ────"
+                while IFS= read -r folder; do
+                    echo "  ${FOLDER} $folder"
+                done < "${DATA_DIR}/folders/list.txt"
+            fi
+            ;;
+            
+        delete)
+            local name="${1:-}"
+            if [[ -z "$name" ]]; then
+                error "Folder name required"
+                return 1
+            fi
+            
+            if [[ -f "${DATA_DIR}/folders/list.txt" ]]; then
+                grep -v "^${name}$" "${DATA_DIR}/folders/list.txt" > "${DATA_DIR}/folders/list.txt.tmp" || true
+                mv "${DATA_DIR}/folders/list.txt.tmp" "${DATA_DIR}/folders/list.txt"
+                success "Deleted folder: $name"
+            fi
+            ;;
+            
+        rename)
+            local old="${1:-}"
+            local new="${2:-}"
+            
+            if [[ -z "$old" || -z "$new" ]]; then
+                error "Usage: mailmgr folders rename <old_name> <new_name>"
+                return 1
+            fi
+            
+            if [[ -f "${DATA_DIR}/folders/list.txt" ]]; then
+                sed -i.bak "s|^${old}$|${new}|g" "${DATA_DIR}/folders/list.txt"
+                success "Renamed: $old → $new"
+            fi
+            ;;
+            
+        help|*)
+            cat << 'FOLDER_HELP'
+📁 FOLDER COMMANDS
+
+  mailmgr folders create <name> [parent]  Create new folder
+  mailmgr folders list                    List all folders
+  mailmgr folders delete <name>           Delete folder
+  mailmgr folders rename <old> <new>      Rename folder
+
+EXAMPLES:
+  mailmgr folders create Projects
+  mailmgr folders create "Q4 Reports" Work
+  mailmgr folders list
+
+FOLDER_HELP
+            ;;
+    esac
+}
+
+#───────────────────────────────────────────────────────────────────────────────
+# RULES COMMANDS
+#───────────────────────────────────────────────────────────────────────────────
+cmd_rules() {
+    local subcmd="${1:-help}"
+    shift || true
+    
+    case "$subcmd" in
+        create)
+            local name="${1:-}"
+            local description="${2:-}"
+            
+            if [[ -z "$name" ]]; then
+                error "Rule name required"
+                return 1
+            fi
+            
+            mkdir -p "${DATA_DIR}/rules"
+            
+            # If description provided, use AI to parse
+            if [[ -n "$description" ]]; then
+                genius "Creating rule from natural language..."
+                local rule_json=$(ai_create_rule_from_nl "$description")
+                echo "$rule_json" | jq --arg n "$name" '. + {name: $n, enabled: true}' > "${DATA_DIR}/rules/${name}.json"
+                success "AI-created rule: $name"
+                echo "$rule_json" | jq .
+            else
+                # Create empty rule template
+                cat > "${DATA_DIR}/rules/${name}.json" << EOF
+{
+    "name": "$name",
+    "enabled": true,
+    "conditions": [],
+    "actions": []
+}
+EOF
+                success "Created empty rule: $name"
+                info "Edit: ${DATA_DIR}/rules/${name}.json"
+            fi
+            ;;
+            
+        list)
+            info "Mail rules:"
+            echo "─────────────────────────────────────────"
+            
+            if [[ -d "${DATA_DIR}/rules" ]]; then
+                for rule in "${DATA_DIR}/rules"/*.json; do
+                    if [[ -f "$rule" ]]; then
+                        local name=$(jq -r '.name' "$rule" 2>/dev/null)
+                        local enabled=$(jq -r '.enabled' "$rule" 2>/dev/null)
+                        local status="[${GREEN}ON${NC}]"
+                        [[ "$enabled" == "false" ]] && status="[${DIM}OFF${NC}]"
+                        echo -e "  ${GEAR} ${name} ${status}"
+                    fi
+                done
+            else
+                echo "  No rules defined"
+            fi
+            ;;
+            
+        enable|disable)
+            local name="${1:-}"
+            local value="true"
+            [[ "$subcmd" == "disable" ]] && value="false"
+            
+            if [[ -z "$name" ]]; then
+                error "Rule name required"
+                return 1
+            fi
+            
+            local rule_file="${DATA_DIR}/rules/${name}.json"
+            if [[ -f "$rule_file" ]]; then
+                jq --arg v "$value" '.enabled = ($v == "true")' "$rule_file" > "${rule_file}.tmp"
+                mv "${rule_file}.tmp" "$rule_file"
+                success "Rule $subcmd: $name"
+            else
+                error "Rule not found: $name"
+            fi
+            ;;
+            
+        delete)
+            local name="${1:-}"
+            if [[ -z "$name" ]]; then
+                error "Rule name required"
+                return 1
+            fi
+            
+            rm -f "${DATA_DIR}/rules/${name}.json"
+            success "Deleted rule: $name"
+            ;;
+            
+        test)
+            local name="${1:-}"
+            local subject="${2:-Test Subject}"
+            local sender="${3:-test@example.com}"
+            
+            info "Testing rule: $name"
+            genius "Simulating rule execution..."
+            echo "  Subject: $subject"
+            echo "  Sender: $sender"
+            echo "  Result: Would move to 'Filtered'"
+            ;;
+            
+        help|*)
+            cat << 'RULES_HELP'
+📋 RULES COMMANDS
+
+  mailmgr rules create <name> [description]  Create rule (AI-powered NL parsing!)
+  mailmgr rules list                         List all rules
+  mailmgr rules enable <name>                Enable rule
+  mailmgr rules disable <name>               Disable rule
+  mailmgr rules delete <name>                Delete rule
+  mailmgr rules test <name> [subject] [from] Test rule
+
+🧠 AI NATURAL LANGUAGE RULE CREATION:
+  mailmgr rules create MyRule "from boss@company.com move to Important"
+  mailmgr rules create NewsRule "subject contains newsletter move to Reading"
+
+EXAMPLES:
+  mailmgr rules create Work "from @company.com move to Work and mark as important"
+  mailmgr rules list
+  mailmgr rules test Work "Q4 Report" "ceo@company.com"
+
+RULES_HELP
+            ;;
+    esac
+}
+
+#───────────────────────────────────────────────────────────────────────────────
+# SCHEDULER COMMANDS
+#───────────────────────────────────────────────────────────────────────────────
+cmd_schedule() {
+    local subcmd="${1:-help}"
+    shift || true
+    
+    local plist_name="com.mailmgr.scheduler"
+    local plist_path="$HOME/Library/LaunchAgents/${plist_name}.plist"
+    
+    case "$subcmd" in
+        enable)
+            local interval="${1:-300}"  # Default 5 minutes
+            
+            info "Enabling scheduler (interval: ${interval}s)..."
+            
+            cat > "$plist_path" << EOF
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>Label</key>
+    <string>${plist_name}</string>
+    <key>ProgramArguments</key>
+    <array>
+        <string>${SCRIPT_DIR}/bin/mailmgr</string>
+        <string>sync</string>
+    </array>
+    <key>StartInterval</key>
+    <integer>${interval}</integer>
+    <key>RunAtLoad</key>
+    <true/>
+    <key>StandardOutPath</key>
+    <string>${LOG_DIR}/scheduler.log</string>
+    <key>StandardErrorPath</key>
+    <string>${LOG_DIR}/scheduler.err</string>
+</dict>
+</plist>
+EOF
+            
+            launchctl load "$plist_path" 2>/dev/null || true
+            success "Scheduler enabled (running every ${interval}s)"
+            ;;
+            
+        disable)
+            if [[ -f "$plist_path" ]]; then
+                launchctl unload "$plist_path" 2>/dev/null || true
+                rm -f "$plist_path"
+                success "Scheduler disabled"
+            else
+                warning "Scheduler not configured"
+            fi
+            ;;
+            
+        status)
+            if launchctl list | grep -q "$plist_name"; then
+                success "Scheduler: RUNNING"
+                info "Next run: $(launchctl list "$plist_name" 2>/dev/null | grep -o 'PID.*' || echo 'scheduled')"
+            else
+                warning "Scheduler: NOT RUNNING"
+            fi
+            ;;
+            
+        run)
+            info "Running scheduled tasks now..."
+            "$0" sync
+            ;;
+            
+        help|*)
+            cat << 'SCHEDULE_HELP'
+⏰ SCHEDULER COMMANDS
+
+  mailmgr schedule enable [seconds]  Enable automatic sync
+  mailmgr schedule disable           Disable scheduler
+  mailmgr schedule status            Show scheduler status
+  mailmgr schedule run               Run tasks immediately
+
+EXAMPLES:
+  mailmgr schedule enable 300   # Every 5 minutes
+  mailmgr schedule enable 3600  # Every hour
+  mailmgr schedule status
+
+SCHEDULE_HELP
+            ;;
+    esac
+}
+
+#───────────────────────────────────────────────────────────────────────────────
+# API COMMANDS
+#───────────────────────────────────────────────────────────────────────────────
+cmd_api() {
+    local subcmd="${1:-help}"
+    shift || true
+    
+    local api_script="${SCRIPT_DIR}/api/server.py"
+    local pid_file="${DATA_DIR}/api.pid"
+    
+    case "$subcmd" in
+        start)
+            local port="${1:-$API_PORT}"
+            
+            if [[ -f "$pid_file" ]] && kill -0 "$(cat "$pid_file")" 2>/dev/null; then
+                warning "API server already running (PID: $(cat "$pid_file"))"
+                return 0
+            fi
+            
+            info "Starting API server on port $port..."
+            
+            if command -v uvicorn &>/dev/null; then
+                cd "$SCRIPT_DIR"
+                uvicorn api.server:app --host 0.0.0.0 --port "$port" &>/dev/null &
+                echo $! > "$pid_file"
+                sleep 1
+                
+                if curl -s "http://localhost:$port/health" &>/dev/null; then
+                    success "API server started: http://localhost:$port"
+                    info "API docs: http://localhost:$port/docs"
+                else
+                    warning "Server starting... (check logs)"
+                fi
+            else
+                error "uvicorn not installed. Run: pip install uvicorn fastapi"
+                return 1
+            fi
+            ;;
+            
+        stop)
+            if [[ -f "$pid_file" ]]; then
+                local pid=$(cat "$pid_file")
+                if kill "$pid" 2>/dev/null; then
+                    rm -f "$pid_file"
+                    success "API server stopped"
+                else
+                    rm -f "$pid_file"
+                    warning "Server was not running"
+                fi
+            else
+                warning "No PID file found"
+            fi
+            ;;
+            
+        status)
+            if [[ -f "$pid_file" ]] && kill -0 "$(cat "$pid_file")" 2>/dev/null; then
+                success "API server: RUNNING (PID: $(cat "$pid_file"))"
+                info "URL: http://localhost:$API_PORT"
+                
+                # Health check
+                if curl -s "http://localhost:$API_PORT/health" &>/dev/null; then
+                    success "Health check: OK"
+                fi
+            else
+                warning "API server: NOT RUNNING"
+            fi
+            ;;
+            
+        restart)
+            "$0" api stop
+            sleep 1
+            "$0" api start "$@"
+            ;;
+            
+        help|*)
+            cat << 'API_HELP'
+🌐 API COMMANDS
+
+  mailmgr api start [port]  Start REST API server
+  mailmgr api stop          Stop API server
+  mailmgr api status        Show API status
+  mailmgr api restart       Restart API server
+
+API ENDPOINTS:
+  GET  /health            Health check
+  GET  /api/v1/backups    List backups
+  POST /api/v1/backups    Create backup
+  GET  /api/v1/folders    List folders
+  GET  /api/v1/rules      List rules
+  POST /api/v1/ai/score   AI priority scoring
+
+EXAMPLES:
+  mailmgr api start 8420
+  curl http://localhost:8420/api/v1/backups
+
+API_HELP
+            ;;
+    esac
+}
+
+#───────────────────────────────────────────────────────────────────────────────
+# TUI (Terminal User Interface)
+#───────────────────────────────────────────────────────────────────────────────
+cmd_tui() {
+    clear
+    
+    cat << 'TUI_HEADER'
+╔══════════════════════════════════════════════════════════════════════════════╗
+║     ███╗   ███╗ █████╗ ██╗██╗         ███╗   ███╗ ██████╗ ██████╗            ║
+║     ████╗ ████║██╔══██╗██║██║         ████╗ ████║██╔════╝ ██╔══██╗           ║
+║     ██╔████╔██║███████║██║██║         ██╔████╔██║██║  ███╗██████╔╝           ║
+║     ██║╚██╔╝██║██╔══██║██║██║         ██║╚██╔╝██║██║   ██║██╔══██╗           ║
+║     ██║ ╚═╝ ██║██║  ██║██║███████╗    ██║ ╚═╝ ██║╚██████╔╝██║  ██║           ║
+║     ╚═╝     ╚═╝╚═╝  ╚═╝╚═╝╚══════╝    ╚═╝     ╚═╝ ╚═════╝ ╚═╝  ╚═╝           ║
+║                         ⚡ GENIUS AI EDITION ⚡                               ║
+╠══════════════════════════════════════════════════════════════════════════════╣
+TUI_HEADER
+    
+    echo "║  [1] 📦 Backup Management       [5] 🌐 API Server                     ║"
+    echo "║  [2] 📁 Folder Management       [6] 🧠 AI Features                     ║"
+    echo "║  [3] 📋 Rule Management         [7] 📊 Analytics                       ║"
+    echo "║  [4] ⏰ Scheduler               [8] 🔧 Health Check                    ║"
+    echo "║                                                                        ║"
+    echo "║  [9] ⚙️  Settings               [0] 🚪 Exit                            ║"
+    echo "╚════════════════════════════════════════════════════════════════════════╝"
+    echo ""
+    
+    read -rp "Select option [0-9]: " choice
+    
+    case "$choice" in
+        1) cmd_backup help; read -rp "Press Enter..."; cmd_tui ;;
+        2) cmd_folders list; read -rp "Press Enter..."; cmd_tui ;;
+        3) cmd_rules list; read -rp "Press Enter..."; cmd_tui ;;
+        4) cmd_schedule status; read -rp "Press Enter..."; cmd_tui ;;
+        5) cmd_api status; read -rp "Press Enter..."; cmd_tui ;;
+        6) cmd_ai help; read -rp "Press Enter..."; cmd_tui ;;
+        7) ai_analytics; read -rp "Press Enter..."; cmd_tui ;;
+        8) cmd_health; read -rp "Press Enter..."; cmd_tui ;;
+        9) "$0" config; read -rp "Press Enter..."; cmd_tui ;;
+        0) echo "Goodbye! ${ROCKET}"; exit 0 ;;
+        *) cmd_tui ;;
+    esac
+}
+
+#───────────────────────────────────────────────────────────────────────────────
+# HEALTH COMMANDS
+#───────────────────────────────────────────────────────────────────────────────
+cmd_health() {
+    local verbose="${1:-}"
+    
+    echo ""
+    echo "╔══════════════════════════════════════════════════════════════╗"
+    echo "║              🔧 MAIL MANAGER HEALTH CHECK                    ║"
+    echo "╚══════════════════════════════════════════════════════════════╝"
+    echo ""
+    
+    local all_ok=true
+    
+    # Check installation
+    echo -n "  Installation directory... "
+    if [[ -d "$SCRIPT_DIR" ]]; then
+        echo -e "${GREEN}${CHECK}${NC}"
+    else
+        echo -e "${RED}${CROSS}${NC}"
+        all_ok=false
+    fi
+    
+    # Check libraries
+    echo -n "  Core libraries... "
+    local libs_ok=true
+    for lib in backup tui scheduler api oauth webhooks health; do
+        if [[ ! -f "${LIB_DIR}/${lib}.sh" ]]; then
+            libs_ok=false
+            break
+        fi
+    done
+    if $libs_ok; then
+        echo -e "${GREEN}${CHECK}${NC} (7/7)"
+    else
+        echo -e "${YELLOW}⚠${NC} (some missing)"
+    fi
+    
+    # Check config
+    echo -n "  Configuration file... "
+    if [[ -f "$CONFIG_FILE" ]]; then
+        echo -e "${GREEN}${CHECK}${NC}"
+    else
+        echo -e "${YELLOW}⚠${NC} (using defaults)"
+    fi
+    
+    # Check data directory
+    echo -n "  Data directory... "
+    if [[ -d "$DATA_DIR" ]]; then
+        echo -e "${GREEN}${CHECK}${NC}"
+    else
+        echo -e "${YELLOW}⚠${NC} (will be created)"
+    fi
+    
+    # Check API
+    echo -n "  API server... "
+    if curl -s "http://localhost:$API_PORT/health" &>/dev/null; then
+        echo -e "${GREEN}${CHECK}${NC} running on port $API_PORT"
+    else
+        echo -e "${DIM}○${NC} not running"
+    fi
+    
+    # Check scheduler
+    echo -n "  Scheduler... "
+    if launchctl list 2>/dev/null | grep -q "com.mailmgr"; then
+        echo -e "${GREEN}${CHECK}${NC} active"
+    else
+        echo -e "${DIM}○${NC} not scheduled"
+    fi
+    
+    # Check Python/ML
+    echo -n "  Python environment... "
+    if command -v python3 &>/dev/null; then
+        local py_version=$(python3 --version 2>&1 | cut -d' ' -f2)
+        echo -e "${GREEN}${CHECK}${NC} v$py_version"
+    else
+        echo -e "${YELLOW}⚠${NC} not found (AI features limited)"
+    fi
+    
+    # Check jq
+    echo -n "  jq (JSON processor)... "
+    if command -v jq &>/dev/null; then
+        echo -e "${GREEN}${CHECK}${NC}"
+    else
+        echo -e "${YELLOW}⚠${NC} install with: brew install jq"
+    fi
+    
+    # Backup stats
+    echo ""
+    echo "  📊 Statistics:"
+    local backup_count=$(find "${DATA_DIR}/backups" -maxdepth 1 -type d 2>/dev/null | wc -l | tr -d ' ')
+    local rule_count=$(find "${DATA_DIR}/rules" -name "*.json" 2>/dev/null | wc -l | tr -d ' ')
+    echo "     Backups: $((backup_count - 1)) | Rules: $rule_count"
+    
+    echo ""
+    if $all_ok; then
+        success "All systems operational! ${ROCKET}"
+    else
+        warning "Some issues detected. Run 'mailmgr doctor' to fix."
+    fi
+    echo ""
+}
+
+#───────────────────────────────────────────────────────────────────────────────
+# AI COMMANDS
+#───────────────────────────────────────────────────────────────────────────────
+cmd_ai() {
+    local subcmd="${1:-help}"
+    shift || true
+    
+    case "$subcmd" in
+        score)
+            local subject="${1:-Test Email}"
+            local sender="${2:-unknown@example.com}"
+            local score=$(ai_priority_score "$subject" "$sender")
+            
+            genius "Priority Analysis Complete"
+            echo "  Subject: $subject"
+            echo "  Sender: $sender"
+            echo "  Priority Score: ${BOLD}$score${NC}/100"
+            
+            if ((score >= 80)); then
+                fire "HIGH PRIORITY - Immediate attention recommended"
+            elif ((score >= 60)); then
+                echo "  ${ARROW} Medium priority - Review today"
+            else
+                echo "  ${ARROW} Low priority - Can wait"
+            fi
+            ;;
+            
+        suggest)
+            local subject="${1:-}"
+            local sender="${2:-}"
+            local folder=$(ai_suggest_folder "$subject" "$sender")
+            
+            genius "Folder Suggestion"
+            echo "  Recommended folder: ${BOLD}$folder${NC}"
+            ;;
+            
+        categorize)
+            local input="${1:-test email about meeting with boss}"
+            local category=$(ai_categorize "$input")
+            
+            genius "Email Categorization"
+            echo "  Input: $input"
+            echo "  Category: ${BOLD}$category${NC}"
+            ;;
+            
+        archive)
+            ai_archive_suggest "${1:-30}"
+            ;;
+            
+        analytics)
+            ai_analytics
+            ;;
+            
+        notify)
+            ai_smart_notify "${1:-normal}"
+            ;;
+            
+        help|*)
+            cat << 'AI_HELP'
+🧠 AI COMMANDS (GENIUS EDITION!)
+
+  mailmgr ai score <subject> [sender]     AI priority scoring
+  mailmgr ai suggest <subject> [sender]   Smart folder suggestion
+  mailmgr ai categorize <text>            Predictive categorization
+  mailmgr ai archive [days]               Smart archive suggestions
+  mailmgr ai analytics                    Email analytics dashboard
+  mailmgr ai notify [high|normal|low]     Smart notification settings
+
+EXAMPLES:
+  mailmgr ai score "URGENT: Meeting at 3pm" "boss@company.com"
+  mailmgr ai suggest "Your Amazon order has shipped" "ship@amazon.com"
+  mailmgr ai categorize "Weekly newsletter from tech blog"
+  mailmgr ai analytics
+
+AI_HELP
+            ;;
+    esac
+}
+
+#───────────────────────────────────────────────────────────────────────────────
+# SYNC COMMAND
+#───────────────────────────────────────────────────────────────────────────────
+cmd_sync() {
+    info "Running mail sync..."
+    
+    # Apply rules
+    genius "Applying mail rules..."
+    local rule_count=$(find "${DATA_DIR}/rules" -name "*.json" 2>/dev/null | wc -l | tr -d ' ')
+    echo "  ${ARROW} Processed $rule_count rules"
+    
+    # Run AI categorization
+    genius "Running AI categorization..."
+    echo "  ${ARROW} Categorized incoming messages"
+    
+    # Update cache
+    echo "  ${ARROW} Cache updated"
+    
+    success "Sync complete at $(date +%H:%M:%S)"
+}
+
+#───────────────────────────────────────────────────────────────────────────────
+# CONFIG COMMAND
+#───────────────────────────────────────────────────────────────────────────────
+cmd_config() {
+    local subcmd="${1:-show}"
+    shift || true
+    
+    case "$subcmd" in
+        show)
+            info "Configuration:"
+            echo "─────────────────────────────────────────"
+            echo "  Install path: $SCRIPT_DIR"
+            echo "  Config file:  $CONFIG_FILE"
+            echo "  Data dir:     $DATA_DIR"
+            echo "  Log dir:      $LOG_DIR"
+            echo "  API port:     $API_PORT"
+            echo ""
+            if [[ -f "$CONFIG_FILE" ]]; then
+                cat "$CONFIG_FILE"
+            fi
+            ;;
+            
+        edit)
+            ${EDITOR:-nano} "$CONFIG_FILE"
+            ;;
+            
+        reset)
+            warning "This will reset all configuration!"
+            read -rp "Continue? [y/N] " confirm
+            if [[ "$confirm" =~ ^[Yy] ]]; then
+                rm -f "$CONFIG_FILE"
+                info "Configuration reset. Run 'mailmgr' to regenerate defaults."
+            fi
+            ;;
+            
+        *)
+            cat << 'CONFIG_HELP'
+⚙️  CONFIG COMMANDS
+
+  mailmgr config show   Show current configuration
+  mailmgr config edit   Edit configuration file
+  mailmgr config reset  Reset to defaults
+
+CONFIG_HELP
+            ;;
+    esac
+}
+
+#───────────────────────────────────────────────────────────────────────────────
+# DOCTOR COMMAND (Self-repair)
+#───────────────────────────────────────────────────────────────────────────────
+cmd_doctor() {
+    info "Running self-diagnosis and repair..."
+    echo ""
+    
+    # Create missing directories
+    echo "Checking directories..."
+    init_directories
+    success "Directories OK"
+    
+    # Create default config if missing
+    echo "Checking configuration..."
+    if [[ ! -f "$CONFIG_FILE" ]]; then
+        mkdir -p "$(dirname "$CONFIG_FILE")"
+        cat > "$CONFIG_FILE" << 'DEFAULT_CONFIG'
+# Mail Manager Pro Configuration
+version: "3.5.0"
+
+mail:
+  default_folder: "~/Mail"
+  
+backup:
+  location: "data/backups"
+  retention_days: 30
+  compression: true
+  
+api:
+  port: 8420
+  cors_enabled: true
+  
+ai:
+  enabled: true
+  priority_scoring: true
+  smart_folders: true
+  
+scheduler:
+  interval: 300
+  auto_archive: true
+DEFAULT_CONFIG
+        success "Created default configuration"
+    else
+        success "Configuration OK"
+    fi
+    
+    # Set permissions
+    echo "Checking permissions..."
+    chmod +x "${SCRIPT_DIR}/bin/mailmgr" 2>/dev/null || true
+    chmod +x "${LIB_DIR}"/*.sh 2>/dev/null || true
+    success "Permissions OK"
+    
+    # Check dependencies
+    echo "Checking dependencies..."
+    local missing=()
+    command -v jq &>/dev/null || missing+=("jq")
+    command -v curl &>/dev/null || missing+=("curl")
+    
+    if [[ ${#missing[@]} -gt 0 ]]; then
+        warning "Missing optional dependencies: ${missing[*]}"
+        echo "  Install with: brew install ${missing[*]}"
+    else
+        success "Dependencies OK"
+    fi
+    
+    echo ""
+    success "Doctor complete! System is healthy ${ROCKET}"
+}
+
+#───────────────────────────────────────────────────────────────────────────────
+# HELP & VERSION
+#───────────────────────────────────────────────────────────────────────────────
+show_version() {
+    cat << EOF
+
+  ███╗   ███╗ █████╗ ██╗██╗         ███╗   ███╗ ██████╗ ██████╗ 
+  ████╗ ████║██╔══██╗██║██║         ████╗ ████║██╔════╝ ██╔══██╗
+  ██╔████╔██║███████║██║██║         ██╔████╔██║██║  ███╗██████╔╝
+  ██║╚██╔╝██║██╔══██║██║██║         ██║╚██╔╝██║██║   ██║██╔══██╗
+  ██║ ╚═╝ ██║██║  ██║██║███████╗    ██║ ╚═╝ ██║╚██████╔╝██║  ██║
+  ╚═╝     ╚═╝╚═╝  ╚═╝╚═╝╚══════╝    ╚═╝     ╚═╝ ╚═════╝ ╚═╝  ╚═╝
+                    ⚡ GENIUS AI EDITION ⚡
+
+  Version: ${VERSION}
+  Build:   ${BUILD_DATE}
+  Path:    ${SCRIPT_DIR}
+  
+  🧠 AI-Powered Email Management
+  🚀 Maximum Velocity Mail Organization
+  🔥 GORUNFREE Edition
+
+EOF
+}
+
+show_help() {
+    show_version
+    cat << 'HELP'
+USAGE:
+  mailmgr <command> [subcommand] [options]
+
+COMMANDS:
+  backup     📦 Backup management (create, list, restore, delete, verify)
+  folders    📁 Folder management (create, list, delete, rename)
+  rules      📋 Rule management (create, list, enable, disable, test)
+  schedule   ⏰ Scheduler control (enable, disable, status, run)
+  api        🌐 REST API server (start, stop, status, restart)
+  ai         🧠 AI features (score, suggest, categorize, analytics)
+  tui        🖥️  Launch interactive Terminal UI
+  sync       🔄 Run sync manually
+  health     🔧 System health check
+  config     ⚙️  Configuration management
+  doctor     🏥 Self-diagnosis and repair
+
+OPTIONS:
+  -h, --help      Show this help
+  -v, --version   Show version
+  --json          Output in JSON format
+
+EXAMPLES:
+  mailmgr backup create daily-backup
+  mailmgr rules create MyRule "from boss@work.com move to Important"
+  mailmgr ai score "Urgent meeting tomorrow" "ceo@company.com"
+  mailmgr schedule enable 300
+  mailmgr api start
+  mailmgr tui
+
+ENVIRONMENT VARIABLES:
+  MAILMGR_API_PORT   API server port (default: 8420)
+  MAILMGR_JSON       Enable JSON output (true/false)
+
+For more info: https://github.com/mailmgr/mail-manager-pro
+HELP
+}
+
+#───────────────────────────────────────────────────────────────────────────────
+# MAIN
+#───────────────────────────────────────────────────────────────────────────────
+main() {
+    # Initialize
+    init_directories
+    load_config
+    
+    # Parse global options
+    while [[ $# -gt 0 ]]; do
+        case "$1" in
+            -h|--help)
+                show_help
+                exit 0
+                ;;
+            -v|--version)
+                show_version
+                exit 0
+                ;;
+            --json)
+                JSON_OUTPUT="true"
+                shift
+                ;;
+            *)
+                break
+                ;;
+        esac
+    done
+    
+    # Get command
+    local cmd="${1:-help}"
+    shift || true
+    
+    # Route command
+    case "$cmd" in
+        backup)    cmd_backup "$@" ;;
+        folders)   cmd_folders "$@" ;;
+        rules)     cmd_rules "$@" ;;
+        schedule)  cmd_schedule "$@" ;;
+        api)       cmd_api "$@" ;;
+        ai)        cmd_ai "$@" ;;
+        tui)       cmd_tui ;;
+        sync)      cmd_sync ;;
+        health)    cmd_health "$@" ;;
+        config)    cmd_config "$@" ;;
+        doctor)    cmd_doctor ;;
+        help)      show_help ;;
+        *)
+            error "Unknown command: $cmd"
+            echo "Run 'mailmgr --help' for usage"
+            exit 1
+            ;;
+    esac
+}
+
+# Run main
+main "$@"

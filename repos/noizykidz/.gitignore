@@ -1,0 +1,86 @@
+# ============================================================
+# NOIZY EMPIRE — CONSTITUTIONAL MEDIA BLOCK
+# No audio or video in Git. Ever.
+# Media lives on THE AQUARIUM (34TB external) only.
+# Never on GOD system drive. Never in version control.
+# ============================================================
+
+# AUDIO
+*.wav
+*.mp3
+*.aac
+*.flac
+*.ogg
+*.m4a
+*.wma
+*.aiff
+*.aif
+*.alac
+*.opus
+*.mid
+*.midi
+*.ac3
+*.dts
+*.pcm
+*.raw
+*.caf
+*.amr
+*.ape
+*.wv
+*.dsf
+*.dff
+
+# VIDEO
+*.mp4
+*.mov
+*.avi
+*.mkv
+*.wmv
+*.flv
+*.webm
+*.m4v
+*.mpg
+*.mpeg
+*.3gp
+*.3g2
+*.ts
+*.mts
+*.m2ts
+*.vob
+*.ogv
+*.divx
+*.asf
+*.rm
+*.rmvb
+*.f4v
+*.prores
+
+# PROJECT FILES (DAW / NLE — these reference media)
+*.ptx
+*.ptf
+*.logicx
+*.band
+*.als
+*.flp
+*.rpp
+*.cpr
+*.npr
+*.sesx
+*.aup3
+*.prproj
+*.fcpxd
+*.drp
+
+# LARGE BINARY BLOBS
+*.iso
+*.dmg
+*.img
+*.bin
+*.dat
+
+# OS junk
+.DS_Store
+Thumbs.db
+desktop.ini
+*.swp
+*~

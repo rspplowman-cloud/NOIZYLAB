@@ -1,0 +1,3 @@
+[submodule "GABRIEL"]
+    path = GABRIEL
+    url = https://github.com/NOIZYLAB-io/GABRIEL.git

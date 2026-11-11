@@ -1,0 +1,170 @@
+syntax = "proto3";
+
+package noizylab.grid;
+
+option go_package = "github.com/noizyfish/noizylab/grid";
+option java_package = "com.noizylab.grid";
+option java_multiple_files = true;
+
+// ═══════════════════════════════════════════════════════════════════════════
+// UNIFIED GRID RPC PROTOCOL FOR M2-ULTRA ↔ HP-OMEN COMMUNICATION
+// ═══════════════════════════════════════════════════════════════════════════
+
+// Core node identity
+message NodeIdentity {
+  string node_id = 1;           // "M2-Ultra", "HP-Omen", "Mac-Pro"
+  string ip_address = 2;         // 192.168.1.20, etc.
+  int32 port = 3;               // 8899
+  string os = 4;                // "macOS", "Windows", "Linux"
+  string role = 5;              // "primary", "secondary", "worker"
+  map<string, string> capabilities = 6;  // GPU, CPU cores, RAM, etc.
+}
+
+// Task execution request (M2 → HP-OMEN or vice versa)
+message ExecuteTaskRequest {
+  string task_id = 1;
+  string task_type = 2;         // "ai_inference", "windows_diagnostic", "encoding"
+  string payload = 3;           // JSON or binary data (base64)
+  map<string, string> metadata = 4;  // Priority, timeout, retry policy
+  int32 timeout_seconds = 5;
+  bool require_ai_decision = 6;  // Should AI agent approve/route this?
+}
+
+// Task execution response
+message ExecuteTaskResponse {
+  string task_id = 1;
+  bool success = 2;
+  string result = 3;            // Output (base64 if binary)
+  string error_message = 4;
+  int64 execution_time_ms = 5;
+  map<string, string> metrics = 6;  // CPU%, RAM%, GPU%, etc.
+}
+
+// Stream of real-time task updates (for long-running tasks)
+message TaskProgressUpdate {
+  string task_id = 1;
+  float progress_percent = 2;
+  string current_stage = 3;     // "initializing", "processing", "finalizing"
+  string log_line = 4;          // Real-time log output
+  int64 elapsed_ms = 5;
+}
+
+// Health check request/response
+message HealthCheckRequest {
+  string requester_id = 1;
+}
+
+message HealthCheckResponse {
+  string node_id = 1;
+  bool is_healthy = 2;
+  float cpu_usage = 3;
+  float memory_usage = 4;
+  int32 active_tasks = 5;
+  repeated string error_logs = 6;
+  int64 timestamp_ms = 7;
+}
+
+// AI Agent decision request
+message AgentDecisionRequest {
+  string request_id = 1;
+  string decision_type = 2;     // "route_task", "allocate_resource", "diagnose_issue"
+  map<string, string> context = 3;
+  int32 timeout_seconds = 4;
+  repeated string available_nodes = 5;
+  string prompt = 6;            // Natural language decision request
+}
+
+message AgentDecisionResponse {
+  string request_id = 1;
+  string decision = 2;          // AI agent's recommendation
+  string rationale = 3;         // Why the agent chose this
+  repeated string recommended_nodes = 4;
+  float confidence = 5;         // 0.0-1.0
+  map<string, string> metadata = 6;
+}
+
+// Remote command execution (for Windows or macOS commands)
+message RemoteCommandRequest {
+  string command_id = 1;
+  string command = 2;           // "powershell", "bash", "python"
+  string script = 3;            // Command/script text
+  int32 timeout_seconds = 4;
+  map<string, string> env_vars = 5;
+}
+
+message RemoteCommandResponse {
+  string command_id = 1;
+  int32 exit_code = 2;
+  string stdout = 3;
+  string stderr = 4;
+  int64 execution_time_ms = 5;
+}
+
+// Network inventory query (for topology discovery)
+message NetworkInventoryRequest {
+  string requester_id = 1;
+  bool include_detailed_metrics = 2;
+}
+
+message NetworkInventoryResponse {
+  repeated NodeIdentity nodes = 1;
+  repeated NetworkLink links = 2;  // Connections between nodes
+  map<string, string> network_config = 3;  // Switch config, DNS, etc.
+  int64 timestamp_ms = 4;
+}
+
+message NetworkLink {
+  string from_node = 1;
+  string to_node = 2;
+  float latency_ms = 3;
+  float bandwidth_mbps = 4;
+  bool is_encrypted = 5;
+}
+
+// Bidirectional streaming for real-time agent sync
+message AgentStateUpdate {
+  string agent_id = 1;
+  string state = 2;             // "idle", "processing", "error"
+  map<string, string> context = 3;
+  int64 timestamp_ms = 4;
+}
+
+// ═══════════════════════════════════════════════════════════════════════════
+// MAIN RPC SERVICE
+// ═══════════════════════════════════════════════════════════════════════════
+
+service NoizyGridRPC {
+  // Core task execution
+  rpc ExecuteTask(ExecuteTaskRequest) returns (ExecuteTaskResponse);
+  
+  // Streaming for long-running tasks
+  rpc ExecuteTaskStreaming(ExecuteTaskRequest) 
+    returns (stream TaskProgressUpdate);
+  
+  // Health checks (one-way)
+  rpc HealthCheck(HealthCheckRequest) returns (HealthCheckResponse);
+  
+  // Bidirectional health sync for real-time monitoring
+  rpc HealthCheckStreaming(stream HealthCheckRequest) 
+    returns (stream HealthCheckResponse);
+  
+  // AI agent-based decision making
+  rpc RequestAgentDecision(AgentDecisionRequest) 
+    returns (AgentDecisionResponse);
+  
+  // Autonomous agent sync (bidirectional streaming)
+  rpc SyncAgentState(stream AgentStateUpdate) 
+    returns (stream AgentStateUpdate);
+  
+  // Remote command execution (Windows/macOS)
+  rpc ExecuteRemoteCommand(RemoteCommandRequest) 
+    returns (RemoteCommandResponse);
+  
+  // Network topology discovery
+  rpc GetNetworkInventory(NetworkInventoryRequest) 
+    returns (NetworkInventoryResponse);
+  
+  // Node registration/deregistration
+  rpc RegisterNode(NodeIdentity) returns (google.protobuf.Empty);
+  rpc DeregisterNode(NodeIdentity) returns (google.protobuf.Empty);
+}

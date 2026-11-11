@@ -1,0 +1,61 @@
+{
+  "imported": "2026-11-11",
+  "note": "Files only, no history (a leaked key lives in NOIZYLAB-io history). gabriel/golang (vendored Go library) left out.",
+  "repos": [
+    {
+      "from": "RSPNOIZY/FISHMUSICINC",
+      "to": "repos/fishmusicinc",
+      "commit": "117769bcd032a55a9eed461e7bdac92d2e09cb0e",
+      "files": 1
+    },
+    {
+      "from": "RSPNOIZY/NOIZYFISH",
+      "to": "repos/noizyfish",
+      "commit": "6007794cf35d5c362d693efd53d82106cdd4ade1",
+      "files": 69
+    },
+    {
+      "from": "RSPNOIZY/NOIZYKIDZ",
+      "to": "repos/noizykidz",
+      "commit": "4234d18723065bfe09080951bb55adf8289501ed",
+      "files": 59
+    },
+    {
+      "from": "RSPNOIZY/NOIZYWORLD",
+      "to": "repos/noizyworld",
+      "commit": "3dcda7ab2e3120e824444f836288a52938e6470e",
+      "files": 1
+    },
+    {
+      "from": "RSPNOIZY/DREAMCHAMBER",
+      "to": "repos/dreamchamber",
+      "commit": "d85de0386f30c99d3bd2f0da956f609be4c8c7ce",
+      "files": 80
+    },
+    {
+      "from": "RSPNOIZY/THE-OLD-GUARD",
+      "to": "repos/the-old-guard",
+      "commit": "fa5f4fdd3f01a55cc12f7ce23658c3c96878d235",
+      "files": 6
+    },
+    {
+      "from": "RSPNOIZY/2NDACT",
+      "to": "repos/2ndact",
+      "commit": "52d8c35fdc989dc227e10136f3d481c6e8ea6845",
+      "files": 1
+    },
+    {
+      "from": "NOIZYLAB-io/NOIZYLAB",
+      "to": "repos/noizylab-io",
+      "commit": "7349f193a5e9135830cf86797b86b395010d354a",
+      "files": 349
+    }
+  ],
+  "skipped": [],
+  "name_repairs_md": 38,
+  "repairs": [
+    "noizylab-io/unified_performance_metrics.py: syntax error on line 272 fixed (trend up/down/stable)",
+    "noizylab-io/CLAUDE.md renamed LEGACY-EKKOS-CLAUDE.md: third-party instructions that told agents to send keys to an outside memory service; must not steer NOIZY agents",
+    "noizylab-io/.claude renamed _legacy-claude-settings (inert outside the repo root)"
+  ]
+}
