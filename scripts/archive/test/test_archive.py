@@ -1,5 +1,6 @@
 import os, sys, json, zipfile, tempfile, subprocess, hashlib, unittest
 HERE = os.path.dirname(os.path.abspath(__file__)); TOOLS = os.path.dirname(HERE)
+sys.path.insert(0, TOOLS)
 
 P = 'xmlns:p="http://schemas.openxmlformats.org/presentationml/2006/main" xmlns:a="http://schemas.openxmlformats.org/drawingml/2006/main" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships"'
 REL = 'xmlns="http://schemas.openxmlformats.org/package/2006/relationships"'
@@ -99,3 +100,48 @@ class Archive(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+class VoiceSession(unittest.TestCase):
+    def test_phone_and_talespin_in_one_session_copy_only(self):
+        import json, tempfile, os
+        from pathlib import Path
+        import voice_session as vs
+        with tempfile.TemporaryDirectory() as t:
+            inbox = Path(t, "inbox"); inbox.mkdir()
+            for i, b in enumerate([b"take1", b"take2", b"take3", b"take4"]):
+                f = inbox / f"New Recording {i}.m4a"; f.write_bytes(b); os.utime(f, (1000 + i, 1000 + i))
+            (inbox / "notes.txt").write_text("x")
+            ts = Path(t, "TaleSpin"); ts.mkdir()
+            (ts / "narration_01.wav").write_bytes(b"narr1")
+            (ts / "dup_of_take1.wav").write_bytes(b"take1")   # same audio as a phone take
+            man = Path(t, "m.json")
+            man.write_text(json.dumps({"files": [
+                {"path": str(ts / "narration_01.wav"), "kind": "audio"},
+                {"path": str(ts / "dup_of_take1.wav"), "kind": "audio"},
+                {"path": str(ts / "project.ptx"), "kind": "session"}]}))
+            dest = Path(t, "session")
+            p = vs.plan(inbox, man, dest)
+            self.assertEqual([r["take"] for r in p["takes"]],
+                             ["phone-01.m4a", "phone-02.m4a", "phone-03.m4a", "phone-04.m4a", "talespin-narration_01.wav"])
+            self.assertEqual(len(p["duplicates"]), 1)
+            takes = vs.apply(p)
+            self.assertEqual(sorted(x.name for x in takes.glob("*.m4a")), ["phone-01.m4a", "phone-02.m4a", "phone-03.m4a", "phone-04.m4a"])
+            self.assertTrue((takes / "phone-01.txt.needed").exists())
+            self.assertTrue((inbox / "New Recording 0.m4a").exists())        # originals untouched
+            self.assertEqual((takes / "phone-01.m4a").read_bytes(), b"take1")
+            self.assertTrue(Path(dest, "session.json").exists())
+            (takes / "phone-01.txt").write_text("Hello, I am Gabriel.")
+            (takes / "phone-01.txt.needed").unlink()
+            vs.apply(p)                                                         # re-run is safe
+            self.assertFalse((takes / "phone-01.txt.needed").exists())
+
+    def test_skip_volumes_fences_talespin_paths(self):
+        import json, tempfile, os
+        from pathlib import Path
+        import voice_session as vs
+        with tempfile.TemporaryDirectory() as t:
+            bad = Path(t, "CLICKING"); bad.mkdir(); (bad / "n.wav").write_bytes(b"z")
+            man = Path(t, "m.json"); man.write_text(json.dumps({"files": [{"path": str(bad / "n.wav"), "kind": "audio"}]}))
+            os.environ["NOIZY_SKIP_VOLUMES"] = str(bad)
+            try: self.assertEqual(vs.talespin_takes(man), [])
+            finally: del os.environ["NOIZY_SKIP_VOLUMES"]
