@@ -118,11 +118,11 @@ async function apiCall(method, path, body = null) {
 
 async function h17Health() {
   try {
-    const res = await fetch(`${HEAVEN_URL}/health`, {
+    const res = await fetch(`${HEAVEN_URL}/api/health`, {
       signal: AbortSignal.timeout(3000),
     });
     const data = await res.json();
-    return data.success ? "LIVE" : "DEGRADED";
+    return res.ok && (data.success || data.status === "alive") ? "LIVE" : "DEGRADED";
   } catch {
     return "UNREACHABLE";
   }

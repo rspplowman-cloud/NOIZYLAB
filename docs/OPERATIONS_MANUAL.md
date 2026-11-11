@@ -6,7 +6,7 @@
 |--------|-----|------|
 | HEAVEN Worker | heaven.rsp-5f3.workers.dev | X-NOIZY-Key header |
 | HEAVEN Dashboard | heaven.rsp-5f3.workers.dev/dashboard | None (read-only) |
-| HEAVEN Health | heaven.rsp-5f3.workers.dev/health | None |
+| HEAVEN Health | heaven.rsp-5f3.workers.dev/api/health | None (`/health` needs the key since v18) |
 | DreamChamber | localhost:7777 | Local only |
 | GABRIEL Daemon | localhost:9777 | Local only |
 | Ollama | localhost:11434 | Local only |
@@ -28,7 +28,7 @@ npm run smoke
 npm run tail
 
 # Check health
-curl https://heaven.rsp-5f3.workers.dev/health
+curl https://heaven.rsp-5f3.workers.dev/api/health
 ```
 
 ## Kill Switch Activation
