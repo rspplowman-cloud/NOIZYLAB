@@ -148,6 +148,10 @@ const CONVERSATION_TYPES = {
 // MCP SERVER
 // ═══════════════════════════════════════════════════════════════
 
+// Shared NOIZY knowledge (same index LUCY uses): search, read, map.
+import { knowledgeTools } from "./lib/knowledge.js";
+const KNOWLEDGE = new Map(knowledgeTools("gabriel").map((t) => [t.name, t]));
+
 const server = new Server(
   { name: "gabriel-mcp", version: "2.0.0" },
   { capabilities: { tools: {} } },
@@ -155,6 +159,8 @@ const server = new Server(
 
 server.setRequestHandler(ListToolsRequestSchema, async () => ({
   tools: [
+    ...[...KNOWLEDGE.values()].map(({ name, description, inputSchema }) => ({
+      name, description, inputSchema: inputSchema || { type: "object", properties: {} } })),
     // ─── ORIGINAL TOOLS ───
     {
       name: "gabriel_speak",
@@ -1103,8 +1109,11 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
         };
       }
 
-      default:
+      default: {
+        const k = KNOWLEDGE.get(name);
+        if (k) return { content: [{ type: "text", text: JSON.stringify(await k.handler(args || {}), null, 2) }] };
         throw new Error(`Unknown tool: ${name}`);
+      }
     }
   } catch (err) {
     return {

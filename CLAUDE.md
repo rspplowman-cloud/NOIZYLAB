@@ -27,6 +27,12 @@
 - **Fully automated runs** go to **Google Cloud Shell** (or CI), not RSP_001's machine.
 - **Claude Cowork** for hands-on sessions with RSP_001.
 
+## Research first, then build (RSP_001, 2026-11-11)
+
+- **Load the `noizyclaude` skill** (`.claude/skills/noizyclaude/`) at the start of NOIZY work.
+- **Before building anything new, look first** at: the n8n community, the Forgejo community, Hugging Face, Kaggle, MIT, and the best open-source projects. Reuse proven work.
+- **GABRIEL and LUCY share one knowledge index.** Search it before assuming (`gabriel_knowledge_search`, `lucy_knowledge_search`).
+
 ## Safety
 
 - **Never push straight to `main`.** Use a branch and a pull request.

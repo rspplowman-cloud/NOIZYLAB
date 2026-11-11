@@ -33,6 +33,35 @@ function readIfExists(p: string): string {
 }
 
 /** Load LIGHTNING_AND_RAIN.md (human spark decides; voice records; AI is the ambient rain). */
+/**
+ * The knowledge map: one line per NOIZY document in the repo (path — title), so GABRIEL
+ * always knows what exists. Details come on demand through gabriel_knowledge_search /
+ * gabriel_knowledge_read (mcp/lib/knowledge.js), the same index LUCY uses.
+ */
+const REPO = process.env.NOIZYLAB_ROOT || join(GABRIEL_HOME, "..", "..");
+const SKIP_DIRS = new Set(["node_modules", ".git", "dist", "results"]);
+export function loadKnowledgeMap(): string {
+  const lines: string[] = [];
+  const walk = (dir: string): void => {
+    let entries;
+    try { entries = readdirSync(dir, { withFileTypes: true }); } catch { return; }
+    for (const e of entries) {
+      if (e.name.startsWith(".") && e.name !== ".github") continue;
+      const p = join(dir, e.name);
+      if (e.isDirectory()) { if (!SKIP_DIRS.has(e.name)) walk(p); }
+      else if (e.name.endsWith(".md")) {
+        const title = (readIfExists(p).match(/^#\s+(.+)$/m) || [, e.name])[1].trim();
+        lines.push(`- ${p.slice(REPO.length + 1)} — ${title}`);
+      }
+    }
+  };
+  walk(REPO);
+  if (!lines.length) return "";
+  return ["## Knowledge map", "",
+    "Every NOIZY document, one per line. For details, call gabriel_knowledge_search or gabriel_knowledge_read; never guess what a document says.", "",
+    ...lines.sort()].join("\n");
+}
+
 export function loadLightningAndRain(): string {
   return readIfExists(LIGHTNING_AND_RAIN_PATH);
 }
@@ -157,6 +186,7 @@ export function buildSystemPrompt(): string {
   const integrations = loadIntegrations();
   const discordFleet = loadDiscordFleet();
   const memory = loadMemory();
+  const knowledgeMap = loadKnowledgeMap();
 
   const targetDate = process.env.GABRIEL_TARGET_DATE || "2026-05-17";
   const targetLabel = process.env.GABRIEL_TARGET_LABEL || "next empire milestone";
@@ -186,6 +216,7 @@ export function buildSystemPrompt(): string {
   if (dreamChamber) parts.push(dreamChamber);
   if (integrations) parts.push(integrations);
   if (discordFleet) parts.push(discordFleet);
+  if (knowledgeMap) parts.push(knowledgeMap);
   if (memory) parts.push(memory);
   parts.push(liveContext);
 

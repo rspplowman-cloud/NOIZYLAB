@@ -10,6 +10,7 @@ import { join } from "node:path";
 import { homedir } from "node:os";
 import { randomBytes } from "node:crypto";
 import { serve, statusOf } from "../lib/noizy-mcp.js";
+import { knowledgeTools } from "../lib/knowledge.js";
 
 const STATE = process.env.GABRIEL_STATE_DIR || join(homedir(), "NOIZYLAB", "gabriel-state");
 const QUEUE = join(STATE, "queue", "for-gabriel.jsonl");
@@ -50,6 +51,7 @@ const tools = [
     },
   },
   { name: "lucy_queue_list", description: "Everything waiting for GABRIEL.", handler: () => queue() },
+  ...knowledgeTools("lucy"),
 ];
 tools.push({ name: "lucy_status", description: "LUCY's status and where she reads from.",
   handler: () => statusOf("LUCY", "Relay · organizer · memory index", tools.map((t) => t.name),
