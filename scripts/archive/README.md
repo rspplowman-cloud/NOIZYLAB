@@ -102,3 +102,19 @@ see `docs/infra/12TB-RESCUE.md`).
 4. Wait for **VERIFIED**. Then tick that drive off.
 
 **Do the most important first:** the Voice Vault and voice takes, TaleSpin, CLAC, then everything else.
+
+### Several accounts, one rescue
+
+RSP_001 has several Google, Microsoft and Apple accounts. Each one can become an rclone remote, each wrapped in its own
+encrypted `crypt` remote. Names only, never addresses, in this public repo: `gdrive-<label>`, `onedrive-<label>`, `icloud-<label>`.
+
+| Kind | rclone type | Notes |
+|---|---|---|
+| Google Drive | `drive` | Stable. Each account's free space is shared with its Gmail and Photos: check it is not full first. |
+| OneDrive | `onedrive` | Stable. Microsoft 365 Family/Premium gives **1 TB per person, up to 6 people**: the cheapest big space you may already pay for. |
+| iCloud Drive | `iclouddrive` | Newer backend; needs Advanced Data Protection **off** for rclone. Use for small sets. |
+| Dropbox | `dropbox` | Free Basic is 2 GB: not useful for rescue. |
+
+Set up each one with `rclone config` (it opens the browser to sign in; nothing is typed on a command line),
+then a `crypt` remote on top of it, then `bash cloud_rescue.sh <folder> <crypt-remote>:<name>`.
+**Never** put a full account in the plan: a full Google account stops Gmail too.
