@@ -230,6 +230,8 @@ jobs:
         with: { python-version: "3.12" }
       - run: python3 -m unittest discover -s scripts/archive/test -v   # TaleSpin finder, deck reader, voice session, Workspace plan, library finder
       - run: bash scripts/archive/test/test_cloud_rescue.sh   # encrypted, add-only, refuses the clicking drive
+      - run: python3 -m unittest discover -s scripts/catalog/test -v   # file catalog: sealed, HALT before push
+      - run: node --test infra/n8n/test/workflows.test.mjs   # n8n catalog workflows: HALT first, sealed never embedded
       - run: python3 -m unittest discover -s scripts/organize/test -v  # app map, Spotlight tags, video sort
       - run: python3 -m unittest discover -s services/covenant-math/test -v  # 75/25 math
   gabriel-voice:
