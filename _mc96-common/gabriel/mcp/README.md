@@ -11,7 +11,7 @@ One MCP server per agent, all in this folder. They share one core (`lib/noizy-mc
 | `cb01-mcp` | CB01 | Deploy status, health checks, offline test run, GoDaddy exit checklist, env check | No |
 | `shirley-mcp` | SHIRLEY | File inventory, dependency audit (incl. known-bad LiteLLM), code stats, TODOs, format check | No |
 | `family-mcp` | POPS + SHIRL | Grounding line, session check, wins log, wellbeing check, break reminder | Wins log (append) |
-| `heaven-mcp` | HEAVEN | Consent kernel, **GET only**: health, actors, never clauses, consent tokens, ledger, rate table, stats | **Never** |
+| `heaven-mcp` | HEAVEN | Consent kernel, **GET only**: health, actors, never clauses, consent tokens, ledger, rate table, stats. **Cloudflare side** (`h17_cf_*`): the Worker, its live deployment, versions, binding names (never values), D1 and KV, and a rollback *plan* that only runs through NOIZYARMY with RSP_001's approval | **Never** |
 | `infomaniak-mcp` | (provider) | Swiss-hosted open models through Infomaniak AI Tools: status, model list, ask. HALT first; refuses consent, NOIZYKIDZ, family and vault material | **Never** |
 
 ## Used by GABRIEL's daemon
@@ -36,7 +36,7 @@ Each boss in `source/bosses/` talks to its server here:
 
 1. `cd _mc96-common/gabriel/mcp`
 2. `npm ci`
-3. `npm test` (9 tests start every server over MCP and check its tools and its safety rules)
+3. `npm test` (10 tests start every server over MCP and check its tools and its safety rules)
 
 ## Add to Claude Code
 
@@ -64,6 +64,7 @@ Settings, all optional, all read from the environment:
 | `NOIZYLAB_ROOT` | all | Repo root (default: found automatically) |
 | `HALT_URL` | cb01, infomaniak | HALT worker base URL |
 | `HEAVEN_URL`, `HEAVEN_KEY` or `NOIZY_API_KEY` | heaven, cb01 | HEAVEN base URL and `X-NOIZY-Key` (from Proton Pass) |
+| `CLOUDFLARE_ACCOUNT_ID`, `CLOUDFLARE_API_TOKEN`, `HEAVEN_WORKER` | heaven | The HEAVEN account, a **read-only** token (Workers Scripts Read, D1 Read, Workers KV Storage Read), and the Worker name (default `heaven`) |
 | `CB01_HEALTH_URLS` | cb01 | Comma-separated URLs to health-check |
 | `GABRIEL_STATE_DIR` | lucy | GABRIEL's state (default `~/NOIZYLAB/gabriel-state`) |
 | `INFOMANIAK_TOKEN`, `INFOMANIAK_AI_PRODUCT_ID` | infomaniak | Infomaniak API token and AI Tools product ID (Proton Pass, VAULT-OPS) |
