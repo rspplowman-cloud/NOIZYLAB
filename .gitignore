@@ -18,3 +18,5 @@ notes-export.zip
 # Python cache
 __pycache__/
 *.pyc
+.dev.vars
+.wrangler/

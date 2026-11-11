@@ -81,6 +81,8 @@ LUCY is fail-closed by design. On mobile, she:
 
 LUCY on iPhone uses Moira (British voice per `feedback_lucy_british_voice` memory) as the interim TTS until the NOIZY custom voice ships. GABRIEL on M2Ultra uses Daniel.
 
+**iPhone voice talk (2026-11-11, RSP_001's decision):** on the hands-free Siri path (`services/talk`), GABRIEL and LUCY both speak in **Kate** (en-GB). Each shortcut opens by saying its name ("Gabriel here." / "Lucy here."), which replaces the voice change as the cue for who is talking. That path is read-only: no tools for either agent.
+
 Rob never hears Moira and Daniel in the same exchange unless a handoff is happening — that's a deliberate audio cue: _if the voice just changed, the surface just changed, and with it the authority level._
 
 ## Implementation status
@@ -89,6 +91,7 @@ Rob never hears Moira and Daniel in the same exchange unless a handoff is happen
 | ------------------------------------------- | -------------------------- | ------------------------------------------------------------------------------------ |
 | LUCY PWA at `/lucy`                         | BUILT (per CLAUDE.md)      | connect to `lucy_inbox` / `lucy_outbox` tables                                       |
 | LUCY native iOS app (`GABRIEL/ios/LUCY/`)   | BUILT (per CLAUDE.md)      | wire notification delivery, handoff UX                                               |
+| Siri voice talk (`services/talk`)            | BUILT 2026-11-11           | deploy (README steps); later, drain its `/notes` into `lucy_inbox`                  |
 | `lucy_inbox` / `lucy_outbox` D1 tables      | not yet in `agent-memory`  | additive migration (fits v5 agent-memory migration 001 scope)                        |
 | `lucy_notify` / `lucy_inbox_push` MCP tools | not yet in `mcp/lucy-mcp/` | add tools; no gabriel_db touch                                                       |
 | APNs push relay Worker                      | not started                | CF Worker using `Cloudflare Realtime Calls` or `apn` library, NOIZYCLOUDS-registered |

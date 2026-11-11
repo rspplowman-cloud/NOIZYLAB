@@ -135,6 +135,20 @@ jobs:
       - run: npm ci --no-audit --no-fund
       - run: npm run typecheck
       - run: npm test   # HALT gate (fails closed) + the M2Ultra link compiles
+  talk:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    defaults: { run: { working-directory: services/talk } }
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version: "22"
+          cache: npm
+          cache-dependency-path: services/talk/package-lock.json
+      - run: npm ci --no-audit --no-fund
+      - run: npm run typecheck
+      - run: npm test   # never-to-AI gate, phone key, HALT fails closed
   ledger:
     runs-on: ubuntu-latest
     timeout-minutes: 10

@@ -1,0 +1,22 @@
+// wrangler.jsonc — talk: GABRIEL and LUCY by voice from the iPhone.
+{
+  "name": "talk",
+  "main": "src/index.ts",
+  "compatibility_date": "2025-03-07",
+  "compatibility_flags": ["nodejs_compat"],
+  "observability": { "enabled": true, "head_sampling_rate": 1 },
+
+  // Non-secret configuration. Secrets (ANTHROPIC_API_KEY, TALK_KEY) are added in the
+  // Cloudflare dashboard: Worker -> Settings -> Variables and Secrets. Never in this file.
+  "vars": {
+    // HALT worker base URL. Required: unset or unreachable = halted, and nobody talks.
+    "HALT_URL": "",
+    "MODEL": "claude-opus-5-5",
+    // low = fastest replies for the car. Raise to medium for harder thinking.
+    "EFFORT": "low"
+  },
+
+  // Conversation memory (30 minutes) and the "note" inbox (30 days).
+  // Create with `npx wrangler kv namespace create TALK_KV`, then paste the id here.
+  "kv_namespaces": [{ "binding": "TALK_KV", "id": "REPLACE_WITH_KV_ID" }]
+}
