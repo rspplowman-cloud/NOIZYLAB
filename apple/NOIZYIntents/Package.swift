@@ -6,5 +6,9 @@ let package = Package(
     name: "NOIZYIntents",
     platforms: [.iOS(.v17), .macOS(.v14)],
     products: [.library(name: "NOIZYIntents", targets: ["NOIZYIntents"])],
-    targets: [.target(name: "NOIZYIntents")]
+    // To run LUCY and GABRIEL on the iPhone with MLX, add this package in Xcode and uncomment the two lines:
+    // dependencies: [.package(url: "https://github.com/ml-explore/mlx-swift-lm", branch: "main")],
+    targets: [.target(name: "NOIZYIntents"
+        // , dependencies: [.product(name: "MLXLMCommon", package: "mlx-swift-lm"), .product(name: "MLXLLM", package: "mlx-swift-lm")]
+    )]
 )

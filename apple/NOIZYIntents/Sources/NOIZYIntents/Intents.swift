@@ -20,6 +20,31 @@ public struct DriveHealthIntent: AppIntent {
     }
 }
 
+/// Ask LUCY or GABRIEL. Tries the iPhone first (private, works offline); if no on-device model is ready,
+/// asks both of them on M2Ultra through the bridge.
+public enum NOIZYAgent: String, AppEnum {
+    case lucy, gabriel
+    public static var typeDisplayRepresentation: TypeDisplayRepresentation = "Agent"
+    public static var caseDisplayRepresentations: [NOIZYAgent: DisplayRepresentation] = [.lucy: "LUCY", .gabriel: "GABRIEL"]
+}
+
+public struct AskAgentIntent: AppIntent {
+    public static var title: LocalizedStringResource = "Ask LUCY or GABRIEL"
+    public static var description = IntentDescription("One question, a short answer. Runs on this iPhone when a local model is ready; otherwise asks M2Ultra. Advice only.")
+    @Parameter(title: "Who", default: .gabriel) public var who: NOIZYAgent
+    @Parameter(title: "Question") public var question: String
+    public init() {}
+    public func perform() async throws -> some IntentResult & ProvidesDialog {
+        if let local = try? await OnDeviceMind.ask(who == .lucy ? .lucy : .gabriel, question) {
+            return .result(dialog: IntentDialog(stringLiteral: local.text))
+        }
+        let r = try await NOIZYBridge.call("/ask", body: ["q": question])
+        let answers = r["answers"] as? [[String: Any]] ?? []
+        let mine = answers.first { ($0["agent"] as? String)?.lowercased() == who.rawValue } ?? answers.first
+        return .result(dialog: IntentDialog(stringLiteral: (mine?["text"] as? String) ?? "Nobody answered."))
+    }
+}
+
 public struct MorningBriefIntent: AppIntent {
     public static var title: LocalizedStringResource = "NOIZY morning brief"
     public static var description = IntentDescription("What is red, what is waiting on you, and the one thing to ship today. Read only.")
@@ -106,6 +131,8 @@ public struct NOIZYShortcuts: AppShortcutsProvider {
     public static var appShortcuts: [AppShortcut] {
         AppShortcut(intent: DriveHealthIntent(), phrases: ["Check my drives with \(.applicationName)", "How are the drives in \(.applicationName)"],
                     shortTitle: "Drives", systemImageName: "internaldrive")
+        AppShortcut(intent: AskAgentIntent(), phrases: ["Ask GABRIEL with \(.applicationName)", "Ask LUCY with \(.applicationName)", "Ask \(.applicationName)"],
+                    shortTitle: "Ask", systemImageName: "bubble.left.and.bubble.right")
         AppShortcut(intent: MorningBriefIntent(), phrases: ["Morning brief with \(.applicationName)", "What's my day in \(.applicationName)"],
                     shortTitle: "Brief", systemImageName: "sun.max")
         AppShortcut(intent: FindFileIntent(), phrases: ["Find a file with \(.applicationName)", "Where is it in \(.applicationName)"],

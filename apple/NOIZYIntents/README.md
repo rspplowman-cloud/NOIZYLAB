@@ -1,9 +1,12 @@
 # NOIZYIntents: Siri on iPhone 15 Pro Max drives M2Ultra
 
-**Four Siri actions, each one NOIZYBRIDGE verb.** Swift App Intents (iOS 17+). Written here; **not yet built on a device**.
+**Seven Siri actions.** LUCY and GABRIEL can also answer **on the iPhone itself** (`OnDevice.swift`, MLX or Apple's on-device model); see `docs/apple/PARTNERS-AND-ON-DEVICE.md`. Swift App Intents (iOS 17+). Written here; **not yet built on a device**.
 
 | Say to Siri | Intent | M2Ultra does |
 |---|---|---|
+| "Ask GABRIEL with NOIZY" / "Ask LUCY with NOIZY" | `AskAgentIntent` | Answers on the iPhone if a local model is ready; otherwise asks M2Ultra (advice only) |
+| "Morning brief with NOIZY" | `MorningBriefIntent` | Red, waiting on you, ship today |
+| "All green with NOIZY" | `WarpJobIntent` | Opens a fixed Warp job |
 | "Check my drives with NOIZY" | `DriveHealthIntent` | Reads NOIZYTEK's drive cards (read only) |
 | "Find a file with NOIZY" | `FindFileIntent` | Asks the file catalog (read only) |
 | "Start recording with NOIZY" | `AudioHijackIntent` | Starts or stops an Audio Hijack session (HALT first) |
@@ -13,7 +16,7 @@
 
 1. On M2Ultra, open Xcode (or Swift Playgrounds on iPad/Mac).
 2. New app called **NOIZY** (App Intents phrases use the app name).
-3. Add the three files in `Sources/NOIZYIntents/` to the app target. Put them in the app itself, so Siri finds the phrases.
+3. Add the four files in `Sources/NOIZYIntents/` to the app target. Put them in the app itself, so Siri finds the phrases.
 4. In the app's main view, show `NOIZYSettingsView()`.
 5. Run it on the iPhone 15 Pro Max once. Enter:
    1. **Address:** M2Ultra's tailnet address, `http://100.x.y.z:9795` (from the Tailscale app).
