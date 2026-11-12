@@ -13,6 +13,8 @@ const fakeBridge = (calls = []) => Object.assign(async (path, body) => {
   if (path === "/drives") return { cards: [{ disk: "disk6", name: "MAG 4TB", grade: "COPY NOW", why: ["8 sectors it cannot read"] }, { disk: "disk0", grade: "OK" }] };
   if (path === "/files/ask") return { results: [{ name: "line1.wav", path: "/Volumes/MAG 4TB/TaleSpin/line1.wav" }] };
   if (path === "/warp") return { ok: true };
+  if (path === "/ask") return { answers: [{ agent: "GABRIEL", text: "- Lab call first." }, { agent: "LUCY", text: "- Logged." }] };
+  if (path === "/army") return { soldiers: ["GABRIEL", "LUCY"], tasks: { queued: 2 }, awaiting_your_approval: [{ verb: "deploy", target: "heaven" }] };
 }, { calls });
 
 test("only allowlisted users get anything, and nothing is called for others", async () => {
@@ -31,6 +33,14 @@ test("brief, drives, find and run map to fixed bridge verbs", async () => {
   assert.equal(await handle("run scan", ME, b, ALLOW), "Started scan on M2Ultra in Warp.");
   assert.deepEqual(b.calls.map((c) => c[0]), ["/brief", "/drives", "/files/ask", "/warp"]);
   assert.deepEqual(b.calls[3][1], { job: "noizytek-scan" });
+});
+
+test("ask reaches GABRIEL and LUCY; army shows the roster and what waits on RSP_001", async () => {
+  const b = fakeBridge();
+  assert.match(await handle("ask what should I ship today", ME, b, ALLOW), /GABRIEL:\n- Lab call first\.\n\nLUCY:\n- Logged\./);
+  assert.deepEqual(b.calls[0], ["/ask", { q: "what should I ship today" }]);
+  assert.match(await handle("army", ME, b, ALLOW), /2 soldiers \(GABRIEL, LUCY\)\.\nTasks: 2 queued\.\nWaiting on your approval: deploy heaven/);
+  assert.match(await handle("ask", ME, b, ALLOW), /Ask what/);
 });
 
 test("anything else is help or a plain refusal; no free-form command reaches the bridge", async () => {

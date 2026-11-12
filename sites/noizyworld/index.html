@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>NOIZYWORLD: the call to the NOIZYARMY</title>
+<meta name="description" content="NOIZYWORLD is where creators keep what is theirs: their work, their voice, and 75% of what it earns. Join the NOIZYARMY.">
+<style>
+  :root { --bg:#0f1013; --ink:#f4f1ea; --soft:#b9b3a6; --line:#34343b; --accent:#ffb238; --on:#1a1206; }
+  @media (prefers-color-scheme: light) { :root { --bg:#fbf8f2; --ink:#17161a; --soft:#57534b; --line:#d8d2c6; --accent:#9a5b00; --on:#ffffff; } }
+  * { box-sizing: border-box; }
+  body { margin:0; background:var(--bg); color:var(--ink); font:20px/1.6 -apple-system, "Segoe UI", system-ui, sans-serif; }
+  main { max-width: 42rem; margin: 0 auto; padding: 2.5rem 1rem 4rem; }
+  h1 { font-size: 2.6rem; line-height: 1.1; margin: 0 0 1rem; letter-spacing: -.01em; }
+  h2 { font-size: 1.4rem; margin: 2.5rem 0 .5rem; }
+  .lead { font-size: 1.3rem; color: var(--soft); }
+  ul { padding-left: 1.2rem; } li { margin: .5rem 0; }
+  form { border-top: 1px solid var(--line); margin-top: 2.5rem; padding-top: 1.5rem; }
+  label { display:block; font-weight:600; margin: 1rem 0 .3rem; }
+  input, select { width:100%; font: inherit; padding: .8rem; border:2px solid var(--line); border-radius:.5rem; background:var(--bg); color:var(--ink); }
+  input:focus, select:focus, button:focus { outline: 3px solid var(--accent); outline-offset: 2px; }
+  button { margin-top:1.5rem; font: inherit; font-weight:700; padding: 1rem 1.5rem; border:0; border-radius:.5rem; background:var(--accent); color:var(--on); cursor:pointer; min-height: 3.5rem; }
+  .note { font-size: 1rem; color: var(--soft); }
+  .hp { position:absolute; left:-9999px; }
+</style>
+</head>
+<body>
+<main>
+  <h1>NOIZYWORLD.<br>The call to the NOIZYARMY.</h1>
+  <p class="lead">Life is not a dress rehearsal. If you make things, keep what is yours.</p>
+
+  <h2>What we stand for</h2>
+  <ul>
+    <li><strong>You own your work and your voice.</strong> Always.</li>
+    <li><strong>Nothing is used without your yes.</strong> Consent is written down, and you can take it back.</li>
+    <li><strong>75% to the creator.</strong> Not the other way round.</li>
+    <li><strong>Culture is not a commodity.</strong> No training AI on your work without your written consent.</li>
+  </ul>
+
+  <h2>Who the NOIZYARMY is</h2>
+  <ul>
+    <li>Musicians, composers and sound people.</li>
+    <li>Voice actors and narrators.</li>
+    <li>Small independent labels.</li>
+    <li>Builders who want technology to serve people.</li>
+  </ul>
+
+  <h2>Where it stands</h2>
+  <p>NOIZYWORLD is being built by Robert Stephen Plowman, a composer and sound designer. It is not open yet. Join the list and you will hear first.</p>
+
+  <form name="noizyarmy-call" method="POST" data-netlify="true" netlify-honeypot="company">
+    <input type="hidden" name="form-name" value="noizyarmy-call">
+    <p class="hp"><label>Leave this empty <input name="company" tabindex="-1" autocomplete="off"></label></p>
+    <label for="email">Your email</label>
+    <input id="email" name="email" type="email" required autocomplete="email">
+    <label for="who">I am a…</label>
+    <select id="who" name="who">
+      <option>Musician or composer</option>
+      <option>Voice actor or narrator</option>
+      <option>Independent label</option>
+      <option>Builder or engineer</option>
+      <option>Friend of the cause</option>
+    </select>
+    <button type="submit">Answer the call</button>
+    <p class="note">We use your email only to write to you about NOIZYWORLD. Never sold, never shared. GORUNFREE.</p>
+  </form>
+</main>
+</body>
+</html>

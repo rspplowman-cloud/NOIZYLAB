@@ -10,7 +10,7 @@ Steps (each one says DONE, SKIP (already there), TODO (plan mode) or NEEDS YOU, 
   3. Tools             brew install smartmontools ddrescue (drive health and gentle rescue)
   4. Warp jobs         copies infra/warp/launch_configurations to ~/.warp/launch_configurations
   5. Forgejo           makes the PRIVATE repo NOIZY/NOIZY-CATALOG (needs FORGEJO_TOKEN in the env file) and clones it
-  6. n8n               imports the two file-catalog workflows, once (by name), into the running n8n container
+  6. n8n               imports the NOIZY workflows (file catalog, morning brief), once (by name), into the running n8n container
   7. Local model       ollama pull nomic-embed-text (the catalog's embedding model)
   8. First run         NOIZYTEK scan, then the catalog commit
 
@@ -21,7 +21,8 @@ import json, os, shutil, subprocess, sys, urllib.request, urllib.error
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
-WORKFLOWS = ["NOIZY Catalog: index files (Forgejo -> Ollama -> Qdrant)", "NOIZY Catalog: ask where a file is"]
+WORKFLOWS = ["NOIZY Catalog: index files (Forgejo -> Ollama -> Qdrant)", "NOIZY Catalog: ask where a file is",
+             "NOIZY: GABRIEL morning brief to Slack and Discord"]
 
 def sh(cmd, **kw):
     try:
@@ -101,7 +102,7 @@ def step_n8n(apply):
     code, out = sh(compose + ["exec", "-T", "n8n", "n8n", "list:workflow"], timeout=60)
     if code != 0: return "NEEDS YOU", "n8n is not running (cd infra/m2ultra && docker compose up -d)"
     missing = [w for w in WORKFLOWS if w not in out]
-    if not missing: return "SKIP", "both catalog workflows already in n8n"
+    if not missing: return "SKIP", "all NOIZY workflows already in n8n"
     if not apply: return "TODO", f"import {len(missing)} workflow(s) into n8n"
     for f in sorted((ROOT / "infra" / "n8n" / "workflows").glob("*.json")):
         if json.loads(f.read_text())["name"] not in missing: continue

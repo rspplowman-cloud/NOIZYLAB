@@ -1,13 +1,15 @@
 # NOIZYBRIDGE: iPhone to M2Ultra, one safe door
 
 A tiny local service on M2Ultra. Siri (NOIZYIntents), Shortcuts or any app on the iPhone 15 Pro Max calls it over the
-tailnet. It does **seven things only**:
+tailnet. It does **nine things only**:
 
 | Verb | What | Changes anything? |
 |---|---|---|
 | `GET /health` | Up? HALT clear? (no key needed) | No |
 | `GET /drives` | NOIZYTEK drive cards | No |
 | `GET /brief` | Morning brief: red, waiting, ship | No |
+| `POST /ask` | GABRIEL and LUCY answer one question through DreamChamber (needs `DREAMCHAMBER_TOKEN`) | No: advice only. HALT first, because it uses Claude |
+| `GET /army` | NOIZYARMY roster and open tasks | No: never dispatches or approves |
 | `POST /files/ask` | "Where is …?" via the n8n file catalog | No |
 | `POST /audio/hijack` | Start or stop a named Audio Hijack session | Yes: HALT first |
 | `POST /airfoil` | Connect or disconnect an Airfoil speaker | Yes: HALT first |

@@ -9,7 +9,7 @@ state = os.environ["BU_STATE"]
 if tool == "docker" and "list:workflow" in a:
     print(open(state).read() if os.path.exists(state) else "")
 if tool == "docker" and "import:workflow" in a:
-    open(state, "a").write("NOIZY Catalog: index files (Forgejo -> Ollama -> Qdrant)\nNOIZY Catalog: ask where a file is\n")
+    open(state, "a").write("NOIZY Catalog: index files (Forgejo -> Ollama -> Qdrant)\nNOIZY Catalog: ask where a file is\nNOIZY: GABRIEL morning brief to Slack and Discord\n")
 if tool == "ollama" and a[:1] == ["list"] and os.path.exists(state + ".model"): print("nomic-embed-text:latest")
 if tool == "ollama" and a[:1] == ["pull"]: open(state + ".model", "w").write("x")
 '''
@@ -66,7 +66,7 @@ class Bringup(unittest.TestCase):
         self.assertIn("brew install smartmontools ddrescue", self.log())
         self.assertEqual(Srv.posts[0][0], "/api/v1/orgs/NOIZY/repos"); self.assertTrue(Srv.posts[0][1]["private"])
         self.assertEqual(Srv.posts[0][2], "token tok-from-env"); self.assertNotIn("tok-from-env", out)
-        self.assertEqual(self.log().count("import:workflow"), 2); self.assertIn("ollama pull nomic-embed-text", self.log())
+        self.assertEqual(self.log().count("import:workflow"), 3); self.assertIn("ollama pull nomic-embed-text", self.log())
         warp = os.path.join(self.home, ".warp", "launch_configurations")
         self.assertEqual(sorted(os.listdir(warp)), ["allgreen.yaml", "noizytek-scan.yaml", "party.yaml"])
         self.assertNotIn("/Users/m2ultra/NOIZYLAB", open(os.path.join(warp, "allgreen.yaml")).read())
@@ -75,7 +75,7 @@ class Bringup(unittest.TestCase):
         code, out = self.run_("--apply")
         self.assertEqual(len(Srv.posts), 1, "repo not created twice")
         self.assertNotIn("import:workflow", self.log()); self.assertNotIn("ollama pull", self.log())
-        for s in ("Warp jobs already installed", "both catalog workflows already in n8n", "already pulled"): self.assertIn(s, out)
+        for s in ("Warp jobs already installed", "all NOIZY workflows already in n8n", "already pulled"): self.assertIn(s, out)
 
     def test_public_catalog_repo_stops_everything(self):
         self.protect(); Srv.repo = {"private": False}
