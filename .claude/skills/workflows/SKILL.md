@@ -22,6 +22,7 @@ Answer RSP_001 in short bullets (CLAUDE.md). First show the menu, then run what 
 | **workspace** | Google Workspace shared-drive plan | `python3 scripts/archive/workspace_plan.py <libraries>` |
 | **cloud rescue** | Encrypted, add-only upload, verified | `bash scripts/archive/cloud_rescue.sh <folder> <crypt-remote>:` |
 | **bridge** | iPhone ⇄ M2Ultra door for Siri | `python3 services/noizybridge/bridge.py` |
+| **bots** | Slack and Discord `/noizy` commands into M2Ultra | `node services/noizybots/src/main.mjs` |
 | **sovereign git** | Mirror repos and Notion to Forgejo | `bash scripts/sovereign-git/sync.sh` |
 | **history** | Everything about RSP_001's time and spend with Claude (below) | run by Claude |
 
