@@ -15,7 +15,8 @@ class Bridge(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         cls.t = tempfile.mkdtemp(); b = os.path.join(cls.t, "bin"); os.makedirs(b)
-        open(os.path.join(b, "osascript"), "w").write(STUB); os.chmod(os.path.join(b, "osascript"), 0o755)
+        for tool in ("osascript", "open"):
+            open(os.path.join(b, tool), "w").write(STUB); os.chmod(os.path.join(b, tool), 0o755)
         cls.log = os.path.join(cls.t, "osa.log")
         cls.halt = socketserver.TCPServer(("127.0.0.1", 0), Halt); threading.Thread(target=cls.halt.serve_forever, daemon=True).start()
         os.environ.update({"PATH": b + ":" + os.environ["PATH"], "BR_LOG": cls.log, "NOIZY_OUT_DIR": os.path.join(cls.t, "out"),
@@ -82,6 +83,26 @@ class Bridge(unittest.TestCase):
         self.assertEqual(self.call("POST", "/airfoil", {"speaker": "Den", "action": "disconnect"})[0], 502)
         rec = [json.loads(l) for l in open(os.path.join(self.t, "out", "bridge", "actions.jsonl"))]
         self.assertEqual([(r["verb"], r["ok"]) for r in rec[-2:]], [("airfoil", True), ("airfoil", False)])
+
+    def test_warp_only_fixed_jobs_halt_first_and_installed(self):
+        self.assertEqual(self.call("POST", "/warp", {"job": "rm -rf /"})[0], 400)
+        home = os.path.join(self.t, "home"); os.makedirs(os.path.join(home, ".warp", "launch_configurations"), exist_ok=True)
+        old = os.environ.get("HOME"); os.environ["HOME"] = home
+        try:
+            self.assertEqual(self.call("POST", "/warp", {"job": "allgreen"})[0], 409, "not installed yet")
+            open(os.path.join(home, ".warp", "launch_configurations", "allgreen.yaml"), "w").write("name: x\n")
+            Halt.halted = True
+            self.assertEqual(self.call("POST", "/warp", {"job": "allgreen"})[0], 423)
+            Halt.halted = False
+            code, body = self.call("POST", "/warp", {"job": "allgreen"})
+            self.assertEqual(code, 200, body)
+            self.assertEqual(self.osa()[-1], ["warp://launch/allgreen.yaml"])
+        finally:
+            os.environ["HOME"] = old
+
+    def test_repo_launch_configs_match_the_allowlist(self):
+        d = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(HERE))), "infra", "warp", "launch_configurations")
+        self.assertEqual({f[:-5] for f in os.listdir(d) if f.endswith(".yaml")}, bridge.WARP_JOBS)
 
     def test_files_ask_needs_its_own_key(self):
         os.environ.pop("NOIZY_ASK_KEY", None)

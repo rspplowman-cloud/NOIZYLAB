@@ -1,0 +1,11 @@
+# Warp launch configuration: NOIZYTEK scan. Opened by NOIZYBRIDGE (POST /warp {"job": "noizytek-scan"}) or from Warp's menu.
+# Copy to ~/.warp/launch_configurations/ on M2Ultra (see infra/warp/README.md). Edit /Users/m2ultra if your home differs.
+---
+name: NOIZY NOIZYTEK scan
+windows:
+  - tabs:
+      - title: NOIZYTEK scan
+        layout:
+          cwd: /Users/m2ultra/NOIZYLAB
+          commands:
+            - exec: python3 services/noizytek/noizytek.py scan

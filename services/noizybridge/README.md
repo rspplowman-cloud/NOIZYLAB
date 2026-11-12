@@ -1,7 +1,7 @@
 # NOIZYBRIDGE: iPhone to M2Ultra, one safe door
 
 A tiny local service on M2Ultra. Siri (NOIZYIntents), Shortcuts or any app on the iPhone 15 Pro Max calls it over the
-tailnet. It does **five things only**:
+tailnet. It does **six things only**:
 
 | Verb | What | Changes anything? |
 |---|---|---|
@@ -10,6 +10,7 @@ tailnet. It does **five things only**:
 | `POST /files/ask` | "Where is …?" via the n8n file catalog | No |
 | `POST /audio/hijack` | Start or stop a named Audio Hijack session | Yes: HALT first |
 | `POST /airfoil` | Connect or disconnect an Airfoil speaker | Yes: HALT first |
+| `POST /warp` | Open one of three fixed Warp jobs (`infra/warp/`) | Yes: HALT first |
 
 - **Key:** every verb but `/health` needs `X-NOIZY-Key` (24+ characters, Proton Pass). No key, no start.
 - **Never on the open internet:** it binds only to `127.0.0.1` or the tailnet (`100.x`). It refuses anything else.

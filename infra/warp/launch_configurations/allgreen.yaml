@@ -1,0 +1,11 @@
+# Warp launch configuration: All green. Opened by NOIZYBRIDGE (POST /warp {"job": "allgreen"}) or from Warp's menu.
+# Copy to ~/.warp/launch_configurations/ on M2Ultra (see infra/warp/README.md). Edit /Users/m2ultra if your home differs.
+---
+name: NOIZY All green
+windows:
+  - tabs:
+      - title: All green
+        layout:
+          cwd: /Users/m2ultra/NOIZYLAB
+          commands:
+            - exec: bash infra/m2ultra/allgreen.sh

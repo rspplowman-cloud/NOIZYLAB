@@ -1,6 +1,6 @@
 {
   "name": "NOIZYBRIDGE",
-  "role": "The one door from RSP_001's iPhone (Siri App Intents, Shortcuts) to M2Ultra over the tailnet. Five fixed verbs: health, drive cards, file-catalog questions, start/stop a named Audio Hijack session, connect/disconnect a named Airfoil speaker. No shell, no file paths, no free-form commands. Actions check HALT first.",
+  "role": "The one door from RSP_001's iPhone (Siri App Intents, Shortcuts) to M2Ultra over the tailnet. Six fixed verbs: health, drive cards, file-catalog questions, start/stop a named Audio Hijack session, connect/disconnect a named Airfoil speaker, open one of three fixed Warp jobs. No shell, no file paths, no free-form commands. Actions check HALT first.",
   "doctrine": [
     "SAFETY_CONTRACT.md",
     "NEVER_CLAUSES_OPS.md",

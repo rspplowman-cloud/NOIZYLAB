@@ -11,6 +11,7 @@ A short list of verbs, nothing else. No shell, no file paths, no free-form comma
   POST /files/ask   {"q": "..."}    the file catalog: "where is ...?" (read only, via n8n)
   POST /audio/hijack {"session": "TaleSpin VO", "action": "start"|"stop"}    Audio Hijack session (HALT first)
   POST /airfoil     {"speaker": "Kitchen", "action": "connect"|"disconnect"} Airfoil speaker (HALT first)
+  POST /warp        {"job": "noizytek-scan"|"allgreen"|"party"}           opens a fixed Warp launch configuration (HALT first)
 
 Rules:
   - Every route but /health needs the X-NOIZY-Key header (24+ characters, from Proton Pass, kept in the env file).
@@ -101,7 +102,23 @@ def airfoil(body):
     receipt("airfoil", {"speaker": name, "action": action}, ok)
     return (200 if ok else 502), {"ok": ok, "speaker": name, "action": action, **({} if ok else {"error": out})}
 
-ROUTES = {("GET", "/drives"): lambda b: drives(), ("POST", "/files/ask"): files_ask,
+WARP_JOBS = {"noizytek-scan", "allgreen", "party"}   # each is a launch configuration in infra/warp/launch_configurations
+
+def warp(body):
+    job = body.get("job")
+    if job not in WARP_JOBS: return 400, {"error": f"job must be one of: {', '.join(sorted(WARP_JOBS))}"}
+    if halted(): return 423, {"error": "HALT is set or unreachable: not opening Warp jobs"}
+    cfg = Path.home() / ".warp" / "launch_configurations" / f"{job}.yaml"
+    if not cfg.exists(): return 409, {"error": f"{cfg} not installed: see infra/warp/README.md"}
+    try:
+        r = subprocess.run(["open", f"warp://launch/{job}.yaml"], capture_output=True, text=True, timeout=10)
+        ok, out = r.returncode == 0, (r.stdout + r.stderr).strip()[:300]
+    except (FileNotFoundError, subprocess.TimeoutExpired) as e:
+        ok, out = False, e.__class__.__name__
+    receipt("warp", {"job": job}, ok)
+    return (200 if ok else 502), {"ok": ok, "job": job, **({} if ok else {"error": out})}
+
+ROUTES = {("POST", "/warp"): warp, ("GET", "/drives"): lambda b: drives(), ("POST", "/files/ask"): files_ask,
           ("POST", "/audio/hijack"): audio_hijack, ("POST", "/airfoil"): airfoil}
 
 def make_server(host, port, key):

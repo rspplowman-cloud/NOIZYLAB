@@ -70,6 +70,24 @@ public struct AirfoilIntent: AppIntent {
     }
 }
 
+public enum WarpJob: String, AppEnum {
+    case scan = "noizytek-scan", allgreen, party
+    public static var typeDisplayRepresentation: TypeDisplayRepresentation = "Job"
+    public static var caseDisplayRepresentations: [WarpJob: DisplayRepresentation] = [
+        .scan: "Drive scan", .allgreen: "All green", .party: "NOIZY PARTY"]
+}
+
+public struct WarpJobIntent: AppIntent {
+    public static var title: LocalizedStringResource = "Run a NOIZY job in Warp on M2Ultra"
+    public static var description = IntentDescription("Opens a fixed Warp launch configuration on M2Ultra: drive scan, all green, or NOIZY PARTY. Checks HALT first.")
+    @Parameter(title: "Job", default: .allgreen) public var job: WarpJob
+    public init() {}
+    public func perform() async throws -> some IntentResult & ProvidesDialog {
+        _ = try await NOIZYBridge.call("/warp", body: ["job": job.rawValue])
+        return .result(dialog: "Started on M2Ultra in Warp.")
+    }
+}
+
 /// Siri phrases. Every phrase must contain the app name; the app is called NOIZY.
 public struct NOIZYShortcuts: AppShortcutsProvider {
     public static var appShortcuts: [AppShortcut] {
@@ -81,5 +99,7 @@ public struct NOIZYShortcuts: AppShortcutsProvider {
                     shortTitle: "Record", systemImageName: "record.circle")
         AppShortcut(intent: AirfoilIntent(), phrases: ["Send audio with \(.applicationName)"],
                     shortTitle: "Speakers", systemImageName: "hifispeaker")
+        AppShortcut(intent: WarpJobIntent(), phrases: ["Run a job in Warp with \(.applicationName)", "All green with \(.applicationName)"],
+                    shortTitle: "Warp job", systemImageName: "terminal")
     }
 }
