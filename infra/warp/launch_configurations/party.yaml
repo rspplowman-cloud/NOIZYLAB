@@ -1,0 +1,11 @@
+# Warp launch configuration: NOIZY PARTY. Opened by NOIZYBRIDGE (POST /warp {"job": "party"}) or from Warp's menu.
+# Copy to ~/.warp/launch_configurations/ on M2Ultra (see infra/warp/README.md). Edit /Users/m2ultra if your home differs.
+---
+name: NOIZY NOIZY PARTY
+windows:
+  - tabs:
+      - title: NOIZY PARTY
+        layout:
+          cwd: /Users/m2ultra/NOIZYLAB
+          commands:
+            - exec: bash scripts/party/party.sh

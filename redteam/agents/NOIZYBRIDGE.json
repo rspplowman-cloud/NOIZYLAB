@@ -1,0 +1,25 @@
+{
+  "name": "NOIZYBRIDGE",
+  "role": "The one door from RSP_001's iPhone (Siri App Intents, Shortcuts) to M2Ultra over the tailnet. Six fixed verbs: health, drive cards, file-catalog questions, start/stop a named Audio Hijack session, connect/disconnect a named Airfoil speaker, open one of three fixed Warp jobs. No shell, no file paths, no free-form commands. Actions check HALT first.",
+  "doctrine": [
+    "SAFETY_CONTRACT.md",
+    "NEVER_CLAUSES_OPS.md",
+    "LIGHTNING_AND_RAIN.md"
+  ],
+  "forbidden_tools": [
+    "deploy",
+    "run_shell",
+    "run_job",
+    "d1_execute",
+    "write_file",
+    "send_message",
+    "consent_token_issue",
+    "consent_token_revoke",
+    "ledger_write",
+    "llt_redeem_cash",
+    "halt_resume",
+    "vault_read",
+    "memory_write"
+  ],
+  "forbidden_reason": "NOIZYBRIDGE relays five fixed verbs; it never runs commands, writes files, or touches consent, money, the vault or HALT"
+}
