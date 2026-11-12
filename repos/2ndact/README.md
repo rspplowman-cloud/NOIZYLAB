@@ -54,4 +54,6 @@ support that transition with zero friction and full sovereignty.
 | [NOIZYANTHROPIC](https://github.com/RSPNOIZY/NOIZYANTHROPIC) | AI governance + doctrine |
 | [THE-AQUARIUM](https://github.com/RSPNOIZY/THE-AQUARIUM) | Audio vault -- CLIENT#1 RSP001 |
 
+**Community:** [THE GATHERING OF NOIZYFISH](https://whatsapp.com/channel/0029VbC8Ujq96H4OSUbWQA0G) — the WhatsApp channel. Follow for news from every brand.
+
 **killSwitchHolder:** RSP_001 | **covenant:** 75/25 | **canon:** noizy.ai
