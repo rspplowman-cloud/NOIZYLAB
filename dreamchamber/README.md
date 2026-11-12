@@ -29,6 +29,7 @@ Built from `_mc96-common/gabriel/doctrine/DREAMCHAMBER.md` (Layer 5, interaction
 | `strategy` | "Think long-arc." | DREAM, ENGR_KEITH, GABRIEL |
 | `build` | "Build and review." | ENGR_KEITH, SHIRLEY, GABRIEL |
 | `ops` | "Run the fleet." | CB01, ENGR_KEITH, GABRIEL |
+| `care` | "Care for the drives." | SHIRLEY, ENGR_KEITH, GABRIEL (paste a NOIZYTEK scan; they advise, nothing runs) |
 | `open` | "Open the chamber." | GABRIEL |
 
 ## Controls
