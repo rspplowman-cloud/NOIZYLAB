@@ -43,5 +43,6 @@ export const RITUALS = {
   strategy:    { intent: "Think long-arc.",        agents: ["DREAM", "ENGR_KEITH", "GABRIEL"] },
   build:       { intent: "Build and review.",      agents: ["ENGR_KEITH", "SHIRLEY", "GABRIEL"] },
   ops:         { intent: "Run the fleet.",         agents: ["CB01", "ENGR_KEITH", "GABRIEL"] },
+  care:        { intent: "Care for the drives.",   agents: ["SHIRLEY", "ENGR_KEITH", "GABRIEL"] },  // read a NOIZYTEK scan together; advice only
   open:        { intent: "Open the chamber.",      agents: ["GABRIEL"] },
 };
