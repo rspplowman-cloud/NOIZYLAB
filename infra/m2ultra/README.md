@@ -85,6 +85,18 @@ Brings Ollama and the Gemma 4 set up to date. Run in Warp or Ghostty:
 - **For the explicit MLX builds** of Gemma 4, run `MLX=1 bash models-pull.sh`.
 - **Other Macs:** the same script works on any Mac with this repo, Ollama and `HALT_URL` set. Check free space and memory first; `ripple-preview` is large.
 
+## One-command setup: `bringup.py`
+
+After the stack is up, one command sets up the rest, in order, and is safe to run again:
+
+1. `set -a; source ~/.noizy/bridge.env; set +a` (your env file: `HALT_URL`, `FORGEJO_TOKEN`)
+2. `python3 infra/m2ultra/bringup.py` (plan: changes nothing)
+3. `python3 infra/m2ultra/bringup.py --apply`
+
+It checks HALT and the protected-drive list, installs the drive tools, installs the Warp jobs, makes the private
+Forgejo repo `NOIZY/NOIZY-CATALOG`, imports the two n8n workflows once, pulls the embedding model, and runs the first
+NOIZYTEK scan. Anything it cannot do is listed at the end under **NEEDS YOU**.
+
 ## Not covered yet
 
 - **Local-only rule for private data.** Nothing here stops a workflow from calling a cloud API. That needs an n8n policy, or an egress block.
