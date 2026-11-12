@@ -59,3 +59,22 @@ Get at least two quotes (Montréal or Ottawa, and Toronto).
 Prices are vendor ranges, not quotes.
 
 `killSwitchHolder: RSP_001 | covenant: 75/25 | canon: noizy.ai`
+
+## Call sheet: labs to phone first (found 2026-11-12, not yet checked by phone)
+
+| Lab | What its own page says | Still to ask |
+|---|---|---|
+| **PITS Data Recovery** (Ottawa) | "ISO-certified cleanrooms", free consultation | Is the cleanroom in Ottawa, or is the drive shipped? Helium drives in-house? |
+| **ACE Data Recovery** (Ottawa office) | Free diagnostics | Where is the cleanroom? Helium drives? |
+| **Recovery Force** (Waterloo) | Own cleanroom, in Waterloo | Free evaluation? Courier from Ottawa? |
+| **Secure Data Recovery** (Toronto) | Certified Class 10 ISO 4 cleanroom | No data, no fee? Helium refill priced in the quote? |
+
+**What to say on the phone (30 seconds):**
+
+1. "I have a 12 TB drive that clicks. It has not been powered on since."
+2. "Do you open drives in your own cleanroom, at this location?"
+3. "Do you work on helium drives in-house?"
+4. "Is the evaluation free, and is it no data, no fee?"
+5. "Can you return a full image on a new drive I supply?"
+
+**Walk away if** a shop wants to "just plug it in and see", has no cleanroom on site, or will not quote in writing.

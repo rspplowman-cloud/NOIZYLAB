@@ -104,6 +104,11 @@ class Bridge(unittest.TestCase):
         d = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(HERE))), "infra", "warp", "launch_configurations")
         self.assertEqual({f[:-5] for f in os.listdir(d) if f.endswith(".yaml")}, bridge.WARP_JOBS)
 
+    def test_brief_is_read_only_and_needs_the_key(self):
+        self.assertEqual(self.call("GET", "/brief", key=None)[0], 401)
+        code, body = self.call("GET", "/brief")
+        self.assertEqual(code, 200); self.assertEqual(sorted(body), ["red", "ship", "waiting"])
+
     def test_files_ask_needs_its_own_key(self):
         os.environ.pop("NOIZY_ASK_KEY", None)
         self.assertEqual(self.call("POST", "/files/ask", {"q": "takes"})[0], 503)
