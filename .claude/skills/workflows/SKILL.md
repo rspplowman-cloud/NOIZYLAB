@@ -11,6 +11,7 @@ Answer RSP_001 in short bullets (CLAUDE.md). First show the menu, then run what 
 
 | Workflow | What it does | Command (Warp or Ghostty, on M2Ultra) |
 |---|---|---|
+| **bringup** | First-time setup of everything on M2Ultra (plan first, `--apply` to do it) | `python3 infra/m2ultra/bringup.py` |
 | **party** | Everything in one safe run: HALT, drives, libraries, TaleSpin, catalog, Workspace plan, all green | `bash scripts/party/party.sh` |
 | **allgreen** | Every service and HEAVEN, one line each | `bash infra/m2ultra/allgreen.sh` |
 | **drives** | NOIZYTEK health grades for every drive (12 TB stays protected) | `python3 services/noizytek/noizytek.py scan` |
