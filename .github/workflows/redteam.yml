@@ -236,6 +236,10 @@ jobs:
       - run: python3 -m unittest discover -s services/noizytek/test -v   # NOIZYTEK: protected drive untouched, gentle rescue, no destructive commands
       - run: python3 -m unittest discover -s services/noizybridge/test -v   # NOIZYBRIDGE: key, tailnet-only bind, HALT before actions, no injection
       - run: python3 infra/m2ultra/test_bringup.py   # one-command M2Ultra setup: plan changes nothing, apply is idempotent
+      - run: python3 -m unittest discover -s scripts/brief/test -v   # morning brief: reads files only
+      - uses: actions/setup-node@v5
+        with: { node-version: 22 }
+      - run: node --test services/noizybots/test/bots.test.mjs   # Slack + Discord bots: allowlist, fixed commands, private replies
       - run: python3 -m unittest discover -s scripts/organize/test -v  # app map, Spotlight tags, video sort
       - run: python3 -m unittest discover -s services/covenant-math/test -v  # 75/25 math
   gabriel-voice:

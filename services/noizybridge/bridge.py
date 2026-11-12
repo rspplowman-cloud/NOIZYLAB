@@ -8,6 +8,7 @@ A short list of verbs, nothing else. No shell, no file paths, no free-form comma
 
   GET  /health                      open: is the bridge up, is HALT clear
   GET  /drives                      NOIZYTEK's latest drive cards (read only)
+  GET  /brief                       the morning brief: what is red, what waits on RSP_001, the one thing to ship (read only)
   POST /files/ask   {"q": "..."}    the file catalog: "where is ...?" (read only, via n8n)
   POST /audio/hijack {"session": "TaleSpin VO", "action": "start"|"stop"}    Audio Hijack session (HALT first)
   POST /airfoil     {"speaker": "Kitchen", "action": "connect"|"disconnect"} Airfoil speaker (HALT first)
@@ -102,6 +103,11 @@ def airfoil(body):
     receipt("airfoil", {"speaker": name, "action": action}, ok)
     return (200 if ok else 502), {"ok": ok, "speaker": name, "action": action, **({} if ok else {"error": out})}
 
+def brief():
+    sys.path.insert(0, str(Path(__file__).resolve().parents[2] / "scripts" / "brief"))
+    import morning
+    return 200, morning.brief()
+
 WARP_JOBS = {"noizytek-scan", "allgreen", "party"}   # each is a launch configuration in infra/warp/launch_configurations
 
 def warp(body):
@@ -118,7 +124,7 @@ def warp(body):
     receipt("warp", {"job": job}, ok)
     return (200 if ok else 502), {"ok": ok, "job": job, **({} if ok else {"error": out})}
 
-ROUTES = {("POST", "/warp"): warp, ("GET", "/drives"): lambda b: drives(), ("POST", "/files/ask"): files_ask,
+ROUTES = {("POST", "/warp"): warp, ("GET", "/brief"): lambda b: brief(), ("GET", "/drives"): lambda b: drives(), ("POST", "/files/ask"): files_ask,
           ("POST", "/audio/hijack"): audio_hijack, ("POST", "/airfoil"): airfoil}
 
 def make_server(host, port, key):

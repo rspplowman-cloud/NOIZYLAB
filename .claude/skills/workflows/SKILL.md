@@ -12,6 +12,7 @@ Answer RSP_001 in short bullets (CLAUDE.md). First show the menu, then run what 
 | Workflow | What it does | Command (Warp or Ghostty, on M2Ultra) |
 |---|---|---|
 | **bringup** | First-time setup of everything on M2Ultra (plan first, `--apply` to do it) | `python3 infra/m2ultra/bringup.py` |
+| **brief** | Morning brief: what's red, what waits on you, the one thing to ship | `python3 scripts/brief/morning.py` |
 | **party** | Everything in one safe run: HALT, drives, libraries, TaleSpin, catalog, Workspace plan, all green | `bash scripts/party/party.sh` |
 | **allgreen** | Every service and HEAVEN, one line each | `bash infra/m2ultra/allgreen.sh` |
 | **drives** | NOIZYTEK health grades for every drive (12 TB stays protected) | `python3 services/noizytek/noizytek.py scan` |
@@ -21,6 +22,7 @@ Answer RSP_001 in short bullets (CLAUDE.md). First show the menu, then run what 
 | **workspace** | Google Workspace shared-drive plan | `python3 scripts/archive/workspace_plan.py <libraries>` |
 | **cloud rescue** | Encrypted, add-only upload, verified | `bash scripts/archive/cloud_rescue.sh <folder> <crypt-remote>:` |
 | **bridge** | iPhone ⇄ M2Ultra door for Siri | `python3 services/noizybridge/bridge.py` |
+| **bots** | Slack and Discord `/noizy` commands into M2Ultra | `node services/noizybots/src/main.mjs` |
 | **sovereign git** | Mirror repos and Notion to Forgejo | `bash scripts/sovereign-git/sync.sh` |
 | **history** | Everything about RSP_001's time and spend with Claude (below) | run by Claude |
 

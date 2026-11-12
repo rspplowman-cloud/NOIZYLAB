@@ -1,0 +1,10 @@
+{
+  "name": "noizybots",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "NOIZYBOTS: Slack and Discord slash commands into M2Ultra, through NOIZYBRIDGE. Outbound connections only. No dependencies.",
+  "license": "AGPL-3.0-or-later",
+  "engines": { "node": ">=22.5" },
+  "scripts": { "start": "node src/main.mjs", "test": "node --test test/*.test.mjs" }
+}

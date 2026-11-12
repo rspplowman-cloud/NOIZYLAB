@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>NOIZYVOX: bank your voice. You own it.</title>
+<meta name="description" content="NOIZYVOX is consent-first voice banking. Your voice stays yours: you decide every use, you can switch it off, and you keep 75%.">
+<style>
+  :root { --bg:#faf8f4; --ink:#1c1b19; --soft:#5a564f; --line:#d9d4ca; --accent:#0b5d4a; --on:#ffffff; }
+  @media (prefers-color-scheme: dark) { :root { --bg:#151412; --ink:#f1ede6; --soft:#b3ada2; --line:#35322d; --accent:#58c7a8; --on:#10231d; } }
+  * { box-sizing: border-box; }
+  body { margin:0; background:var(--bg); color:var(--ink); font:20px/1.6 -apple-system, "Segoe UI", system-ui, sans-serif; }
+  main { max-width: 42rem; margin: 0 auto; padding: 2.5rem 1rem 4rem; }
+  h1 { font-size: 2.4rem; line-height: 1.15; margin: 0 0 1rem; }
+  h2 { font-size: 1.4rem; margin: 2.5rem 0 .5rem; }
+  p.lead { font-size: 1.3rem; color: var(--soft); }
+  ul { padding-left: 1.2rem; } li { margin: .5rem 0; }
+  form { border-top: 1px solid var(--line); margin-top: 2.5rem; padding-top: 1.5rem; }
+  label { display:block; font-weight:600; margin: 1rem 0 .3rem; }
+  input, select { width:100%; font: inherit; padding: .8rem; border:2px solid var(--line); border-radius:.5rem; background:var(--bg); color:var(--ink); }
+  input:focus, select:focus, button:focus { outline: 3px solid var(--accent); outline-offset: 2px; }
+  button { margin-top:1.5rem; font: inherit; font-weight:700; padding: 1rem 1.5rem; border:0; border-radius:.5rem; background:var(--accent); color:var(--on); cursor:pointer; min-height: 3.5rem; }
+  .note { font-size: 1rem; color: var(--soft); }
+  .hp { position:absolute; left:-9999px; }
+</style>
+</head>
+<body>
+<main>
+  <h1>Bank your voice. You own it.</h1>
+  <p class="lead">For people whose voice is changing, and for anyone who wants their voice kept safe.</p>
+
+  <h2>What NOIZYVOX is</h2>
+  <ul>
+    <li><strong>Your voice, recorded and kept for you.</strong></li>
+    <li><strong>Nothing happens without your yes.</strong> Every use needs your consent, written down.</li>
+    <li><strong>You can switch it off.</strong> One switch stops every use.</li>
+    <li><strong>You keep 75%</strong> of anything your voice earns.</li>
+    <li><strong>Never used to train AI</strong> unless you say so, in writing.</li>
+  </ul>
+
+  <h2>Who is building it</h2>
+  <p>Robert Stephen Plowman, a composer and sound designer. He is the first person to bank his voice with it.</p>
+
+  <h2>Where it stands</h2>
+  <p>NOIZYVOX is not open yet. We are starting with a small first group. Leave your email and we will write when there is a place for you.</p>
+
+  <form name="voicebank-waitlist" method="POST" data-netlify="true" netlify-honeypot="company">
+    <input type="hidden" name="form-name" value="voicebank-waitlist">
+    <p class="hp"><label>Leave this empty <input name="company" tabindex="-1" autocomplete="off"></label></p>
+    <label for="email">Your email</label>
+    <input id="email" name="email" type="email" required autocomplete="email">
+    <label for="who">Who is this for?</label>
+    <select id="who" name="who">
+      <option>Me</option>
+      <option>Someone I care for</option>
+      <option>I am a voice actor or performer</option>
+      <option>I work in speech or health care</option>
+    </select>
+    <button type="submit">Tell me when it opens</button>
+    <p class="note">We use your email only to write to you about NOIZYVOX. Never sold, never shared. NOIZYVOX is not a medical service.</p>
+  </form>
+</main>
+</body>
+</html>

@@ -20,6 +20,19 @@ public struct DriveHealthIntent: AppIntent {
     }
 }
 
+public struct MorningBriefIntent: AppIntent {
+    public static var title: LocalizedStringResource = "NOIZY morning brief"
+    public static var description = IntentDescription("What is red, what is waiting on you, and the one thing to ship today. Read only.")
+    public init() {}
+    public func perform() async throws -> some IntentResult & ProvidesDialog {
+        let r = try await NOIZYBridge.call("/brief")
+        let red = (r["red"] as? [String] ?? []).joined(separator: " ")
+        let waiting = (r["waiting"] as? [String] ?? []).joined(separator: ". ")
+        let ship = r["ship"] as? String ?? ""
+        return .result(dialog: IntentDialog(stringLiteral: "\(red) Waiting on you: \(waiting). Ship today: \(ship)"))
+    }
+}
+
 public struct FindFileIntent: AppIntent {
     public static var title: LocalizedStringResource = "Find a NOIZY file"
     public static var description = IntentDescription("Asks the NOIZY file catalog on M2Ultra where something is. Read only.")
@@ -93,6 +106,8 @@ public struct NOIZYShortcuts: AppShortcutsProvider {
     public static var appShortcuts: [AppShortcut] {
         AppShortcut(intent: DriveHealthIntent(), phrases: ["Check my drives with \(.applicationName)", "How are the drives in \(.applicationName)"],
                     shortTitle: "Drives", systemImageName: "internaldrive")
+        AppShortcut(intent: MorningBriefIntent(), phrases: ["Morning brief with \(.applicationName)", "What's my day in \(.applicationName)"],
+                    shortTitle: "Brief", systemImageName: "sun.max")
         AppShortcut(intent: FindFileIntent(), phrases: ["Find a file with \(.applicationName)", "Where is it in \(.applicationName)"],
                     shortTitle: "Find file", systemImageName: "magnifyingglass")
         AppShortcut(intent: AudioHijackIntent(), phrases: ["Start recording with \(.applicationName)", "Record on M2Ultra with \(.applicationName)"],
