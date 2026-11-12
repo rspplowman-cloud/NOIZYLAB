@@ -109,6 +109,40 @@ class Bridge(unittest.TestCase):
         code, body = self.call("GET", "/brief")
         self.assertEqual(code, 200); self.assertEqual(sorted(body), ["red", "ship", "waiting"])
 
+    def test_ask_room_and_army_through_local_services(self):
+        seen = []
+        class Local(http.server.BaseHTTPRequestHandler):
+            def _r(s, obj): s.send_response(200); s.end_headers(); s.wfile.write(json.dumps(obj).encode())
+            def do_GET(s):
+                seen.append(("GET", s.path, s.headers.get("authorization")))
+                if s.path == "/roster": return s._r({"soldiers": [{"name": "GABRIEL"}, {"name": "LUCY"}]})
+                if s.path == "/tasks": return s._r({"tasks": [{"id": "t1", "state": "awaiting_approval", "verb": "deploy", "target": "x"}, {"id": "t2", "state": "done"}]})
+            def do_POST(s):
+                n = int(s.headers.get("content-length") or 0); b = json.loads(s.rfile.read(n) or b"{}"); seen.append(("POST", s.path, b))
+                if s.path == "/sessions": return s._r({"id": "dc_1"})
+                if s.path.endswith("/ask"): return s._r({"answers": [{"agent": "GABRIEL", "text": "- Do the lab call first."}, {"agent": "LUCY", "text": "- Noted."}]})
+                s._r({})
+            def log_message(*a): pass
+        loc = socketserver.TCPServer(("127.0.0.1", 0), Local); threading.Thread(target=loc.serve_forever, daemon=True).start()
+        base = f"http://127.0.0.1:{loc.server_address[1]}"
+        os.environ.update({"DREAMCHAMBER_URL": base, "NOIZYARMY_URL": base})
+        try:
+            os.environ.pop("DREAMCHAMBER_TOKEN", None)
+            self.assertEqual(self.call("POST", "/ask", {"q": "what first?"})[0], 503)
+            os.environ["DREAMCHAMBER_TOKEN"] = "t" * 30
+            Halt.halted = True
+            self.assertEqual(self.call("POST", "/ask", {"q": "what first?"})[0], 423)
+            Halt.halted = False
+            code, body = self.call("POST", "/ask", {"q": "what first?"})
+            self.assertEqual(code, 200, body); self.assertEqual([a["agent"] for a in body["answers"]], ["GABRIEL", "LUCY"])
+            posts = [p for m, p, _ in seen if m == "POST"]
+            self.assertEqual(posts, ["/sessions", "/sessions/dc_1/bring_in", "/sessions/dc_1/ask", "/sessions/dc_1/close"])
+            code, body = self.call("GET", "/army")
+            self.assertEqual(body["soldiers"], ["GABRIEL", "LUCY"]); self.assertEqual(body["awaiting_your_approval"][0]["id"], "t1")
+            self.assertFalse(any(m == "POST" and "/task" in p for m, p, _ in seen), "bridge never dispatches or approves")
+        finally:
+            loc.shutdown()
+
     def test_files_ask_needs_its_own_key(self):
         os.environ.pop("NOIZY_ASK_KEY", None)
         self.assertEqual(self.call("POST", "/files/ask", {"q": "takes"})[0], 503)

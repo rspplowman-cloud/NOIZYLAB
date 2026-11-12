@@ -1,0 +1,197 @@
+{
+  "name": "NOIZY: GABRIEL morning brief to Slack and Discord",
+  "nodes": [
+    {
+      "id": "afaae43c-dae2-5a11-8f08-c82509dbc977",
+      "name": "Every morning",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        0,
+        0
+      ],
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "triggerAtHour": 8
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "39ac5f9e-a71b-5b46-9950-7a19c19736cf",
+      "name": "Config",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        220,
+        0
+      ],
+      "parameters": {
+        "jsCode": "// Fill these in once after import. Nothing secret here: keys live in n8n credentials.\nreturn [{ json: {\n  HALT_URL: 'https://SET-ME',\n  BRIDGE: 'http://SET-ME:9795',          // NOIZYBRIDGE on M2Ultra's tailnet address\n  SLACK_WEBHOOK: '',                      // optional: a Slack incoming-webhook URL for YOUR private channel\n  DISCORD_WEBHOOK: '',                    // optional: a Discord webhook URL for YOUR private channel\n} }];"
+      }
+    },
+    {
+      "id": "8d13528d-1ea2-5922-98cb-7a7e92c7dc1e",
+      "name": "HALT status",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        440,
+        0
+      ],
+      "parameters": {
+        "method": "GET",
+        "url": "={{ $json.HALT_URL }}/status",
+        "options": {}
+      },
+      "onError": "continueRegularOutput"
+    },
+    {
+      "id": "9d08451d-04bc-5687-b012-9240ec8c7c5d",
+      "name": "HALT gate",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        660,
+        0
+      ],
+      "parameters": {
+        "jsCode": "const cfg = $('Config').first().json; const r = $input.first().json;\nif (!cfg.HALT_URL || cfg.HALT_URL.includes('SET-ME')) throw new Error('HALT_URL not set in Config: stopping (fail closed).');\nif (r.error || r.halted !== false) throw new Error('HALT is set or unreachable: stopping.');\nreturn [{ json: cfg }];"
+      }
+    },
+    {
+      "id": "115c1672-60ab-5ac6-85c9-4e49739c7131",
+      "name": "Get brief",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        880,
+        0
+      ],
+      "parameters": {
+        "method": "GET",
+        "url": "={{ $json.BRIDGE }}/brief",
+        "options": {},
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth"
+      },
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "",
+          "name": "NOIZY bridge key"
+        }
+      }
+    },
+    {
+      "id": "f1a8e9a6-b9f7-5767-9c2b-12f0234bf5d1",
+      "name": "Format",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1100,
+        0
+      ],
+      "parameters": {
+        "jsCode": "// GABRIEL's morning brief, from the bridge. No AI writes it: it only repeats the three lists.\nconst b = $input.first().json; const cfg = $('Config').first().json;\nconst text = ['GABRIEL \u00b7 morning brief', 'RED: ' + (b.red || []).join(' '), 'WAITING ON YOU: ' + (b.waiting || []).join(' \u00b7 '), 'SHIP TODAY: ' + (b.ship || '')].join('\\n');\nconst out = [];\nif (cfg.SLACK_WEBHOOK) out.push({ json: { url: cfg.SLACK_WEBHOOK, body: { text } } });\nif (cfg.DISCORD_WEBHOOK) out.push({ json: { url: cfg.DISCORD_WEBHOOK, body: { content: text.slice(0, 1900) } } });\nreturn out;"
+      }
+    },
+    {
+      "id": "f4551f05-31da-5e33-9897-893970a12b5e",
+      "name": "Post",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1320,
+        0
+      ],
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $json.url }}",
+        "options": {},
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify($json.body) }}"
+      }
+    }
+  ],
+  "connections": {
+    "Every morning": {
+      "main": [
+        [
+          {
+            "node": "Config",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Config": {
+      "main": [
+        [
+          {
+            "node": "HALT status",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HALT status": {
+      "main": [
+        [
+          {
+            "node": "HALT gate",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HALT gate": {
+      "main": [
+        [
+          {
+            "node": "Get brief",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get brief": {
+      "main": [
+        [
+          {
+            "node": "Format",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Format": {
+      "main": [
+        [
+          {
+            "node": "Post",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "saveDataSuccessExecution": "none"
+  },
+  "active": false,
+  "meta": {
+    "templateCredsSetupCompleted": false
+  },
+  "tags": []
+}

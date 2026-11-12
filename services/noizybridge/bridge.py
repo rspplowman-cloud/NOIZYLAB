@@ -8,6 +8,8 @@ A short list of verbs, nothing else. No shell, no file paths, no free-form comma
 
   GET  /health                      open: is the bridge up, is HALT clear
   GET  /drives                      NOIZYTEK's latest drive cards (read only)
+  POST /ask   {"q": "..."}          GABRIEL and LUCY answer in role through DreamChamber (advice only; HALT first)
+  GET  /army                        NOIZYARMY roster and open tasks (read only; the bridge never dispatches)
   GET  /brief                       the morning brief: what is red, what waits on RSP_001, the one thing to ship (read only)
   POST /files/ask   {"q": "..."}    the file catalog: "where is ...?" (read only, via n8n)
   POST /audio/hijack {"session": "TaleSpin VO", "action": "start"|"stop"}    Audio Hijack session (HALT first)
@@ -108,6 +110,51 @@ def brief():
     import morning
     return 200, morning.brief()
 
+def _local(method, url, body=None, token=None, timeout=120):
+    req = urllib.request.Request(url, method=method, data=json.dumps(body).encode() if body is not None else None,
+                                 headers={"content-type": "application/json", **({"authorization": f"Bearer {token}"} if token else {})})
+    with urllib.request.urlopen(req, timeout=timeout) as r:
+        raw = r.read()
+        return json.loads(raw) if raw else {}
+
+def ask_room(body):
+    """GABRIEL and LUCY answer one question, in role, through DreamChamber. Advice only: they have no tools there."""
+    q = str(body.get("q", "")).strip()[:1000]
+    if not q: return 400, {"error": "ask needs q"}
+    token = os.environ.get("DREAMCHAMBER_TOKEN")
+    if not token: return 503, {"error": "DREAMCHAMBER_TOKEN not set in the env file"}
+    if halted(): return 423, {"error": "HALT is set or unreachable: the room stays closed"}
+    base = os.environ.get("DREAMCHAMBER_URL", "http://127.0.0.1:9790").rstrip("/")
+    sid = None
+    try:
+        sid = _local("POST", base + "/sessions", {"ritual": "open", "title": "Bridge question"}, token)["id"]
+        _local("POST", f"{base}/sessions/{sid}/bring_in", {"agent": "LUCY"}, token)
+        r = _local("POST", f"{base}/sessions/{sid}/ask", {"prompt": q}, token, timeout=180)
+        answers = [{"agent": a.get("agent"), "text": (a.get("text") or a.get("error") or "")[:1500]} for a in r.get("answers", [])]
+        receipt("ask", {"chars": len(q), "agents": [a["agent"] for a in answers]}, True)
+        return 200, {"answers": answers}
+    except Exception as e:
+        receipt("ask", {"chars": len(q)}, False)
+        return 502, {"error": f"DreamChamber did not answer ({e.__class__.__name__}). Is it running on 9790?"}
+    finally:
+        if sid:
+            try: _local("POST", f"{base}/sessions/{sid}/close", {"note": "bridge"}, token, timeout=20)
+            except Exception: pass
+
+def army():
+    """NOIZYARMY roster and open work. Read only: the bridge never dispatches or approves."""
+    base = os.environ.get("NOIZYARMY_URL", "http://127.0.0.1:9333").rstrip("/")
+    key = os.environ.get("NOIZYARMY_KEY")
+    try:
+        roster = _local("GET", base + "/roster", token=key, timeout=10).get("soldiers", [])
+        tasks = _local("GET", base + "/tasks", token=key, timeout=10).get("tasks", [])
+    except Exception as e:
+        return 502, {"error": f"NOIZYARMY did not answer ({e.__class__.__name__}). Is it running on 9333?"}
+    by = {}
+    for t in tasks: by[t.get("state", "?")] = by.get(t.get("state", "?"), 0) + 1
+    waiting = [{"id": t.get("id"), "verb": t.get("verb"), "target": t.get("target")} for t in tasks if t.get("state") == "awaiting_approval"][:5]
+    return 200, {"soldiers": [x.get("name") for x in roster], "tasks": by, "awaiting_your_approval": waiting}
+
 WARP_JOBS = {"noizytek-scan", "allgreen", "party"}   # each is a launch configuration in infra/warp/launch_configurations
 
 def warp(body):
@@ -124,7 +171,7 @@ def warp(body):
     receipt("warp", {"job": job}, ok)
     return (200 if ok else 502), {"ok": ok, "job": job, **({} if ok else {"error": out})}
 
-ROUTES = {("POST", "/warp"): warp, ("GET", "/brief"): lambda b: brief(), ("GET", "/drives"): lambda b: drives(), ("POST", "/files/ask"): files_ask,
+ROUTES = {("POST", "/warp"): warp, ("POST", "/ask"): ask_room, ("GET", "/army"): lambda b: army(), ("GET", "/brief"): lambda b: brief(), ("GET", "/drives"): lambda b: drives(), ("POST", "/files/ask"): files_ask,
           ("POST", "/audio/hijack"): audio_hijack, ("POST", "/airfoil"): airfoil}
 
 def make_server(host, port, key):

@@ -3,7 +3,7 @@ import { test } from "node:test";
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 const load = (f) => JSON.parse(readFileSync(new URL(`../workflows/${f}`, import.meta.url)));
-const wfs = { index: load("noizy-catalog-index.json"), ask: load("noizy-catalog-ask.json") };
+const wfs = { index: load("noizy-catalog-index.json"), ask: load("noizy-catalog-ask.json"), brief: load("noizy-morning-brief.json") };
 const node = (wf, name) => wf.nodes.find((n) => n.name === name);
 const run = (wf, name, input, refs = {}) => {
   const $input = { first: () => ({ json: input[0] }), all: () => input.map((json) => ({ json })) };
@@ -24,11 +24,11 @@ test("every connection points at a real node, and nothing is active on import", 
 });
 
 test("HALT gate comes before any model, Forgejo or Qdrant call", () => {
-  for (const [wf, start] of [[wfs.index, "Daily"], [wfs.index, "Forgejo push"], [wfs.ask, "Ask"]]) {
+  for (const [wf, start] of [[wfs.index, "Daily"], [wfs.index, "Forgejo push"], [wfs.ask, "Ask"], [wfs.brief, "Every morning"]]) {
     const path = order(wf, start);
     const gate = path.indexOf("HALT gate");
     assert.ok(gate > 0, `no HALT gate after ${start}`);
-    path.slice(0, gate).forEach((n) => assert.ok(!/Embed|Qdrant|catalog|collection/i.test(n), `${n} runs before HALT`));
+    path.slice(0, gate).forEach((n) => assert.ok(!/Embed|Qdrant|catalog|collection|brief|Post/i.test(n), `${n} runs before HALT`));
   }
 });
 
@@ -80,4 +80,12 @@ test("webhooks need a key, the collection reset runs once, and no secret is writ
     for (const n of wf.nodes) if (n.credentials) for (const c of Object.values(n.credentials)) assert.equal(c.id, "");
   }
   for (const n of wfs.index.nodes.filter((n) => n.name.startsWith("Fresh collection"))) assert.equal(n.executeOnce, true);
+});
+
+test("morning brief: posts only to the webhooks RSP_001 set, and nothing when none is set", () => {
+  const b = { red: ["Nothing red."], waiting: ["Call the lab"], ship: "Record voice" };
+  assert.equal(run(wfs.brief, "Format", [b], { Config: [{ SLACK_WEBHOOK: "", DISCORD_WEBHOOK: "" }] }).length, 0);
+  const out = run(wfs.brief, "Format", [b], { Config: [{ SLACK_WEBHOOK: "https://hooks.slack.example/x", DISCORD_WEBHOOK: "https://discord.example/y" }] });
+  assert.equal(out.length, 2);
+  assert.match(out[0].json.body.text, /SHIP TODAY: Record voice/); assert.match(out[1].json.body.content, /WAITING ON YOU: Call the lab/);
 });

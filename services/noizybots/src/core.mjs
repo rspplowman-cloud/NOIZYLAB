@@ -1,6 +1,8 @@
 // NOIZYBOTS core: one command line in, one short plain answer out. Shared by Slack and Discord.
 //
 //   /noizy brief            what is red, what waits on RSP_001, the one thing to ship
+//   /noizy ask <question>   GABRIEL and LUCY answer in role (DreamChamber; advice only)
+//   /noizy army             NOIZYARMY roster and open tasks (read only)
 //   /noizy drives           NOIZYTEK drive grades
 //   /noizy find <words>     where is a file (the catalog)
 //   /noizy run allgreen|scan|party     opens that fixed Warp job on M2Ultra (HALT is checked by the bridge)
@@ -10,7 +12,7 @@
 // The bot can do nothing the bridge cannot: no shell, no paths, no free-form commands. Tokens come from the env file.
 
 const JOBS = { allgreen: "allgreen", scan: "noizytek-scan", party: "party" };
-export const HELP = "NOIZY commands: brief · drives · find <words> · run allgreen | scan | party";
+export const HELP = "NOIZY commands: brief · ask <question> · army · drives · find <words> · run allgreen | scan | party";
 
 export function allowed(userId, list = process.env.NOIZY_BOT_USERS || "") {
   return list.split(",").map((s) => s.trim()).filter(Boolean).includes(String(userId));
@@ -52,6 +54,17 @@ export async function handle(text, userId, bridge, allowList) {
         const r = await bridge("/files/ask", { q: arg });
         const hits = (r.results || []).slice(0, 5);
         return hits.length ? clip(hits.map((h) => `${h.name}: ${h.path}`).join("\n")) : `Nothing found for "${arg}".`;
+      }
+      case "ask": {
+        if (!arg) return "Ask what? Example: ask what should I ship today";
+        const r = await bridge("/ask", { q: arg });
+        return clip((r.answers || []).map((a) => `${a.agent}:\n${a.text}`).join("\n\n") || "Nobody answered.");
+      }
+      case "army": {
+        const a = await bridge("/army");
+        const tasks = Object.entries(a.tasks || {}).map(([k, v]) => `${v} ${k}`).join(", ") || "no tasks";
+        const wait = (a.awaiting_your_approval || []).map((t) => `${t.verb} ${t.target || ""}`.trim()).join("; ");
+        return clip(`NOIZYARMY: ${a.soldiers.length} soldiers (${a.soldiers.join(", ")}).\nTasks: ${tasks}.${wait ? "\nWaiting on your approval: " + wait : ""}`);
       }
       case "run": {
         const job = JOBS[(rest[0] || "").toLowerCase()];

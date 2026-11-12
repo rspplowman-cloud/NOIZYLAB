@@ -5,6 +5,8 @@
 | You type | M2Ultra does |
 |---|---|
 | `/noizy brief` | What's red, what waits on you, the one thing to ship |
+| `/noizy ask what should I ship today` | **GABRIEL and LUCY answer, in role** (DreamChamber; advice only, nothing runs) |
+| `/noizy army` | NOIZYARMY roster, open tasks, and what waits on your approval |
 | `/noizy drives` | NOIZYTEK drive grades |
 | `/noizy find TaleSpin narration` | Where a file is (the catalog) |
 | `/noizy run allgreen` (or `scan`, `party`) | Opens that Warp job on M2Ultra (HALT first) |

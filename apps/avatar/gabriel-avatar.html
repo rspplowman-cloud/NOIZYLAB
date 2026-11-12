@@ -1,0 +1,608 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gabriel - AAA Enhanced Avatar</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 50%, #16213e 100%);
+            overflow: hidden;
+            height: 100vh;
+        }
+        #container {
+            width: 100%;
+            height: 100vh;
+            position: relative;
+        }
+        #canvas {
+            width: 100%;
+            height: 100%;
+            display: block;
+        }
+        #controls {
+            position: absolute;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0, 0, 0, 0.9);
+            padding: 25px 35px;
+            border-radius: 25px;
+            display: flex;
+            gap: 20px;
+            align-items: center;
+            backdrop-filter: blur(15px);
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5), 0 0 20px rgba(102, 126, 234, 0.3);
+            border: 1px solid rgba(102, 126, 234, 0.3);
+        }
+        #textInput {
+            padding: 18px 30px;
+            border: 2px solid #667eea;
+            border-radius: 35px;
+            background: rgba(255, 255, 255, 0.98);
+            color: #333;
+            font-size: 16px;
+            width: 550px;
+            outline: none;
+            transition: all 0.3s;
+        }
+        #textInput:focus {
+            border-color: #764ba2;
+            box-shadow: 0 0 20px rgba(118, 75, 162, 0.5);
+        }
+        #speakBtn, #listenBtn {
+            padding: 18px 40px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 35px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 5px 20px rgba(102, 126, 234, 0.4);
+        }
+        #speakBtn:hover, #listenBtn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 30px rgba(102, 126, 234, 0.6);
+        }
+        #listenBtn.listening {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            animation: pulse 1.5s infinite;
+        }
+        @keyframes pulse {
+            0%, 100% { box-shadow: 0 5px 20px rgba(245, 87, 108, 0.5); }
+            50% { box-shadow: 0 5px 40px rgba(245, 87, 108, 0.9); }
+        }
+        #status {
+            position: absolute;
+            top: 30px;
+            left: 30px;
+            background: rgba(0, 0, 0, 0.9);
+            color: white;
+            padding: 20px 30px;
+            border-radius: 20px;
+            font-size: 14px;
+            backdrop-filter: blur(15px);
+            box-shadow: 0 5px 25px rgba(0, 0, 0, 0.4);
+            border: 1px solid rgba(102, 126, 234, 0.2);
+        }
+        #emotions {
+            position: absolute;
+            top: 30px;
+            right: 30px;
+            display: flex;
+            gap: 12px;
+        }
+        .emotion-btn {
+            padding: 12px 24px;
+            background: rgba(255, 255, 255, 0.15);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 25px;
+            color: white;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 13px;
+            backdrop-filter: blur(10px);
+        }
+        .emotion-btn:hover {
+            background: rgba(255, 255, 255, 0.25);
+            transform: scale(1.1);
+            border-color: #667eea;
+        }
+        .emotion-btn.active {
+            background: rgba(102, 126, 234, 0.4);
+            border-color: #667eea;
+        }
+        #visualizer {
+            position: absolute;
+            bottom: 150px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 600px;
+            height: 150px;
+            background: rgba(0, 0, 0, 0.7);
+            border-radius: 20px;
+            padding: 20px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(102, 126, 234, 0.3);
+            display: none;
+        }
+        #visualizer.active {
+            display: block;
+        }
+        #audioBars {
+            display: flex;
+            align-items: flex-end;
+            justify-content: space-around;
+            height: 100%;
+            gap: 4px;
+        }
+        .audio-bar {
+            flex: 1;
+            background: linear-gradient(to top, #667eea, #764ba2);
+            min-height: 4px;
+            border-radius: 2px;
+            transition: height 0.1s ease;
+        }
+        #modelInfo {
+            position: absolute;
+            bottom: 30px;
+            right: 30px;
+            background: rgba(0, 0, 0, 0.8);
+            color: white;
+            padding: 15px 25px;
+            border-radius: 15px;
+            font-size: 12px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(102, 126, 234, 0.3);
+            display: none;
+        }
+        #modelInfo.active {
+            display: block;
+        }
+        .quality-badge {
+            display: inline-block;
+            padding: 4px 12px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: bold;
+            margin-left: 8px;
+        }
+    </style>
+</head>
+<body>
+    <div id="container">
+        <canvas id="canvas"></canvas>
+        <div id="status">Gabriel AAA Avatar | Status: Ready | Quality: AAA-Game</div>
+        <div id="emotions">
+            <button class="emotion-btn active" onclick="setEmotion('neutral')">😐 Neutral</button>
+            <button class="emotion-btn" onclick="setEmotion('happy')">😊 Happy</button>
+            <button class="emotion-btn" onclick="setEmotion('surprised')">😮 Surprised</button>
+            <button class="emotion-btn" onclick="setEmotion('thinking')">🤔 Thinking</button>
+            <button class="emotion-btn" onclick="setEmotion('speaking')">💬 Speaking</button>
+        </div>
+        <div id="visualizer">
+            <div id="audioBars"></div>
+        </div>
+        <div id="modelInfo">
+            <strong>AAA Model Loaded</strong><span class="quality-badge">PBR</span><br>
+            <small>7 Texture Maps | High-Res</small>
+        </div>
+        <div id="controls">
+            <button id="listenBtn" title="Click to start listening">🎤 Listen</button>
+            <input type="text" id="textInput" placeholder="Type or speak to Gabriel...">
+            <button id="speakBtn">💬 Speak</button>
+        </div>
+    </div>
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/OBJLoader.js"></script>
+    <script>
+        // AAA Enhanced Scene Setup
+        const scene = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+        const renderer = new THREE.WebGLRenderer({ 
+            canvas: document.getElementById('canvas'), 
+            antialias: true,
+            alpha: true,
+            powerPreference: "high-performance"
+        });
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        renderer.setPixelRatio(window.devicePixelRatio);
+        renderer.shadowMap.enabled = true;
+        renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+        renderer.toneMapping = THREE.ACESFilmicToneMapping;
+        renderer.toneMappingExposure = 1.2;
+        
+        // Advanced Lighting (PBR-style)
+        const ambientLight = new THREE.AmbientLight(0xffffff, 0.6);
+        scene.add(ambientLight);
+        
+        const directionalLight1 = new THREE.DirectionalLight(0xffffff, 1.0);
+        directionalLight1.position.set(5, 8, 5);
+        directionalLight1.castShadow = true;
+        directionalLight1.shadow.mapSize.width = 2048;
+        directionalLight1.shadow.mapSize.height = 2048;
+        scene.add(directionalLight1);
+        
+        const directionalLight2 = new THREE.DirectionalLight(0x667eea, 0.5);
+        directionalLight2.position.set(-5, 4, -5);
+        scene.add(directionalLight2);
+        
+        const pointLight = new THREE.PointLight(0x764ba2, 0.8, 100);
+        pointLight.position.set(0, 6, 8);
+        scene.add(pointLight);
+        
+        const rimLight = new THREE.DirectionalLight(0xffffff, 0.4);
+        rimLight.position.set(0, 0, -10);
+        scene.add(rimLight);
+        
+        // Create Enhanced Gabriel Avatar Group
+        const avatarGroup = new THREE.Group();
+        let avatarMesh = null;
+        let currentEmotion = 'neutral';
+        
+        // Try to load AAA 3D model
+        const objLoader = new THREE.OBJLoader();
+        const modelPath = '/static/models/GABRIEL.obj';
+        
+        objLoader.load(modelPath, 
+            (object) => {
+                // Successfully loaded OBJ
+                object.traverse((child) => {
+                    if (child.isMesh) {
+                        child.castShadow = true;
+                        child.receiveShadow = true;
+                        avatarMesh = child;
+                    }
+                });
+                avatarGroup.add(object);
+                scene.add(avatarGroup);
+                document.getElementById('modelInfo').classList.add('active');
+                console.log('AAA 3D model loaded');
+            },
+            (progress) => {
+                console.log('Loading model:', (progress.loaded / progress.total * 100) + '%');
+            },
+            (error) => {
+                console.log('Model load failed, using procedural avatar:', error);
+                createProceduralAvatar();
+            }
+        );
+        
+        function createProceduralAvatar() {
+            // Fallback: Create procedural avatar if model fails to load
+            const headGeometry = new THREE.SphereGeometry(1, 64, 64);
+            const headMaterial = new THREE.MeshStandardMaterial({ 
+                color: 0xffdbac,
+                roughness: 0.7,
+                metalness: 0.1
+            });
+            const head = new THREE.Mesh(headGeometry, headMaterial);
+            head.castShadow = true;
+            head.receiveShadow = true;
+            avatarGroup.add(head);
+            avatarMesh = head;
+            scene.add(avatarGroup);
+        }
+        
+        // Enhanced Eyes
+        const eyeGeometry = new THREE.SphereGeometry(0.12, 32, 32);
+        const eyeMaterial = new THREE.MeshStandardMaterial({ color: 0xffffff, roughness: 0.2 });
+        
+        const leftEye = new THREE.Mesh(eyeGeometry, eyeMaterial);
+        leftEye.position.set(-0.3, 0.25, 0.92);
+        avatarGroup.add(leftEye);
+        
+        const rightEye = new THREE.Mesh(eyeGeometry, eyeMaterial);
+        rightEye.position.set(0.3, 0.25, 0.92);
+        avatarGroup.add(rightEye);
+        
+        // Pupils
+        const pupilGeometry = new THREE.SphereGeometry(0.08, 32, 32);
+        const pupilMaterial = new THREE.MeshStandardMaterial({ color: 0x000000, roughness: 0.1 });
+        const leftPupil = new THREE.Mesh(pupilGeometry, pupilMaterial);
+        leftPupil.position.set(-0.3, 0.25, 1.0);
+        avatarGroup.add(leftPupil);
+        const rightPupil = new THREE.Mesh(pupilGeometry, pupilMaterial);
+        rightPupil.position.set(0.3, 0.25, 1.0);
+        avatarGroup.add(rightPupil);
+        
+        // Enhanced Mouth with lip sync
+        const mouthGroup = new THREE.Group();
+        const mouthGeometry = new THREE.TorusGeometry(0.25, 0.08, 16, 32);
+        const mouthMaterial = new THREE.MeshStandardMaterial({ 
+            color: 0x8b0000,
+            roughness: 0.6
+        });
+        const mouth = new THREE.Mesh(mouthGeometry, mouthMaterial);
+        mouth.position.set(0, -0.25, 0.92);
+        mouth.rotation.x = Math.PI / 2;
+        mouthGroup.add(mouth);
+        avatarGroup.add(mouthGroup);
+        
+        // Eyebrows
+        const eyebrowGeometry = new THREE.BoxGeometry(0.4, 0.05, 0.02);
+        const eyebrowMaterial = new THREE.MeshStandardMaterial({ 
+            color: 0x654321,
+            roughness: 0.8
+        });
+        const leftEyebrow = new THREE.Mesh(eyebrowGeometry, eyebrowMaterial);
+        leftEyebrow.position.set(-0.3, 0.45, 0.95);
+        leftEyebrow.rotation.z = -0.1;
+        avatarGroup.add(leftEyebrow);
+        const rightEyebrow = new THREE.Mesh(eyebrowGeometry, eyebrowMaterial);
+        rightEyebrow.position.set(0.3, 0.45, 0.95);
+        rightEyebrow.rotation.z = 0.1;
+        avatarGroup.add(rightEyebrow);
+        
+        camera.position.set(0, 0, 5);
+        camera.lookAt(0, 0, 0);
+        
+        // Animation states
+        let isSpeaking = false;
+        let blinkTimer = 0;
+        let eyeBlinkState = 1;
+        let lipSyncValue = 0;
+        let audioContext = null;
+        let analyser = null;
+        let dataArray = null;
+        let animationId = null;
+        
+        // Audio visualizer bars
+        const visualizer = document.getElementById('visualizer');
+        const audioBars = document.getElementById('audioBars');
+        for (let i = 0; i < 64; i++) {
+            const bar = document.createElement('div');
+            bar.className = 'audio-bar';
+            audioBars.appendChild(bar);
+        }
+        const barElements = document.querySelectorAll('.audio-bar');
+        
+        // Emotions
+        const emotions = {
+            happy: { eyebrowY: 0.48, mouthY: -0.2, mouthScale: 1.3, eyeScale: 1.1, color: 0xffd700 },
+            neutral: { eyebrowY: 0.45, mouthY: -0.25, mouthScale: 1.0, eyeScale: 1.0, color: 0xffffff },
+            surprised: { eyebrowY: 0.50, mouthY: -0.35, mouthScale: 1.5, eyeScale: 1.3, color: 0x00ff00 },
+            thinking: { eyebrowY: 0.43, mouthY: -0.25, mouthScale: 0.8, eyeScale: 0.9, color: 0x4169e1 },
+            speaking: { eyebrowY: 0.46, mouthY: -0.22, mouthScale: 1.4, eyeScale: 1.05, color: 0xff6347 }
+        };
+        
+        function setEmotion(emotion) {
+            currentEmotion = emotion;
+            const config = emotions[emotion];
+            if (config) {
+                // Update UI
+                document.querySelectorAll('.emotion-btn').forEach(btn => btn.classList.remove('active'));
+                event.target.classList.add('active');
+                
+                // Animate to emotion
+                animateToEmotion(config);
+            }
+        }
+        
+        function animateToEmotion(config) {
+            // Smooth transition to emotion state
+            // Implementation would use GSAP or custom animation
+        }
+        
+        // Enhanced Animation Loop
+        function animate() {
+            animationId = requestAnimationFrame(animate);
+            
+            const time = Date.now() * 0.001;
+            
+            // Gentle floating with smoother motion
+            avatarGroup.position.y = Math.sin(time * 0.5) * 0.2;
+            
+            // Smooth head rotation
+            avatarGroup.rotation.y = Math.sin(time * 0.2) * 0.15;
+            avatarGroup.rotation.x = Math.sin(time * 0.15) * 0.08;
+            
+            // Eye blinking (more natural)
+            blinkTimer += 0.016;
+            if (blinkTimer > 3 + Math.random() * 2) {
+                eyeBlinkState = 0.05;
+                blinkTimer = 0;
+            } else if (blinkTimer > 0.15) {
+                eyeBlinkState = 1;
+            }
+            leftEye.scale.y = eyeBlinkState;
+            rightEye.scale.y = eyeBlinkState;
+            
+            // Advanced lip sync with audio analysis
+            if (isSpeaking && analyser) {
+                analyser.getByteFrequencyData(dataArray);
+                const average = dataArray.reduce((a, b) => a + b) / dataArray.length;
+                lipSyncValue = Math.min(average / 128, 1.0);
+                
+                // Update mouth based on audio
+                const mouthOpen = 0.5 + lipSyncValue * 0.6;
+                mouthGroup.scale.y = mouthOpen;
+                mouthGroup.scale.x = 1 + lipSyncValue * 0.3;
+                
+                // Update visualizer
+                visualizer.classList.add('active');
+                updateAudioVisualizer(dataArray);
+                
+                // Head nod while speaking
+                avatarGroup.rotation.x += Math.sin(time * 3) * 0.03;
+                
+                // Eye movement (tracking)
+                const trackX = Math.sin(time * 2) * 0.08;
+                leftPupil.position.x = -0.3 + trackX;
+                rightPupil.position.x = 0.3 + trackX;
+            } else {
+                mouthGroup.scale.set(1, 1, 1);
+                visualizer.classList.remove('active');
+                
+                // Subtle idle movements
+                const idleX = Math.sin(time * 0.5) * 0.03;
+                leftPupil.position.x = -0.3 + idleX;
+                rightPupil.position.x = 0.3 + idleX;
+            }
+            
+            // Emotion-based adjustments
+            const emotion = emotions[currentEmotion];
+            if (emotion && !isSpeaking) {
+                leftEyebrow.position.y = emotion.eyebrowY;
+                rightEyebrow.position.y = emotion.eyebrowY;
+                mouthGroup.position.y = emotion.mouthY;
+                if (pointLight) {
+                    pointLight.color.setHex(emotion.color);
+                }
+            }
+            
+            renderer.render(scene, camera);
+        }
+        animate();
+        
+        function updateAudioVisualizer(dataArray) {
+            const barCount = barElements.length;
+            const dataStep = Math.floor(dataArray.length / barCount);
+            
+            barElements.forEach((bar, index) => {
+                const dataIndex = index * dataStep;
+                const value = dataArray[dataIndex] / 255;
+                const height = Math.max(value * 100, 4);
+                bar.style.height = height + '%';
+                bar.style.opacity = 0.5 + value * 0.5;
+            });
+        }
+        
+        // Voice and UI Controls
+        const speakBtn = document.getElementById('speakBtn');
+        const listenBtn = document.getElementById('listenBtn');
+        const textInput = document.getElementById('textInput');
+        const status = document.getElementById('status');
+        
+        let recognition = null;
+        let isListening = false;
+        
+        // Initialize Web Speech API
+        if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
+            const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+            recognition = new SpeechRecognition();
+            recognition.continuous = false;
+            recognition.interimResults = false;
+            recognition.lang = 'en-US';
+            
+            recognition.onresult = (event) => {
+                const transcript = event.results[0][0].transcript;
+                textInput.value = transcript;
+                setTimeout(() => speakText(transcript), 300);
+            };
+            
+            recognition.onerror = (event) => {
+                console.error('Speech recognition error:', event.error);
+                status.textContent = 'Gabriel | Error: ' + event.error;
+                isListening = false;
+                listenBtn.classList.remove('listening');
+            };
+            
+            recognition.onend = () => {
+                isListening = false;
+                listenBtn.classList.remove('listening');
+                status.textContent = 'Gabriel | Ready';
+            };
+        } else {
+            listenBtn.disabled = true;
+            listenBtn.title = 'Speech recognition not available';
+        }
+        
+        listenBtn.addEventListener('click', () => {
+            if (!recognition) return;
+            
+            if (isListening) {
+                recognition.stop();
+                isListening = false;
+                listenBtn.classList.remove('listening');
+                status.textContent = 'Gabriel | Stopped listening';
+            } else {
+                recognition.start();
+                isListening = true;
+                listenBtn.classList.add('listening');
+                status.textContent = 'Gabriel | Listening...';
+            }
+        });
+        
+        async function speakText(text) {
+            if (!text.trim()) return;
+            
+            isSpeaking = true;
+            status.textContent = 'Gabriel | Speaking...';
+            speakBtn.disabled = true;
+            setEmotion('speaking');
+            
+            try {
+                const response = await fetch(`/voice/speak/${encodeURIComponent(text)}?profile=uk_male75_pro`);
+                if (response.ok) {
+                    const blob = await response.blob();
+                    const audio = new Audio(URL.createObjectURL(blob));
+                    
+                    // Setup audio analysis for lip sync
+                    if (!audioContext) {
+                        audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                        analyser = audioContext.createAnalyser();
+                        analyser.fftSize = 256;
+                        dataArray = new Uint8Array(analyser.frequencyBinCount);
+                    }
+                    
+                    const source = audioContext.createMediaElementSource(audio);
+                    source.connect(analyser);
+                    analyser.connect(audioContext.destination);
+                    
+                    audio.play();
+                    
+                    audio.onended = () => {
+                        isSpeaking = false;
+                        status.textContent = 'Gabriel | Ready';
+                        speakBtn.disabled = false;
+                        setEmotion('neutral');
+                        mouthGroup.scale.set(1, 1, 1);
+                        visualizer.classList.remove('active');
+                    };
+                } else {
+                    throw new Error('Voice synthesis failed');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                status.textContent = 'Gabriel | Error occurred';
+                isSpeaking = false;
+                speakBtn.disabled = false;
+                setEmotion('neutral');
+            }
+        }
+        
+        speakBtn.addEventListener('click', () => {
+            const text = textInput.value.trim();
+            if (text) {
+                speakText(text);
+                textInput.value = '';
+            }
+        });
+        
+        textInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                speakBtn.click();
+            }
+        });
+        
+        // Window resize
+        window.addEventListener('resize', () => {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        });
+        
+        // Initial greeting
+        setTimeout(() => {
+            speakText('Hello! I am Gabriel, your AAA-enhanced AI assistant. Ready to serve.');
+        }, 1500);
+    </script>
+</body>
+</html>
