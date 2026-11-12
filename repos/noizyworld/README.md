@@ -52,6 +52,8 @@ ownership to any platform, label, or intermediary.
 | [NOIZYANTHROPIC](https://github.com/RSPNOIZY/NOIZYANTHROPIC) | AI governance + doctrine |
 | [NOIZYVOX](https://github.com/RSPNOIZY/NOIZYVOX) | Voice + schema core |
 
+**Community:** [THE GATHERING OF NOIZYFISH](https://whatsapp.com/channel/0029VbC8Ujq96H4OSUbWQA0G) — the WhatsApp channel. Follow for news from every brand.
+
 ---
 
 **killSwitchHolder:** RSP_001 | **covenant:** 75/25 | **horizon:** 10 years | **canon:** noizy.ai
