@@ -234,6 +234,7 @@ jobs:
       - run: node --test infra/n8n/test/workflows.test.mjs   # n8n catalog workflows: HALT first, sealed never embedded
       - run: bash scripts/party/test/test_party.sh   # one run: HALT first, clicking drive skipped, catalog pushed
       - run: python3 -m unittest discover -s services/noizytek/test -v   # NOIZYTEK: protected drive untouched, gentle rescue, no destructive commands
+      - run: python3 -m unittest discover -s services/noizybridge/test -v   # NOIZYBRIDGE: key, tailnet-only bind, HALT before actions, no injection
       - run: python3 -m unittest discover -s scripts/organize/test -v  # app map, Spotlight tags, video sort
       - run: python3 -m unittest discover -s services/covenant-math/test -v  # 75/25 math
   gabriel-voice:
