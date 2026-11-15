@@ -56,7 +56,7 @@ Four of his docs are now out of date: **Lumo has a live API endpoint**, **Infoma
 |---|---|---|---|---|---|---|
 | Cloudflare API MCP (Code Mode) | `search`, `execute`, `docs`, `whoami`; model writes JS run in a sandbox; ~1,100 tokens vs 1.17M native; `?codemode=false` gives per-endpoint tools | Official | Apache-2.0 | OAuth or API token as Bearer | `https://mcp.cloudflare.com/mcp`; github.com/cloudflare/mcp | Docs (27 Oct 2026), repo, LICENSE |
 | Product servers | docs, containers, browser, dex, casb, blog, Agents SDK docs | Official | Apache-2.0 | OAuth | github.com/cloudflare/mcp-server-cloudflare | README |
-| Deprecated servers | ai-gateway, auditlogs, autorag, dns-analytics, graphql; Workers Bindings (this session's connector says so itself) | Official | n/a | n/a | Same | README; connector notice |
+| Deprecated servers | ai-gateway, auditlogs, autorag, dns-analytics, graphql, logpush, observability, radar, workers-bindings, workers-builds (the full list in Cloudflare's README, rechecked 2026-11-15) | Official | n/a | n/a | Same | README; connector notice |
 | `createMcpHandler` | Stateless remote MCP on a Worker; `agents/mcp/server` plus `@modelcontextprotocol/server` | Official | MIT (`agents` 0.33.0, 2026-11-03) | `getMcpAuthContext()` | developers.cloudflare.com/agents/api-reference/mcp-handler-api/ | Docs, npm |
 | `McpAgent` | **Deprecated, feature-frozen**; cannot run a v2 SDK server | Official | MIT | `this.props` | …/mcp-agent-api/ | Docs |
 | `workers-oauth-provider` 1.2.4 | OAuth authorization and resource server for Workers | Official | MIT | n/a | github.com/cloudflare/workers-oauth-provider | npm, LICENSE |

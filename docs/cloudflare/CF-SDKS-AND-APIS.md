@@ -44,7 +44,7 @@
 | Types | `@cloudflare/workers-types` | 5.20261015.1 | Yes |
 | Vite plugin | `@cloudflare/vite-plugin` | 1.64.0 | Future front ends |
 | Tests | `@cloudflare/vitest-plugin` (renamed from `@cloudflare/vitest-pool-workers`, Aug 2026) | 1.4.3 | Worth adopting for NOIZYBKZ |
-| **Agents SDK** | `agents` | 0.28.1 | **Yes:** GABRIEL/LUCY cloud agents, `onEmail` mail agents |
+| **Agents SDK** | `agents` | 0.28.1 (0.33.0 on 2026-11-15; **`McpAgent` is now deprecated**, use `createMcpHandler`) | **Yes:** GABRIEL/LUCY cloud agents, `onEmail` mail agents |
 | Chat agents | `@cloudflare/ai-chat`, `@cloudflare/think` | 0.12.1 · 0.20.2 | Optional |
 | **Sandbox SDK** | `@cloudflare/sandbox` | 1.0.1 (1.0 is new; 0.x docs are legacy) | Isolated code runs for agents |
 | Containers | `@cloudflare/containers` | 0.3.7 | Heavy jobs off the M2Ultra |
@@ -71,6 +71,7 @@
 ## 6. MCP servers (for Claude and other agents)
 
 - **Code Mode / Cloudflare API server:** `https://mcp.cloudflare.com/mcp`. The whole API (2,500+ endpoints) through code execution.
+- **Update 2026-11-15:** the one to use is the unified **Cloudflare API MCP** at `https://mcp.cloudflare.com/mcp` (Code Mode). Cloudflare's README now lists ten of the focused servers below as deprecated: `bindings`, `builds`, `observability`, `logs` (Logpush), `ai-gateway`, `autorag`, `radar`, `graphql`, `auditlogs`, `dns-analytics`. Details: `docs/anthropic/MCP-HOTROD-2026-11-15.md`.
 - **Focused servers** (repo `cloudflare/mcp-server-cloudflare`), each at `https://<name>.mcp.cloudflare.com/mcp`:
   - `docs`, `bindings`, `builds`, `observability`, `logs` (Logpush), `ai-gateway`, `autorag`, `browser`, `containers`, `radar`, `graphql`, `auditlogs`, `dns-analytics`, `dex`, `casb`, `blog`.
 - **Agent-friendly docs:** add `/index.md` to any docs URL; `developers.cloudflare.com/llms.txt` lists every product.

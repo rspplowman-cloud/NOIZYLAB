@@ -13,7 +13,8 @@
 | **Manager API** | Domains, DNS, mail, kDrive, hosting | Official REST API with tokens. Only community MCP servers exist (unofficial) |
 
 - **Hosting:** Infomaniak says data is hosted and processed only in Switzerland, and prompts are not stored.
-- **GitHub:** no official Infomaniak MCP server or AI SDK was found. Community projects (for example `Mogacode-ma/infomaniak-mcp-agent`) are unofficial, and some read browser session cookies. **Do not use those with NOIZY accounts.**
+- **Update 2026-11-15: Infomaniak now ships official MCP servers** on npm: `@infomaniak/mcp-server-kdrive` 1.2.0, `-mail` 2.1.0, `-calendar`, `-contact`, `-kchat`. The mail one can send and delete, and any mailbox it reads goes to the AI: **skip mail**. Details: `docs/anthropic/MCP-HOTROD-2026-11-15.md`.
+- **GitHub (as checked 2026-11-11, now out of date, see above):** no official Infomaniak MCP server or AI SDK was found. Community projects (for example `Mogacode-ma/infomaniak-mcp-agent`) are unofficial, and some read browser session cookies. **Do not use those with NOIZY accounts.**
 
 ## How it fits beside Lumo
 
