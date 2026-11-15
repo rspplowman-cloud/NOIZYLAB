@@ -1,0 +1,4 @@
+# For the stand-in voice in step 5 (--text). Not needed to build the bust, and not needed for --wav.
+# Kokoro-82M: code and weights Apache-2.0. A stock voice, NOT RSP_001's voice.
+kokoro>=0.9
+soundfile

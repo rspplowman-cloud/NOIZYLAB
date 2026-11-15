@@ -21,7 +21,9 @@ HOST, PORT = "127.0.0.1", int(os.environ.get("NOIZY_VOICE_PORT", "9799"))
 KEY = os.environ.get("NOIZY_VOICE_KEY") or os.environ.get("VOICE_AUTH_TOKEN") or ""
 TAKES = os.environ.get("GABRIEL_VOICE_TAKES", os.path.expanduser("~/NOIZY VAULT/voice/GABRIEL"))
 PLAY = os.environ.get("NOIZY_VOICE_PLAY", "1") == "1"
-MAC_VOICES = {"gabriel": "Jamie", "lucy": "Serena", "pops": "Fred", "shirley": "Samantha", "dream": "Karen", "engr_keith": "Tom", "cb01": "Daniel"}
+# GABRIEL's stand-in until his own voice (RSP_001's) is ready. RSP_001, 2026-11-15: GABRIEL is not British.
+# Jamie is British, so set GABRIEL_MAC_VOICE to a voice installed on this Mac (list them: say -v '?').
+MAC_VOICES = {"gabriel": os.environ.get("GABRIEL_MAC_VOICE", "Jamie"), "lucy": "Serena", "pops": "Fred", "shirley": "Samantha", "dream": "Karen", "engr_keith": "Tom", "cb01": "Daniel"}
 
 jobs = queue.Queue(maxsize=20)
 state = {"engine": None, "last": None}
@@ -72,7 +74,7 @@ class Handler(BaseHTTPRequestHandler):
     def do_GET(self):
         if self.path == "/health":
             ready, why = clone_ready()
-            return self.send(200, {"ok": True, "service": "noizy-voice", "gabriel_clone_ready": ready, "clone_note": why,
+            return self.send(200, {"ok": True, "service": "noizy-voice", "gabriel_clone_ready": ready, "clone_note": why, "gabriel_stand_in": MAC_VOICES["gabriel"],
                                    "halt": halt_reason() or "clear", "queued": jobs.qsize(), "last": state["last"]})
         self.send(404, {"error": "not found"})
 

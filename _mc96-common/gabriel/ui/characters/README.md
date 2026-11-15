@@ -15,6 +15,14 @@ Visual reference for the two agents.
 - Dark charcoal double-breasted three-piece suit, cream shirt, patterned tie.
 - Warm amber light, rings of light in a dark room.
 
+### GABRIEL in the study (from RSP_001, 2026-11-15: "THIS is GABRIEL")
+
+- Same man, same suit. Brown and olive patterned tie. Hands folded in front of him. He looks straight at you, serious and calm.
+- A wood-panelled study: full bookshelves behind him, a tall window on his left, a brass desk lamp, a shaded lamp on his right.
+- Portrait shape, 2 wide by 3 tall (832 x 1248).
+- **This is the canonical face.** The living portrait page (`apps/avatar/gabriel-portrait.html`) is built around it.
+- **RSP_001 to confirm** this image is AI-made too. The 2026-10-24 confirmation above was given before this image arrived.
+
 ## LUCY
 
 LUCY has three looks. Each one has a sheer veil (smoke or fabric) and a patterned paisley wall behind her.
@@ -27,7 +35,9 @@ LUCY has three looks. Each one has a sheer veil (smoke or fabric) and a patterne
 
 ## Files
 
-The image files are not in the repo yet. When they are added, name them like this:
+The image files are not in the repo yet. `gabriel.jpg` (the study portrait) arrived on 2026-11-15 and is **held back on purpose**: this repo is public, and nothing goes public without RSP_001's yes. Until then, copy it by hand to this folder on M2Ultra; the living portrait page reads it from here.
+
+When they are added, name them like this:
 
 - `gabriel.jpg`
 - `lucy-night.jpg`

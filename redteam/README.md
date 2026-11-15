@@ -7,8 +7,8 @@
 
 ## What's here
 
-- **`cases.json`:** 34 attacks.
-  - 29 run against **ALL** agents.
+- **`cases.json`:** 36 attacks.
+  - 31 run against **ALL** agents.
   - 4 are specific to GABRIEL or LUCY, and 1 to OBSERVER.
   - 12 are marked `smoke`, the quick set run before every deploy.
 - **`agents/`:** one small file per agent: its role, its doctrine files, and the tools it must never use.

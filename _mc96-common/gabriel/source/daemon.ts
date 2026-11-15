@@ -8,6 +8,7 @@
 //   GET  /healthz         — liveness, unauthenticated
 //   GET  /bosses          — list registered bosses, unauthenticated
 //   POST /intent          — dispatch an intent (Bearer auth required)
+//   GET  /status          — models, today's budget, receipt chain, HALT (Bearer auth required)
 //
 // Auth: NOIZY_API_KEY as Bearer token. When unset, bind stays 127.0.0.1 only
 //       and auth is skipped (dev mode), matching the pattern used by
@@ -16,14 +17,25 @@
 import http from "node:http";
 import type { IncomingMessage, ServerResponse } from "node:http";
 import { env } from "node:process";
+import { createHash, timingSafeEqual as bytesEqual } from "node:crypto";
+import { existsSync } from "node:fs";
 import chalk from "chalk";
 import { dispatch, listBosses, type Intent, type BossName } from "./bosses/index.js";
+import { haltClear } from "./halt.js";
+import { MODELS } from "./router.js";
+import { budget, readChain, verifyChain } from "./state.js";
 
 const PORT = Number(env.GABRIEL_DAEMON_PORT ?? env.GABRIEL_PORT ?? 9777);
 const HOST = env.GABRIEL_DAEMON_HOST ?? env.GABRIEL_BIND ?? "127.0.0.1";
 const LOOPBACK = new Set(["127.0.0.1", "::1", "localhost"]);
 const NOIZY_API_KEY = env.NOIZY_API_KEY ?? "";
 const AUTH_OPTIONAL = !NOIZY_API_KEY;
+const STARTED = Date.now();
+/** Largest request body accepted. An intent is a few hundred bytes; this stops a caller filling memory. */
+const MAX_BODY_BYTES = 1_000_000;
+const SYNC_SCRIPT = env.GABRIEL_SYNC_SCRIPT ?? "/Users/m2ultra/NOIZYANTHROPIC/ops/gabriel-to-all-brands.sh";
+
+class BodyTooLarge extends Error {}
 
 const VALID_BOSSES: BossName[] = [
   "gabriel",
@@ -50,7 +62,16 @@ function send(res: ServerResponse, status: number, payload: unknown): void {
 async function readJson<T = unknown>(req: IncomingMessage): Promise<T> {
   return new Promise((resolve, reject) => {
     const chunks: Buffer[] = [];
-    req.on("data", (c: Buffer) => chunks.push(c));
+    let size = 0;
+    req.on("data", (c: Buffer) => {
+      size += c.length;
+      if (size > MAX_BODY_BYTES) {
+        chunks.length = 0;
+        reject(new BodyTooLarge());
+        return;
+      }
+      chunks.push(c);
+    });
     req.on("end", () => {
       if (chunks.length === 0) return resolve({} as T);
       try {
@@ -63,11 +84,10 @@ async function readJson<T = unknown>(req: IncomingMessage): Promise<T> {
   });
 }
 
+/** Compare two secrets without leaking, through timing, how much of a guess was right or how long the key is. */
 function timingSafeEqual(a: string, b: string): boolean {
-  if (a.length !== b.length) return false;
-  let diff = 0;
-  for (let i = 0; i < a.length; i++) diff |= a.charCodeAt(i) ^ b.charCodeAt(i);
-  return diff === 0;
+  const digest = (s: string) => createHash("sha256").update(s, "utf8").digest();
+  return bytesEqual(digest(a), digest(b));
 }
 
 function authOk(req: IncomingMessage): boolean {
@@ -103,19 +123,6 @@ function fromAnotherSite(req: IncomingMessage): boolean {
   }
 }
 
-/** HALT, fail closed: unset, unreachable or unreadable all count as halted. */
-async function haltClear(): Promise<{ clear: boolean; reason?: string }> {
-  const url = env.HALT_URL;
-  if (!url) return { clear: false, reason: "HALT_URL is not set (treated as halted)" };
-  try {
-    const body = await (await fetch(`${url.replace(/\/+$/, "")}/status`, { signal: AbortSignal.timeout(10_000) })).text();
-    if (body.includes('"halted":false')) return { clear: true };
-    return { clear: false, reason: body.includes('"halted":true') ? "HALTED" : "unreadable HALT status (treated as halted)" };
-  } catch (err) {
-    return { clear: false, reason: `HALT unreachable (treated as halted): ${(err as Error).message}` };
-  }
-}
-
 function isValidBoss(s: unknown): s is BossName {
   return typeof s === "string" && (VALID_BOSSES as string[]).includes(s);
 }
@@ -130,6 +137,23 @@ function handleHealth(res: ServerResponse): void {
     host: HOST,
     auth_required: !AUTH_OPTIONAL,
     bosses: VALID_BOSSES.length,
+    uptime_s: Math.round((Date.now() - STARTED) / 1000),
+  });
+}
+
+/** What GABRIEL is running on and what he has spent. Behind the key: it names models and money. */
+async function handleStatus(res: ServerResponse): Promise<void> {
+  const chain = readChain();
+  const broken = verifyChain(chain);
+  const b = budget();
+  const halt = await haltClear(3_000);
+  send(res, 200, {
+    ok: true,
+    models: MODELS,
+    budget: { cap_usd: b.cap, spent_today_usd: Number(b.spent.toFixed(4)), remaining_usd: b.cap === null ? null : Number(b.remaining.toFixed(4)) },
+    receipts: { entries: chain.length, chain_ok: broken === -1, broken_at: broken === -1 ? null : broken, head: chain.length ? chain[chain.length - 1].hash : null },
+    halt: halt.clear ? "clear" : halt.reason,
+    uptime_s: Math.round((Date.now() - STARTED) / 1000),
   });
 }
 
@@ -158,7 +182,8 @@ async function handleGabrielSync(req: IncomingMessage, res: ServerResponse): Pro
     const halt = await haltClear();
     if (!halt.clear) return send(res, 423, { ok: false, error: `push refused: ${halt.reason}` });
   }
-  const args: string[] = ["/Users/m2ultra/NOIZYANTHROPIC/ops/gabriel-to-all-brands.sh"];
+  if (!existsSync(SYNC_SCRIPT)) return send(res, 404, { ok: false, error: `sync script not found: ${SYNC_SCRIPT} (set GABRIEL_SYNC_SCRIPT)` });
+  const args: string[] = [SYNC_SCRIPT];
   if (mode === "push") args.push("--push");
   if (mode === "scan") args.push("--scan-only");
 
@@ -184,7 +209,8 @@ async function handleIntent(req: IncomingMessage, res: ServerResponse): Promise<
   let body: Partial<Intent>;
   try {
     body = await readJson<Partial<Intent>>(req);
-  } catch {
+  } catch (err) {
+    if (err instanceof BodyTooLarge) return send(res, 413, { ok: false, error: `body too large (limit ${MAX_BODY_BYTES} bytes)` });
     return send(res, 400, { ok: false, error: "invalid JSON body" });
   }
 
@@ -250,12 +276,17 @@ function startDaemon(): http.Server {
       }
 
       if (req.method === "POST" && path === "/intent") return handleIntent(req, res);
+      if (req.method === "GET" && path === "/status") return handleStatus(res);
 
       return send(res, 404, { ok: false, error: "not found" });
     } catch (err) {
       send(res, 500, { ok: false, error: (err as Error).message });
     }
   });
+
+  // A caller that opens a connection and then stalls is dropped instead of held forever.
+  server.headersTimeout = 15_000;
+  server.requestTimeout = 60_000;
 
   server.listen(PORT, HOST, () => {
     console.log(chalk.bold.cyan("═══════════════════════════════════════════"));
@@ -272,6 +303,7 @@ function startDaemon(): http.Server {
     console.log(chalk.dim("Routes:"));
     console.log(chalk.dim("  GET  /healthz"));
     console.log(chalk.dim("  GET  /bosses"));
+    console.log(chalk.dim("  GET  /status   (Bearer)"));
     console.log(
       chalk.dim(
         "  POST /intent  { boss, correlation_id, from, verb, target?, args?, source, priority? }",

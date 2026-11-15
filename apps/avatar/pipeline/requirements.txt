@@ -1,0 +1,7 @@
+# For steps 1 to 3 (step 4 is Blender). All Apache-2.0, BSD or MIT-style licences.
+torch
+transformers
+mediapipe
+opencv-contrib-python
+numpy
+pillow
