@@ -1,7 +1,7 @@
 {
   "name": "gabriel",
-  "version": "3.0.0",
-  "description": "GABRIEL — Generative Adaptive Bridge for Intelligent Expression and Learning. Local autonomous Claude-powered orchestrator for NOIZYWORLD.",
+  "version": "4.0.0",
+  "description": "GABRIEL \u2014 Generative Adaptive Bridge for Intelligent Expression and Learning. Local autonomous Claude-powered orchestrator for NOIZYWORLD.",
   "type": "module",
   "main": "dist/index.js",
   "bin": {
@@ -14,7 +14,9 @@
     "daemon": "node dist/index.js --daemon",
     "chat": "node dist/index.js --chat",
     "status": "node dist/index.js --status",
-    "test": "tsc && node --test test/*.test.mjs"
+    "test": "tsc && node --test test/*.test.mjs",
+    "doctor": "node dist/index.js --doctor",
+    "verify": "node dist/index.js --verify"
   },
   "dependencies": {
     "@anthropic-ai/claude-agent-sdk": "^0.3.322",

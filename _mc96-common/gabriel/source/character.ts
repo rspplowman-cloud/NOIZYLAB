@@ -1,4 +1,4 @@
-import { readFileSync, readdirSync, existsSync } from "node:fs";
+import { readFileSync, readdirSync, existsSync, statSync } from "node:fs";
 import { join, dirname, basename } from "node:path";
 
 const ROOT = process.env.NOIZY_EMPIRE_ROOT || "/Users/m2ultra/NOIZYANTHROPIC";
@@ -40,7 +40,21 @@ function readIfExists(p: string): string {
  */
 const REPO = process.env.NOIZYLAB_ROOT || join(GABRIEL_HOME, "..", "..");
 const SKIP_DIRS = new Set(["node_modules", ".git", "dist", "results"]);
-export function loadKnowledgeMap(): string {
+let _map: { at: number; text: string } | null = null;
+const MAP_TTL_MS = Number(process.env.GABRIEL_KNOWLEDGE_TTL_MS) >= 0 && process.env.GABRIEL_KNOWLEDGE_TTL_MS ? Number(process.env.GABRIEL_KNOWLEDGE_TTL_MS) : 300_000;
+
+/**
+ * The knowledge map, rebuilt at most once every five minutes (GABRIEL_KNOWLEDGE_TTL_MS).
+ * Building it reads the title of every Markdown file in the repo, which is too slow to do on every turn.
+ */
+export function loadKnowledgeMap(fresh = false): string {
+  if (!fresh && _map && Date.now() - _map.at < MAP_TTL_MS) return _map.text;
+  const text = buildKnowledgeMap();
+  _map = { at: Date.now(), text };
+  return text;
+}
+
+function buildKnowledgeMap(): string {
   const lines: string[] = [];
   const walk = (dir: string): void => {
     let entries;
@@ -172,53 +186,71 @@ export function loadMemory(): string {
  * This whole composition is prompt-cached by the Agent SDK — first turn pays,
  * every subsequent turn reads from cache (90% cheaper, ~instant).
  */
+/** The doctrine files, in prompt order. */
+const DOCTRINE_PATHS = [
+  CHARACTER_PATH, VISION_PATH, MISSION_PATH, HEAVEN_PATH, NEVER_CLAUSES_OPS_PATH, SAFETY_CONTRACT_PATH,
+  LIGHTNING_AND_RAIN_PATH, MOBILE_CONTINUITY_PATH, CREATIVE_ECOSYSTEM_PATH, DREAMCHAMBER_PATH,
+  INTEGRATIONS_PATH, DISCORD_FLEET_PATH,
+];
+
+/** Changes whenever a doctrine or memory file is edited, added or removed. Cheap: file dates only, no reading. */
+function doctrineStamp(): string {
+  const stamp = (p: string): string => {
+    for (const candidate of [p, join(dirname(p), "doctrine", basename(p))]) {
+      try { const st = statSync(candidate); return `${candidate}:${st.mtimeMs}:${st.size}`; } catch { /* next */ }
+    }
+    return `${p}:missing`;
+  };
+  const parts = DOCTRINE_PATHS.map(stamp);
+  try {
+    for (const f of readdirSync(MEMORY_DIR).filter((n) => n.endsWith(".md")).sort()) parts.push(stamp(join(MEMORY_DIR, f)));
+  } catch { parts.push("memory:none"); }
+  return parts.join("|");
+}
+
+let _doctrine: { stamp: string; text: string } | null = null;
+
+/** Everything in the prompt that only changes when a file changes. Read from disk once, then reused. */
+function loadDoctrine(): string {
+  const stamp = doctrineStamp();
+  if (_doctrine && _doctrine.stamp === stamp) return _doctrine.text;
+  const parts = [
+    loadCharacter(), loadVision(), loadMission(), loadHeaven(), loadNeverClausesOps(), loadSafetyContract(),
+    loadLightningAndRain(), loadMobileContinuity(), loadCreativeEcosystem(), loadDreamChamber(),
+    loadIntegrations(), loadDiscordFleet(),
+  ].filter(Boolean);
+  _doctrine = { stamp, text: parts.join("\n\n---\n\n") };
+  return _doctrine.text;
+}
+
+/** Date, target and machine. A target date that has passed is said plainly, not shown as "0 days". */
+export function liveContext(now = new Date()): string {
+  const targetDate = process.env.GABRIEL_TARGET_DATE || "";
+  const targetLabel = process.env.GABRIEL_TARGET_LABEL || "next milestone";
+  const lines = ["## Live context", `- Current date: ${now.toISOString().slice(0, 10)}`];
+  const target = targetDate ? new Date(targetDate) : null;
+  if (target && !Number.isNaN(target.getTime())) {
+    const days = Math.ceil((target.getTime() - now.getTime()) / 86400000);
+    lines.push(`- Target: ${targetLabel} (${targetDate})`);
+    lines.push(days >= 0 ? `- Days remaining: ${days}` : `- That target date passed ${-days} days ago. Ask RSP_001 for the new date; do not count down to it.`);
+  } else {
+    lines.push("- No target date is set (GABRIEL_TARGET_DATE). Do not invent a countdown.");
+  }
+  lines.push(`- NOIZYWORLD root: ${ROOT}`);
+  lines.push("- Machine: M2Ultra.local (Mac Studio M2 Ultra)");
+  lines.push("- Heaven: https://heaven.rsp-5f3.workers.dev  (migrating to heaven.noizy.ai)");
+  return lines.join("\n");
+}
+
 export function buildSystemPrompt(): string {
-  const character = loadCharacter();
-  const vision = loadVision();
-  const mission = loadMission();
-  const heaven = loadHeaven();
-  const neverClausesOps = loadNeverClausesOps();
-  const safetyContract = loadSafetyContract();
-  const lightningAndRain = loadLightningAndRain();
-  const mobileContinuity = loadMobileContinuity();
-  const creativeEcosystem = loadCreativeEcosystem();
-  const dreamChamber = loadDreamChamber();
-  const integrations = loadIntegrations();
-  const discordFleet = loadDiscordFleet();
-  const memory = loadMemory();
+  // Order matters twice over: earlier wins on conflicts, and the parts that never
+  // change come first so Anthropic's prompt cache can reuse them turn after turn.
+  // The date goes last because it is the only part that changes by itself.
+  const parts = [loadDoctrine()];
   const knowledgeMap = loadKnowledgeMap();
-
-  const targetDate = process.env.GABRIEL_TARGET_DATE || "2026-05-17";
-  const targetLabel = process.env.GABRIEL_TARGET_LABEL || "next empire milestone";
-  const now = new Date();
-  const target = new Date(targetDate);
-  const daysRemaining = Math.max(0, Math.ceil((target.getTime() - now.getTime()) / 86400000));
-
-  const liveContext = [
-    "## Live context",
-    `- Current date: ${now.toISOString().slice(0, 10)}`,
-    `- Target: ${targetLabel} (${targetDate})`,
-    `- Days remaining: ${daysRemaining}`,
-    `- Empire root: ${ROOT}`,
-    `- Machine: M2Ultra.local (Mac Studio M2 Ultra)`,
-    `- Heaven: https://heaven.rsp-5f3.workers.dev  (migrating to heaven.noizy.ai)`,
-  ].join("\n");
-
-  const parts = [character];
-  if (vision) parts.push(vision);
-  if (mission) parts.push(mission);
-  if (heaven) parts.push(heaven);
-  if (neverClausesOps) parts.push(neverClausesOps);
-  if (safetyContract) parts.push(safetyContract);
-  if (lightningAndRain) parts.push(lightningAndRain);
-  if (mobileContinuity) parts.push(mobileContinuity);
-  if (creativeEcosystem) parts.push(creativeEcosystem);
-  if (dreamChamber) parts.push(dreamChamber);
-  if (integrations) parts.push(integrations);
-  if (discordFleet) parts.push(discordFleet);
   if (knowledgeMap) parts.push(knowledgeMap);
+  const memory = loadMemory();
   if (memory) parts.push(memory);
-  parts.push(liveContext);
-
+  parts.push(liveContext());
   return parts.join("\n\n---\n\n");
 }

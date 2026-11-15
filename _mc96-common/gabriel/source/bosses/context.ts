@@ -6,6 +6,7 @@
 
 import { env } from "node:process";
 import type { BossContext } from "./types.js";
+import { prepareForSpeech, splitForSpeech } from "../voice.js";
 
 const HEAVEN_BASE = env.HEAVEN_BASE_URL ?? "https://heaven.rsp-5f3.workers.dev";
 const NOIZY_API_KEY = env.NOIZY_API_KEY ?? "";
@@ -105,11 +106,15 @@ export function createBossContext(): BossContext {
     async speak(text, agent = "gabriel") {
       if (!text) return;
       try {
-        await fetch(`${VOICE_BASE}/speak`, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ agent, text }),
-        });
+        // The voice service refuses anything over 2,000 characters: send long text in pieces, in order.
+        for (const piece of splitForSpeech(prepareForSpeech(text))) {
+          await fetch(`${VOICE_BASE}/speak`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ agent, text: piece }),
+            signal: AbortSignal.timeout(5_000),
+          });
+        }
       } catch {
         // voice-service offline is non-fatal — silently skip.
       }
