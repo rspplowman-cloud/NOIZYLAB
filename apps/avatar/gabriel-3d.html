@@ -23,6 +23,8 @@
       postMessage({ gabriel: { mood: "speaking", level: 0.6, caption: "...", weights: { jawOpen: 0.4 } } }, "*")
       gabriel-3d.html?ws=ws://127.0.0.1:9798     (same JSON over a WebSocket, loopback addresses only)
       gabriel-3d.html#thinking
+      gabriel-3d.html?speak=pipeline/work/say/evening.json   (a line made by pipeline/05_speak.py: sound plus mouth track)
+      gabriel-3d.html?live       (with serve.py: he speaks every line GABRIEL's voice service makes, as it is made)
   Moods: idle, listening, thinking, speaking, halted.
 -->
 <style>
@@ -128,6 +130,8 @@ const now = () => performance.now() / 1000;
 const look = { x: 0, y: 0, tx: 0, ty: 0 };
 let nextBlink = now() + 2.5, blinkStart = -1;
 let speech = null;               // { until, seed } while the browser voice is talking
+let clip = null;                 // { audio, rate, shapes, words, text } while a prepared line is loaded
+const MOUTH_GAIN = 0.6;          // tracks run 0 to 1; a relaxed speaking mouth uses about 60% of the bust's full opening
 const pending = {};              // weights asked for before the model arrived
 
 function setMood(next) {
@@ -212,7 +216,16 @@ function frame() {
     w.browDownLeft = w.browDownRight = mood === "thinking" ? 0.55 : 0;
     // Mouth: follows the sound level; the shape wanders between open, round and wide so it reads as speech.
     let jaw = 0, pucker = 0, smile = 0;
-    if (mood === "speaking") {
+    if (clip && !clip.audio.paused && !clip.audio.ended) {
+      // A prepared line: the mouth follows the track at the sound's own clock, so they cannot drift apart.
+      const time = clip.audio.currentTime;
+      const i = Math.min(clip.length - 1, Math.max(0, Math.floor(time * clip.rate)));
+      jaw = (clip.shapes.jawOpen[i] || 0) * MOUTH_GAIN;
+      pucker = (clip.shapes.mouthPucker[i] || 0) * MOUTH_GAIN;
+      smile = (clip.shapes.mouthSmileLeft[i] || 0) * MOUTH_GAIN;
+      target = Math.min(1, jaw * 2.2);
+      captionAt(time);
+    } else if (mood === "speaking") {
       const lv = speech ? speechEnvelope(t) : level;
       const shapeMix = wave(t, 7.1, 11.3, 4.7);
       jaw = lv * (0.34 + 0.12 * Math.sin(t * 13));
@@ -255,7 +268,37 @@ function say(text) {
     speechSynthesis.speak(u);
   }
 }
-speakBtn.addEventListener("click", () => say("GABRIEL online. Standing by, RSP_001."));
+// ── A prepared line: sound plus mouth track, made by pipeline/05_speak.py ──
+function captionAt(time) {
+  if (!clip.words.length || clip.text.length <= 150) return;      // short lines stay whole on screen
+  let k = clip.words.findIndex((w) => w.t1 > time);
+  if (k < 0) k = clip.words.length - 1;
+  const from = Math.max(0, k - 9);
+  setCaption(clip.words.slice(from, from + 14).map((w) => w.text).join(" "));
+}
+async function load(url) {
+  const at = new URL(url, location.href);
+  if (at.origin !== location.origin) throw new Error("lines are only loaded from this page's own folder");
+  const data = await (await fetch(at)).json();
+  const shapes = data.track.shapes;
+  const audio = new Audio(new URL(data.audio, at).href);
+  audio.preload = "auto";
+  clip = { audio, rate: data.track.rate, shapes, length: shapes.jawOpen.length, words: data.words || [], text: data.text || "" };
+  audio.addEventListener("ended", () => { setLevel(0); setMood("idle"); });
+  return clip;
+}
+async function play(url) {
+  if (url) await load(url);
+  if (!clip) return false;
+  speech = null;
+  if ("speechSynthesis" in window) speechSynthesis.cancel();
+  clip.audio.currentTime = 0;
+  setCaption(clip.text); setMood("speaking");
+  try { await clip.audio.play(); return true; }
+  catch { setMood("idle"); setCaption("Press Speak to hear me."); return false; }   // browsers hold sound until a first tap
+}
+speakBtn.addEventListener("click", () => { if (clip) play(); else say("GABRIEL online. Standing by, RSP_001."); });
+if (params.get("speak")) play(params.get("speak")).catch((e) => setCaption(String(e.message || e)));
 
 // ── Listen: the microphone level only. Nothing is recorded or sent. ──
 let mic = null;
@@ -288,10 +331,18 @@ function apply(m) {
   if (m.caption !== undefined) setCaption(m.caption);
   if (m.weights !== undefined) setWeights(m.weights);
   if (m.say !== undefined) say(m.say);
+  if (m.play !== undefined) play(String(m.play)).catch((e) => setCaption(String(e.message || e)));
 }
 addEventListener("message", (e) => apply(e.data && e.data.gabriel));
 const fromHash = () => setMood(location.hash.slice(1));
 addEventListener("hashchange", fromHash); fromHash();
+
+// Live: serve.py tells this page each time GABRIEL's voice service has made a new line.
+if (params.has("live")) {
+  const feed = new EventSource("events");
+  feed.onmessage = (e) => { try { apply(JSON.parse(e.data)); } catch { /* not for us */ } };
+  window.gabriel_feed = feed;
+}
 
 // Optional live feed from the voice service. Loopback addresses only: this page never connects out.
 const ws = params.get("ws");
@@ -303,7 +354,7 @@ if (ws && /^ws:\/\/(127\.0\.0\.1|localhost|\[::1\])(:\d+)?(\/|$)/.test(ws)) {
   })();
 }
 
-window.gabriel = { setMood, setLevel, setCaption, setWeights, say, moods: Object.keys(MOODS), ready: null, shapes: [],
+window.gabriel = { setMood, setLevel, setCaption, setWeights, say, play, playing: () => !!clip && !clip.audio.paused && !clip.audio.ended, moods: Object.keys(MOODS), ready: null, shapes: [],
   state: () => ({ mood, level, target, weights: model ? Object.fromEntries(Object.entries(dict).map(([k, i]) => [k, +model.morphTargetInfluences[i].toFixed(3)])) : {} }) };
 </script>
 </body>

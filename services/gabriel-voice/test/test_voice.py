@@ -82,7 +82,7 @@ class Voice(unittest.TestCase):
 
     def test_service_on_9799(self):
         self.record()
-        env = {**os.environ, "NOIZY_VOICE_PORT": "0", "GABRIEL_VOICE_TAKES": self.takes, "GABRIEL_VOICE_ENGINE": "test", "NOIZY_VOICE_PLAY": "0"}
+        env = {**os.environ, "NOIZY_VOICE_PORT": "0", "GABRIEL_VOICE_TAKES": self.takes, "GABRIEL_VOICE_ENGINE": "test", "NOIZY_VOICE_PLAY": "0", "GABRIEL_MAC_VOICE": "Evan"}
         p = subprocess.Popen([sys.executable, "-m", "gabriel_voice.server"], cwd=PKG, env=env, stdout=subprocess.PIPE, text=True)
         try:
             port = int(p.stdout.readline().split("127.0.0.1:")[1].split()[0]); base = f"http://127.0.0.1:{port}"
@@ -93,6 +93,7 @@ class Voice(unittest.TestCase):
                 except urllib.error.HTTPError as e: return e.code, json.loads(e.read())
             h = json.loads(urllib.request.urlopen(base + "/health", timeout=10).read())
             self.assertTrue(h["gabriel_clone_ready"]); self.assertEqual(h["halt"], "clear")
+            self.assertEqual(h["gabriel_stand_in"], "Evan", "the stand-in voice can be moved off the British default")
             s, b = post({"agent": "gabriel", "text": "The lightning decides. The rain carries."})
             self.assertEqual((s, b["voice"]), (202, "RSP_001 clone"))
             self.assertEqual(post({"agent": "nobody", "text": "x"})[0], 400)

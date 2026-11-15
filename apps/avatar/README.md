@@ -65,3 +65,30 @@
 - **Checked** in a real browser: all 13 shapes, idle life, speaking, halting, the missing-model case, and that a non-loopback WebSocket address is ignored.
 - **Known flaws:** fine hair wisps tear slightly at a full head turn. The mouth interior is a plain dark panel, with no teeth.
 
+## GABRIEL speaks (built 2026-11-15)
+
+- **One command makes him say a line** (in Warp or Ghostty):
+  1. `apps/avatar/pipeline/say.sh "Good evening. Everything is in order."`
+  2. `python3 apps/avatar/serve.py`
+  3. Open the address the first command prints.
+- **Add `--video`** and Blender also renders a finished `.mp4`, with sound.
+- **His lips follow the real words.** Each word's sounds and times set the mouth shape: shut on m, b, p; open on "ah"; round on "oo"; wide on "ee".
+- **Any recording works too:** `say.sh --wav take.wav "what it says"`. With no word timings, the mouth follows the sound by ear.
+- **Live:** `serve.py` watches the folder where GABRIEL's voice service writes each line. Open `gabriel-3d.html?live` and **he speaks every line the service makes, as it is made.** Start the service with `NOIZY_VOICE_PLAY=0` so the line is heard once.
+- **The voice today is a stand-in** (Kokoro, a stock voice, Apache-2.0). **It is not RSP_001's voice.** His voice comes from `services/gabriel-voice`; see `VOICE-DIRECTION.md` there.
+
+| File | What it does |
+|---|---|
+| `pipeline/lipsync.py` | Mouth shapes from words with timings, or from any sound. No model, no network |
+| `pipeline/05_speak.py` | A line: the sound plus its mouth track |
+| `pipeline/06_render_video.py` | Blender renders the line to a video (Cycles anywhere; `--engine eevee` on M2Ultra's GPU) |
+| `pipeline/say.sh` | The one command |
+| `serve.py` | Serves the avatar on `127.0.0.1` and links it to the voice service |
+
+- **Checked:**
+  - 9 lip-sync tests pass: `python -m unittest discover -s apps/avatar/pipeline/test`.
+  - In a real browser, the mouth reached exactly the track's peak at the sound's own clock.
+  - The live link spoke a new line within seconds, ignored old lines, refused other websites, and kept scratch files private.
+  - A 9-second, 720 by 1080 video rendered in under 3 minutes on 4 CPU cores with no graphics card.
+- **Not checked:** nothing here has run on M2Ultra, and nothing has been tried with RSP_001's real voice.
+
