@@ -19,3 +19,21 @@
 2. Point **Speak** at GABRIEL's Kate voice, and **Listen** at `POST /ask`.
 3. Move the mouth with the audio level while GABRIEL speaks (the visualizer already measures it).
 4. Make a LUCY twin: same page, her own colours and voice.
+
+## The living portrait (built 2026-11-15)
+
+`gabriel-portrait.html` is GABRIEL's real face, brought to life from one still image.
+
+- **What it does:**
+  - He breathes.
+  - Rings of light behind him change colour with his mood: amber (standing by), blue (listening), violet (thinking), gold (speaking), red (halted).
+  - The light pulses with the sound while he speaks or while the room is loud.
+  - His words appear under his name in large type.
+- **What it does not do:** his lips do not move. That needs a talking-head model run locally on M2Ultra; check its licence first (research before build).
+- **Private by design:** no network calls, no outside scripts. **Listen** measures how loud the room is and nothing else: nothing is recorded or sent.
+- **Needs:** the portrait at `_mc96-common/gabriel/ui/characters/gabriel.jpg` (not in git; see that folder's README). Without it the page shows a plain placeholder.
+- **Open it:** double-click the file, or `open apps/avatar/gabriel-portrait.html` in Warp or Ghostty. Add `#thinking` to the address to set a mood.
+- **Drive it from another page:** `postMessage({ gabriel: { mood: "speaking", level: 0.6, caption: "..." } }, "*")`.
+- **Checked** in a real browser: all five moods, the message and address controls, phone and desktop layout, the missing-image case, reduced motion, and that it makes no network request.
+- **Next:** feed it GABRIEL's real voice level from the voice service on `127.0.0.1:9799`, so the light follows his actual voice.
+

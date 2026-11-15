@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>GABRIEL</title>
+<!--
+  GABRIEL's living portrait.
+
+  One still image, brought to life: he breathes, the light behind him follows his
+  mood, and it pulses with the sound while he speaks. Nothing here leaves the
+  machine: no network calls, no outside scripts, no recording. The microphone is
+  used only to measure how loud the room is, and only after RSP_001 presses Listen.
+
+  The portrait file is not in git. Put it at:
+      _mc96-common/gabriel/ui/characters/gabriel.jpg
+  (or pass ?img=<path>). Without it the page shows a plain placeholder.
+
+  Drive it from another page or from the dashboard:
+      frame.contentWindow.postMessage({ gabriel: { mood: "speaking", level: 0.6, caption: "..." } }, "*")
+  or open it with a mood in the address:  gabriel-portrait.html#thinking
+  Moods: idle, listening, thinking, speaking, halted.
+-->
+<style>
+  :root {
+    --amber: 255, 176, 84;
+    --glow: var(--amber);
+    --level: 0;
+    --ink: #f4ead8;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { height: 100%; background: #0b0806; color: var(--ink); overflow: hidden;
+    font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Helvetica, Arial, sans-serif; }
+
+  /* The bottom strip is kept free for the Speak and Listen buttons, so they never cover his words. */
+  .stage { position: fixed; inset: 0 0 92px 0; display: grid; place-items: center; }
+
+  /* The room: a soft blurred copy of the portrait fills the screen behind him. */
+  .room { position: fixed; inset: -6%; background: #1a120b center / cover no-repeat;
+    filter: blur(38px) brightness(.42) saturate(1.1); transform: scale(1.1); }
+
+  /* Rings of light behind him. Their strength follows --level. */
+  .rings { position: absolute; width: min(150vh, 150vw); aspect-ratio: 1; border-radius: 50%;
+    background:
+      radial-gradient(closest-side, rgba(var(--glow), calc(.10 + var(--level) * .45)) 0 34%, transparent 35%),
+      radial-gradient(closest-side, transparent 0 44%, rgba(var(--glow), calc(.07 + var(--level) * .30)) 45% 46%, transparent 47%),
+      radial-gradient(closest-side, transparent 0 58%, rgba(var(--glow), calc(.05 + var(--level) * .22)) 59% 60%, transparent 61%),
+      radial-gradient(closest-side, transparent 0 74%, rgba(var(--glow), calc(.03 + var(--level) * .16)) 75% 76%, transparent 77%);
+    transition: background .5s; animation: turn 90s linear infinite; }
+
+  .frame { position: relative; height: min(calc(100vh - 112px), 144vw); aspect-ratio: 2 / 3; border-radius: 14px; overflow: hidden;
+    box-shadow: 0 0 0 1px rgba(var(--glow), .28), 0 0 calc(40px + var(--level) * 140px) rgba(var(--glow), calc(.18 + var(--level) * .5)),
+      0 40px 120px rgba(0, 0, 0, .7);
+    transition: box-shadow .12s linear; background: #17110c; }
+
+  .face { position: absolute; inset: -2%; width: 104%; height: 104%; object-fit: cover; object-position: 50% 22%;
+    transform-origin: 50% 62%; animation: breathe 6.5s ease-in-out infinite; will-change: transform; }
+  .face.missing { display: none; }
+
+  /* Warm light on his face that brightens as he speaks. */
+  .light { position: absolute; inset: 0; pointer-events: none; mix-blend-mode: soft-light;
+    background: radial-gradient(60% 45% at 50% 30%, rgba(var(--glow), calc(.10 + var(--level) * .55)), transparent 70%); }
+  .shade { position: absolute; inset: 0; pointer-events: none;
+    background: linear-gradient(to bottom, transparent 55%, rgba(8, 6, 4, .88) 100%); }
+
+  .placeholder { position: absolute; inset: 0; display: none; place-items: center; text-align: center; padding: 8%;
+    font-size: clamp(16px, 2.4vh, 22px); line-height: 1.5; color: #cdbfa8; }
+  .face.missing ~ .placeholder { display: grid; }
+
+  .plate { position: absolute; left: 0; right: 0; bottom: 0; padding: 0 6% 5.5%; text-align: center; }
+  .name { font-size: clamp(20px, 3.4vh, 34px); font-weight: 700; letter-spacing: .34em; padding-left: .34em; }
+  .state { margin-top: .5em; font-size: clamp(14px, 2vh, 20px); letter-spacing: .14em; text-transform: uppercase;
+    color: rgb(var(--glow)); }
+  .state::before { content: ""; display: inline-block; width: .62em; height: .62em; border-radius: 50%; margin-right: .6em;
+    background: rgb(var(--glow)); box-shadow: 0 0 12px rgb(var(--glow)); animation: pulse 2.4s ease-in-out infinite; }
+  .caption { margin-top: .7em; min-height: 2.8em; font-size: clamp(17px, 2.5vh, 26px); line-height: 1.4; color: var(--ink);
+    text-wrap: balance; }
+
+  .controls { position: fixed; left: 0; right: 0; bottom: max(18px, env(safe-area-inset-bottom)); display: flex;
+    gap: 14px; justify-content: center; opacity: .0; transition: opacity .4s; }
+  body:hover .controls, body.touched .controls, .controls:focus-within { opacity: 1; }
+  button { font: inherit; font-size: 18px; font-weight: 600; color: #1a120b; background: rgb(var(--amber)); border: 0;
+    border-radius: 999px; padding: 14px 30px; min-width: 132px; min-height: 52px; cursor: pointer; }
+  button:focus-visible { outline: 3px solid #fff; outline-offset: 3px; }
+  button[aria-pressed="true"] { background: #f4ead8; }
+
+  /* Moods change the colour of his light. */
+  body[data-mood="listening"] { --glow: 110, 200, 255; }
+  body[data-mood="thinking"]  { --glow: 196, 160, 255; }
+  body[data-mood="speaking"]  { --glow: 255, 196, 110; }
+  body[data-mood="halted"]    { --glow: 255, 92, 80; }
+  body[data-mood="thinking"] .rings { animation-duration: 14s; }
+  body[data-mood="halted"] .face { animation-play-state: paused; filter: grayscale(.85) brightness(.75); }
+
+  @keyframes breathe { 0%, 100% { transform: scale(1) translateY(0); } 50% { transform: scale(1.014) translateY(-.35%); } }
+  @keyframes turn { to { transform: rotate(360deg); } }
+  @keyframes pulse { 0%, 100% { opacity: .55; } 50% { opacity: 1; } }
+
+  @media (prefers-reduced-motion: reduce) {
+    .face, .rings, .state::before { animation: none; }
+    .frame { transition: none; }
+  }
+</style>
+</head>
+<body data-mood="idle">
+  <main class="stage" aria-live="polite">
+    <div class="room" id="room"></div>
+    <div class="rings" aria-hidden="true"></div>
+    <div class="frame">
+      <img class="face" id="face" alt="GABRIEL: an older man with long silver hair and a grey beard, in a dark three-piece suit, standing in a study.">
+      <div class="placeholder">GABRIEL's portrait is not on this machine yet.<br>Put it at<br><code>_mc96-common/gabriel/ui/characters/gabriel.jpg</code></div>
+      <div class="light" aria-hidden="true"></div>
+      <div class="shade" aria-hidden="true"></div>
+      <div class="plate">
+        <div class="name">GABRIEL</div>
+        <div class="state" id="state">Standing by</div>
+        <div class="caption" id="caption"></div>
+      </div>
+    </div>
+  </main>
+  <div class="controls">
+    <button id="speak" type="button">Speak</button>
+    <button id="listen" type="button" aria-pressed="false">Listen</button>
+  </div>
+
+<script>
+(() => {
+  "use strict";
+  const MOODS = { idle: "Standing by", listening: "Listening", thinking: "Thinking", speaking: "Speaking", halted: "Halted" };
+  const body = document.body, root = document.documentElement;
+  const face = document.getElementById("face"), room = document.getElementById("room");
+  const stateEl = document.getElementById("state"), captionEl = document.getElementById("caption");
+  const speakBtn = document.getElementById("speak"), listenBtn = document.getElementById("listen");
+
+  // ── Portrait ──────────────────────────────────────────────
+  const src = new URLSearchParams(location.search).get("img") || "../../_mc96-common/gabriel/ui/characters/gabriel.jpg";
+  face.addEventListener("load", () => { room.style.backgroundImage = `url("${face.src}")`; });
+  face.addEventListener("error", () => face.classList.add("missing"));
+  face.src = src;
+
+  // ── Mood, level, caption ──────────────────────────────────
+  let level = 0, target = 0, mood = "idle";
+  function setMood(next) {
+    if (!(next in MOODS)) return false;
+    mood = next;
+    body.dataset.mood = next;
+    stateEl.textContent = MOODS[next];
+    if (next !== "speaking" && next !== "listening") target = 0;
+    return true;
+  }
+  function setLevel(v) { target = Math.max(0, Math.min(1, Number(v) || 0)); }
+  function setCaption(text) { captionEl.textContent = String(text ?? "").slice(0, 240); }
+
+  // Ease the light toward its target so it never flickers.
+  (function tick() {
+    level += (target - level) * (target > level ? 0.35 : 0.08);
+    root.style.setProperty("--level", level.toFixed(3));
+    requestAnimationFrame(tick);
+  })();
+
+  // ── Driven from outside: the address, or a message from the dashboard ──
+  const fromHash = () => setMood(location.hash.slice(1));
+  addEventListener("hashchange", fromHash);
+  fromHash();
+  addEventListener("message", (e) => {
+    const m = e.data && e.data.gabriel;
+    if (!m || typeof m !== "object") return;
+    if (m.mood !== undefined) setMood(String(m.mood));
+    if (m.level !== undefined) setLevel(m.level);
+    if (m.caption !== undefined) setCaption(m.caption);
+  });
+
+  // ── Speak: the browser's own voice, on this machine ───────
+  let speakTimer = 0;
+  function say(text) {
+    setCaption(text);
+    setMood("speaking");
+    clearInterval(speakTimer);
+    // The browser gives no sound level for its own voice, so the light follows the words instead.
+    speakTimer = setInterval(() => setLevel(0.25 + Math.random() * 0.55), 110);
+    const done = () => { clearInterval(speakTimer); setLevel(0); setMood("idle"); };
+    if (!("speechSynthesis" in window)) { setTimeout(done, Math.min(9000, 900 + text.length * 55)); return; }
+    speechSynthesis.cancel();
+    const u = new SpeechSynthesisUtterance(text);
+    u.rate = 0.95; u.pitch = 0.85;
+    u.onboundary = () => setLevel(0.9);
+    u.onend = done; u.onerror = done;
+    speechSynthesis.speak(u);
+  }
+  speakBtn.addEventListener("click", () => say("GABRIEL online. Standing by, RSP_001."));
+
+  // ── Listen: the microphone level only. Nothing is recorded or sent. ──
+  let mic = null;
+  async function toggleListen() {
+    if (mic) {
+      mic.stream.getTracks().forEach((t) => t.stop());
+      await mic.ctx.close();
+      mic = null;
+      listenBtn.setAttribute("aria-pressed", "false");
+      setMood("idle"); setCaption("");
+      return;
+    }
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+      const ctx = new AudioContext(), analyser = ctx.createAnalyser();
+      analyser.fftSize = 512;
+      ctx.createMediaStreamSource(stream).connect(analyser);
+      const data = new Uint8Array(analyser.fftSize);
+      mic = { stream, ctx };
+      listenBtn.setAttribute("aria-pressed", "true");
+      setMood("listening"); setCaption("I am listening.");
+      (function read() {
+        if (!mic) return;
+        analyser.getByteTimeDomainData(data);
+        let sum = 0;
+        for (const v of data) sum += (v - 128) * (v - 128);
+        setLevel(Math.min(1, Math.sqrt(sum / data.length) / 40));
+        requestAnimationFrame(read);
+      })();
+    } catch {
+      setCaption("The microphone is not available.");
+    }
+  }
+  listenBtn.addEventListener("click", toggleListen);
+
+  addEventListener("pointerdown", () => body.classList.add("touched"), { once: true });
+
+  // For the dashboard and for tests.
+  window.gabriel = { setMood, setLevel, setCaption, say, moods: Object.keys(MOODS), state: () => ({ mood, level, target }) };
+})();
+</script>
+</body>
+</html>
