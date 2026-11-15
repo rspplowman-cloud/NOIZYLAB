@@ -20,3 +20,7 @@ __pycache__/
 *.pyc
 .dev.vars
 .wrangler/
+
+# WireGuard configs hold private keys: Proton Pass (VAULT-OPS), never git (red-team case I-05)
+**/VPN/*.conf
+wg[0-9]*.conf
