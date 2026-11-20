@@ -1,0 +1,285 @@
+{
+  "checked": "2026-11-20",
+  "versions": {
+    "npm:cloudflare": "7.3.0",
+    "npm:cf": "1.0.0-rc.2",
+    "npm:wrangler": "4.166.0",
+    "npm:create-cloudflare": "2.75.0",
+    "npm:workerd": "1.20261120.1",
+    "npm:miniflare": "4.20260730.0",
+    "npm:@cloudflare/workers-types": "5.20261120.1",
+    "npm:@cloudflare/vite-plugin": "1.70.1",
+    "npm:@cloudflare/vitest-plugin": "1.9.0",
+    "npm:agents": "0.34.0",
+    "npm:@cloudflare/ai-chat": "0.12.3",
+    "npm:@cloudflare/think": "0.24.0",
+    "npm:@cloudflare/sandbox": "1.0.3",
+    "npm:@cloudflare/puppeteer": "2.0.1",
+    "npm:@cloudflare/playwright": "1.4.0",
+    "npm:@cloudflare/containers": "0.3.7",
+    "npm:@cloudflare/flagship": "0.7.0",
+    "npm:@cloudflare/workers-oauth-provider": "1.2.4",
+    "npm:workers-ai-provider": "4.0.1",
+    "npm:@cloudflare/kv-asset-handler": "0.5.1",
+    "npm:@cloudflare/realtimekit": "2.1.0",
+    "pypi:cloudflare": "5.10.0",
+    "pypi:cloudflare-flagship": "0.7.0",
+    "go:github.com/cloudflare/cloudflare-go/v7": "v7.15.0",
+    "terraform:cloudflare/cloudflare": "5.29.0",
+    "github_releases:cloudflare/cloudflared": "2026.11.1",
+    "github_releases:cloudflare/mcp-server-cloudflare": "docs-ai-search@0.5.0",
+    "github_releases:cloudflare/workers-sdk": "@cloudflare/vitest-plugin@1.9.0"
+  },
+  "changelog": [
+    {
+      "title": "Browser Run - Run custom scripts in Browser Run with /script",
+      "link": "https://developers.cloudflare.com/changelog/post/2026-11-20-script-endpoint/",
+      "date": "Fri, 20 Nov 2026 00:00:00 GMT"
+    },
+    {
+      "title": "Cloudflare Images - View delivery analytics for hosted images",
+      "link": "https://developers.cloudflare.com/changelog/post/2026-11-20-hosted-image-delivery-analytics/",
+      "date": "Fri, 20 Nov 2026 00:00:00 GMT"
+    },
+    {
+      "title": "Radar - CVE pages in Zero Wire",
+      "link": "https://developers.cloudflare.com/changelog/post/2026-11-20-radar-zero-wire-cves/",
+      "date": "Fri, 20 Nov 2026 00:00:00 GMT"
+    },
+    {
+      "title": "Workers for Platforms - Dispatch namespaces can no longer be renamed",
+      "link": "https://developers.cloudflare.com/changelog/post/2026-11-20-dispatch-namespace-rename-removed/",
+      "date": "Fri, 20 Nov 2026 00:00:00 GMT"
+    },
+    {
+      "title": "Browser Run - Capture PDFs, links, scraped elements, and extracted JSON with /snapshot",
+      "link": "https://developers.cloudflare.com/changelog/post/2026-11-19-snapshot-all-formats/",
+      "date": "Thu, 19 Nov 2026 00:00:00 GMT"
+    },
+    {
+      "title": "Durable Objects - Improved Durable Object Reliability During Runtime Updates",
+      "link": "https://developers.cloudflare.com/changelog/post/2026-11-19-durable-objects-runtime-update-reliability/",
+      "date": "Thu, 19 Nov 2026 00:00:00 GMT"
+    },
+    {
+      "title": "Cloudflare Images - Apply Gaussian sharpening with Images",
+      "link": "https://developers.cloudflare.com/changelog/post/2026-11-19-configurable-sharpening/",
+      "date": "Thu, 19 Nov 2026 00:00:00 GMT"
+    },
+    {
+      "title": "R2 - View R2 operations as requests per second",
+      "link": "https://developers.cloudflare.com/changelog/post/2026-11-19-r2-requests-per-second/",
+      "date": "Thu, 19 Nov 2026 00:00:00 GMT"
+    },
+    {
+      "title": "Radar - Autonomous system types on Cloudflare Radar",
+      "link": "https://developers.cloudflare.com/changelog/post/2026-11-19-radar-as-types/",
+      "date": "Thu, 19 Nov 2026 00:00:00 GMT"
+    },
+    {
+      "title": "Spectrum - Redesigned Spectrum dashboard",
+      "link": "https://developers.cloudflare.com/changelog/post/2026-11-19-redesigned-dashboard/",
+      "date": "Thu, 19 Nov 2026 00:00:00 GMT"
+    },
+    {
+      "title": "Stream - B-frame detection for Low-Latency HLS live streams",
+      "link": "https://developers.cloudflare.com/changelog/post/2026-11-19-ll-hls-b-frame-warning/",
+      "date": "Thu, 19 Nov 2026 00:00:00 GMT"
+    },
+    {
+      "title": "WAF - WAF Emergency Release - 2026-11-19",
+      "link": "https://developers.cloudflare.com/changelog/post/2026-11-19-emergency-waf-release/",
+      "date": "Thu, 19 Nov 2026 00:00:00 GMT"
+    },
+    {
+      "title": "Spectrum, Containers, Durable Objects, Workers - Inbound TCP and gRPC for Workers and Containers now in public beta",
+      "link": "https://developers.cloudflare.com/changelog/post/2026-11-19-inbound-tcp/",
+      "date": "Thu, 19 Nov 2026 00:00:00 GMT"
+    },
+    {
+      "title": "Workers, Pages - Workers and Pages now keep versions for 30 days",
+      "link": "https://developers.cloudflare.com/changelog/post/2026-11-19-workers-pages-version-retention/",
+      "date": "Thu, 19 Nov 2026 00:00:00 GMT"
+    },
+    {
+      "title": "Cloudflare One, Access - Automatically retrieve SAML IdP signing certificates",
+      "link": "https://developers.cloudflare.com/changelog/post/2026-11-18-saml-idp-certificate-discovery/",
+      "date": "Wed, 18 Nov 2026 00:00:00 GMT"
+    },
+    {
+      "title": "Agent Lee - Attach images, PDFs, and text files to Agent Lee",
+      "link": "https://developers.cloudflare.com/changelog/post/2026-11-18-agent-lee-attachments/",
+      "date": "Wed, 18 Nov 2026 00:00:00 GMT"
+    },
+    {
+      "title": "Hyperdrive, Workers - Hyperdrive-connected PlanetScale databases now available to Cloudflare Startup Program customers",
+      "link": "https://developers.cloudflare.com/changelog/post/2026-11-18-hyperdrive-planetscale-startup-program/",
+      "date": "Wed, 18 Nov 2026 00:00:00 GMT"
+    },
+    {
+      "title": "Hyperdrive - Custom CA and mTLS certificates for Hyperdrive over Workers VPC",
+      "link": "https://developers.cloudflare.com/changelog/post/2026-11-18-hyperdrive-vpc-custom-ca-mtls/",
+      "date": "Wed, 18 Nov 2026 00:00:00 GMT"
+    },
+    {
+      "title": "Cloudflare Images - A new, consistent language across Images interfaces",
+      "link": "https://developers.cloudflare.com/changelog/post/2026-11-18-consistent-optimization-interfaces/",
+      "date": "Wed, 18 Nov 2026 00:00:00 GMT"
+    },
+    {
+      "title": "Rules - Cloud Connector is now generally available",
+      "link": "https://developers.cloudflare.com/changelog/post/2026-11-18-cloud-connector-ga/",
+      "date": "Wed, 18 Nov 2026 00:00:00 GMT"
+    },
+    {
+      "title": "WAF - WAF Emergency Release - 2026-11-18",
+      "link": "https://developers.cloudflare.com/changelog/post/2026-11-18-emergency-waf-release/",
+      "date": "Wed, 18 Nov 2026 00:00:00 GMT"
+    },
+    {
+      "title": "Hyperdrive, Workers VPC - Custom CA and client certificates (mTLS) for Workers VPC",
+      "link": "https://developers.cloudflare.com/changelog/post/2026-11-18-custom-ca-mtls/",
+      "date": "Wed, 18 Nov 2026 00:00:00 GMT"
+    },
+    {
+      "title": "AI Search - AI Search can generate file summaries during indexing",
+      "link": "https://developers.cloudflare.com/changelog/post/2026-11-17-file-summaries/",
+      "date": "Tue, 17 Nov 2026 00:00:00 GMT"
+    },
+    {
+      "title": "Workers, Cloudflare CLI - Cloudflare CLI (cf) 1.0 release candidate",
+      "link": "https://developers.cloudflare.com/changelog/post/2026-11-17-release-candidate/",
+      "date": "Tue, 17 Nov 2026 00:00:00 GMT"
+    },
+    {
+      "title": "Cloudflare One Appliance, Cloudflare One, Cloudflare WAN - Configure a separate WAN gateway for each appliance in a high availability site",
+      "link": "https://developers.cloudflare.com/changelog/post/2026-11-17-appliance-ha-secondary-gateway/",
+      "date": "Tue, 17 Nov 2026 00:00:00 GMT"
+    },
+    {
+      "title": "Cloudflare Images - Optimize original TIFF files with Images",
+      "link": "https://developers.cloudflare.com/changelog/post/2026-11-17-tiff-input-support/",
+      "date": "Tue, 17 Nov 2026 00:00:00 GMT"
+    },
+    {
+      "title": "Risk Score - Investigate user risk events in a timeline",
+      "link": "https://developers.cloudflare.com/changelog/post/2026-11-17-risk-score-timeline-view/",
+      "date": "Tue, 17 Nov 2026 00:00:00 GMT"
+    },
+    {
+      "title": "Artifacts, Workers - Artifacts now supports local development",
+      "link": "https://developers.cloudflare.com/changelog/post/2026-11-16-local-artifacts-development/",
+      "date": "Mon, 16 Nov 2026 00:00:00 GMT"
+    },
+    {
+      "title": "Cloudflare One, Gateway - Cloudflare One adds Periodic Beaconing Traffic detection",
+      "link": "https://developers.cloudflare.com/changelog/post/2026-11-16-periodic-beaconing-traffic-ueba/",
+      "date": "Mon, 16 Nov 2026 00:00:00 GMT"
+    },
+    {
+      "title": "Browser Run - Browser Run Quick Actions now work in local development",
+      "link": "https://developers.cloudflare.com/changelog/post/2026-11-13-quick-actions-local-dev/",
+      "date": "Fri, 13 Nov 2026 18:00:00 GMT"
+    },
+    {
+      "title": "AI Search - Manage AI Search instances in any namespace with Terraform",
+      "link": "https://developers.cloudflare.com/changelog/post/2026-11-13-terraform-namespaces/",
+      "date": "Fri, 13 Nov 2026 00:00:00 GMT"
+    },
+    {
+      "title": "Billing, Workers, Durable Objects - Set spending limits for Workers and Durable Objects",
+      "link": "https://developers.cloudflare.com/changelog/post/2026-11-13-spend-management/",
+      "date": "Fri, 13 Nov 2026 00:00:00 GMT"
+    },
+    {
+      "title": "AI Search, D1 - AI Search supports D1 databases as a data source (beta)",
+      "link": "https://developers.cloudflare.com/changelog/post/2026-11-12-d1-data-source/",
+      "date": "Thu, 12 Nov 2026 12:00:00 GMT"
+    },
+    {
+      "title": "Browser Run - Kitesurf is now open source",
+      "link": "https://developers.cloudflare.com/changelog/post/2026-11-12-kitesurf-open-source/",
+      "date": "Thu, 12 Nov 2026 00:00:00 GMT"
+    },
+    {
+      "title": "D1 - Export D1 databases with virtual tables",
+      "link": "https://developers.cloudflare.com/changelog/post/2026-11-12-d1-export-virtual-tables/",
+      "date": "Thu, 12 Nov 2026 00:00:00 GMT"
+    },
+    {
+      "title": "Realtime - Set custom validity windows for RealtimeKit auth tokens",
+      "link": "https://developers.cloudflare.com/changelog/post/2026-11-12-realtimekit-auth-token-validity/",
+      "date": "Thu, 12 Nov 2026 00:00:00 GMT"
+    },
+    {
+      "title": "Realtime - Add noise cancellation to web apps built on RealtimeKit",
+      "link": "https://developers.cloudflare.com/changelog/post/2026-11-12-realtimekit-noise-cancellation/",
+      "date": "Thu, 12 Nov 2026 00:00:00 GMT"
+    },
+    {
+      "title": "Rules - New hash functions — sha1(), md5(), and sha512()",
+      "link": "https://developers.cloudflare.com/changelog/post/2026-11-12-hash-functions/",
+      "date": "Thu, 12 Nov 2026 00:00:00 GMT"
+    },
+    {
+      "title": "Cloudflare Tunnel, Cloudflare Tunnel for SASE - Cloudflare Tunnel extends URL normalization",
+      "link": "https://developers.cloudflare.com/changelog/post/2026-11-12-cloudflared-matrix-path-parameters/",
+      "date": "Thu, 12 Nov 2026 00:00:00 GMT"
+    },
+    {
+      "title": "WAF - Manage AI Security for Apps with Terraform",
+      "link": "https://developers.cloudflare.com/changelog/post/2026-11-12-ai-security-for-apps-terraform/",
+      "date": "Thu, 12 Nov 2026 00:00:00 GMT"
+    },
+    {
+      "title": "WAF - Payload logging for WAF custom rules",
+      "link": "https://developers.cloudflare.com/changelog/post/2026-11-12-custom-rules-payload-logging/",
+      "date": "Thu, 12 Nov 2026 00:00:00 GMT"
+    },
+    {
+      "title": "Workers AI - EmbeddingGemma 2 now available on Workers AI",
+      "link": "https://developers.cloudflare.com/changelog/post/2026-11-12-embeddinggemma-2-workers-ai/",
+      "date": "Thu, 12 Nov 2026 00:00:00 GMT"
+    },
+    {
+      "title": "Workers AI - Inkling 2 Small now available on Workers AI",
+      "link": "https://developers.cloudflare.com/changelog/post/2026-11-12-inkling-2-small-workers-ai/",
+      "date": "Thu, 12 Nov 2026 00:00:00 GMT"
+    },
+    {
+      "title": "Access, Cloudflare One - GitHub automatically detects leaked Access service tokens",
+      "link": "https://developers.cloudflare.com/changelog/post/2026-11-11-leaked-service-token-recovery/",
+      "date": "Wed, 11 Nov 2026 00:00:00 GMT"
+    },
+    {
+      "title": "API Shield - Prioritize Web Assets operations with metric views",
+      "link": "https://developers.cloudflare.com/changelog/post/2026-11-11-web-assets-metric-views/",
+      "date": "Wed, 11 Nov 2026 00:00:00 GMT"
+    },
+    {
+      "title": "Durable Objects - Improved Request Routing to Durable Objects",
+      "link": "https://developers.cloudflare.com/changelog/post/2026-11-11-durable-objects-request-routing/",
+      "date": "Wed, 11 Nov 2026 00:00:00 GMT"
+    },
+    {
+      "title": "Hyperdrive - Hyperdrive raises limits for connections and configurations",
+      "link": "https://developers.cloudflare.com/changelog/post/2026-11-11-hyperdrive-raised-limits/",
+      "date": "Wed, 11 Nov 2026 00:00:00 GMT"
+    },
+    {
+      "title": "Realtime - Add a collaborative whiteboard to meetings built on RealtimeKit",
+      "link": "https://developers.cloudflare.com/changelog/post/2026-11-11-realtimekit-whiteboard-plugin/",
+      "date": "Wed, 11 Nov 2026 00:00:00 GMT"
+    },
+    {
+      "title": "Cloudflare CLI, Workers - Send custom API headers with Wrangler and Cloudflare CLI",
+      "link": "https://developers.cloudflare.com/changelog/post/2026-11-11-custom-api-headers/",
+      "date": "Wed, 11 Nov 2026 00:00:00 GMT"
+    },
+    {
+      "title": "Workers, Cloudflare CLI - Serve a Worker&apos;s static assets from a URL path like /blog/",
+      "link": "https://developers.cloudflare.com/changelog/post/2026-11-11-static-assets-base-path/",
+      "date": "Wed, 11 Nov 2026 00:00:00 GMT"
+    }
+  ]
+}
