@@ -258,3 +258,13 @@ jobs:
         working-directory: services/ledger
       - run: python3 -m unittest discover -s test -v   # consent gate, HALT, ledger chain across Python and Node, the 9799 service
         working-directory: services/gabriel-voice
+  toda-anchor:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    defaults: { run: { working-directory: services/toda-anchor } }
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with: { node-version: "22" }
+      - run: npm install --no-audit --no-fund
+      - run: npm test

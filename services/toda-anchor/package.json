@@ -1,0 +1,12 @@
+{
+  "name": "noizy-toda-anchor",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Anchor NOIZY ledger heads in TODA files (hash only). Local line now; TODAQ tether after RSP_001's go.",
+  "license": "AGPL-3.0-or-later",
+  "type": "module",
+  "engines": { "node": ">=20 <=25" },
+  "scripts": { "test": "node --test test/*.test.mjs" },
+  "dependencies": { "todajs": "1.4.0" },
+  "devDependencies": { "typescript": "^5.6.0" }
+}
