@@ -1,0 +1,285 @@
+{
+  "checked": "2026-11-27",
+  "versions": {
+    "npm:cloudflare": "7.3.0",
+    "npm:cf": "1.0.0-rc.6",
+    "npm:wrangler": "4.169.0",
+    "npm:create-cloudflare": "2.75.2",
+    "npm:workerd": "1.20261127.1",
+    "npm:miniflare": "4.20260730.0",
+    "npm:@cloudflare/workers-types": "5.20261127.1",
+    "npm:@cloudflare/vite-plugin": "1.70.2",
+    "npm:@cloudflare/vitest-plugin": "1.10.0",
+    "npm:agents": "0.34.1",
+    "npm:@cloudflare/ai-chat": "0.12.3",
+    "npm:@cloudflare/think": "0.24.0",
+    "npm:@cloudflare/sandbox": "1.0.3",
+    "npm:@cloudflare/puppeteer": "2.0.1",
+    "npm:@cloudflare/playwright": "1.4.0",
+    "npm:@cloudflare/containers": "0.3.7",
+    "npm:@cloudflare/flagship": "0.7.0",
+    "npm:@cloudflare/workers-oauth-provider": "1.4.0",
+    "npm:workers-ai-provider": "4.0.1",
+    "npm:@cloudflare/kv-asset-handler": "0.5.1",
+    "npm:@cloudflare/realtimekit": "2.1.0",
+    "pypi:cloudflare": "5.10.0",
+    "pypi:cloudflare-flagship": "0.7.0",
+    "go:github.com/cloudflare/cloudflare-go/v7": "v7.15.0",
+    "terraform:cloudflare/cloudflare": "5.29.0",
+    "github_releases:cloudflare/cloudflared": "2026.11.2",
+    "github_releases:cloudflare/mcp-server-cloudflare": "docs-ai-search@0.5.0",
+    "github_releases:cloudflare/workers-sdk": "wrangler@4.169.0"
+  },
+  "changelog": [
+    {
+      "title": "Rules - Use IP and ASN lists in response-side and other CDN rule filters",
+      "link": "https://developers.cloudflare.com/changelog/post/2026-11-27-ip-asn-lists-cdn-phases/",
+      "date": "Fri, 27 Nov 2026 00:00:00 GMT"
+    },
+    {
+      "title": "Rules - Inspect multipart part headers, preambles, and empty parts",
+      "link": "https://developers.cloudflare.com/changelog/post/2026-11-27-multipart-inspection-fields/",
+      "date": "Fri, 27 Nov 2026 00:00:00 GMT"
+    },
+    {
+      "title": "Rules - Match response cookies by name in Rules expressions",
+      "link": "https://developers.cloudflare.com/changelog/post/2026-11-27-parsed-response-cookies/",
+      "date": "Fri, 27 Nov 2026 00:00:00 GMT"
+    },
+    {
+      "title": "Rules - Sign storage requests with HMAC and automatic UTC dates",
+      "link": "https://developers.cloudflare.com/changelog/post/2026-11-27-sigv4-hmac-date-functions/",
+      "date": "Fri, 27 Nov 2026 00:00:00 GMT"
+    },
+    {
+      "title": "AI Search - Introducing Search for Agents",
+      "link": "https://developers.cloudflare.com/changelog/post/2026-11-25-search-for-agents/",
+      "date": "Wed, 25 Nov 2026 00:00:00 GMT"
+    },
+    {
+      "title": "Basin Pipelines, Basin - Pipelines Sink credentials can now be updated",
+      "link": "https://developers.cloudflare.com/changelog/post/2026-11-25-update-sink-credentials-and-pipelines/",
+      "date": "Wed, 25 Nov 2026 00:00:00 GMT"
+    },
+    {
+      "title": "Billing, Cloudflare CLI, Agents - Activate Cloudflare subscriptions from the CLI and MCP",
+      "link": "https://developers.cloudflare.com/changelog/post/2026-11-25-activate-pay-as-you-go-cli-mcp/",
+      "date": "Wed, 25 Nov 2026 00:00:00 GMT"
+    },
+    {
+      "title": "Cloudflare One Appliance, Cloudflare One, Cloudflare WAN - Reach overlapping remote networks with DNAT translations on Cloudflare One Appliance",
+      "link": "https://developers.cloudflare.com/changelog/post/2026-11-25-appliance-dnat-translations/",
+      "date": "Wed, 25 Nov 2026 00:00:00 GMT"
+    },
+    {
+      "title": "Cloudflare One Appliance, Cloudflare One, Cloudflare WAN - Prioritized traffic now takes effect on congested WAN circuits for Cloudflare One Appliance",
+      "link": "https://developers.cloudflare.com/changelog/post/2026-11-25-appliance-qos-provisioned-bandwidth/",
+      "date": "Wed, 25 Nov 2026 00:00:00 GMT"
+    },
+    {
+      "title": "D1 - D1 Insights index recommendations",
+      "link": "https://developers.cloudflare.com/changelog/post/2026-11-25-d1-index-recommendations/",
+      "date": "Wed, 25 Nov 2026 00:00:00 GMT"
+    },
+    {
+      "title": "Cloudflare Images, Workers - URL-based image optimization in Workers",
+      "link": "https://developers.cloudflare.com/changelog/post/2026-11-25-worker-scoped-url-transformations/",
+      "date": "Wed, 25 Nov 2026 00:00:00 GMT"
+    },
+    {
+      "title": "Workers for Platforms - Dispatch namespace names now follow Worker naming rules",
+      "link": "https://developers.cloudflare.com/changelog/post/2026-11-25-dispatch-namespace-naming-rules/",
+      "date": "Wed, 25 Nov 2026 00:00:00 GMT"
+    },
+    {
+      "title": "Cache - Range requests respect client Accept-Encoding",
+      "link": "https://developers.cloudflare.com/changelog/post/2026-11-24-range-requests-content-encoding/",
+      "date": "Tue, 24 Nov 2026 00:00:00 GMT"
+    },
+    {
+      "title": "Email Service - Email Sending is now available on the Workers Free plan",
+      "link": "https://developers.cloudflare.com/changelog/post/2026-11-24-email-sending-workers-free/",
+      "date": "Tue, 24 Nov 2026 00:00:00 GMT"
+    },
+    {
+      "title": "Cloudflare Fundamentals - Set up two-factor authentication without a password",
+      "link": "https://developers.cloudflare.com/changelog/post/2026-11-24-2fa-enrollment-email-verification/",
+      "date": "Tue, 24 Nov 2026 00:00:00 GMT"
+    },
+    {
+      "title": "Cloudflare Images - Automatic AVIF conversion with Polish",
+      "link": "https://developers.cloudflare.com/changelog/post/2026-11-24-avif-in-polish/",
+      "date": "Tue, 24 Nov 2026 00:00:00 GMT"
+    },
+    {
+      "title": "WAF - Updated prompt logging for AI Security for Apps",
+      "link": "https://developers.cloudflare.com/changelog/post/2026-11-24-ai-security-prompt-logging/",
+      "date": "Tue, 24 Nov 2026 00:00:00 GMT"
+    },
+    {
+      "title": "WAF - WAF Emergency Release - 2026-11-24",
+      "link": "https://developers.cloudflare.com/changelog/post/2026-11-24-emergency-waf-release/",
+      "date": "Tue, 24 Nov 2026 00:00:00 GMT"
+    },
+    {
+      "title": "WAF - WAF Release - Scheduled changes for 2026-12-01",
+      "link": "https://developers.cloudflare.com/changelog/post/scheduled-waf-release/",
+      "date": "Tue, 24 Nov 2026 00:00:00 GMT"
+    },
+    {
+      "title": "Cloudflare CLI - Send feedback from the Cloudflare CLI and MCP",
+      "link": "https://developers.cloudflare.com/changelog/post/2026-11-23-agent-feedback/",
+      "date": "Mon, 23 Nov 2026 00:00:00 GMT"
+    },
+    {
+      "title": "DNS - DNS settings endpoints remove deprecated Foundation DNS boolean",
+      "link": "https://developers.cloudflare.com/changelog/post/2026-11-23-remove-foundation-dns-boolean/",
+      "date": "Mon, 23 Nov 2026 00:00:00 GMT"
+    },
+    {
+      "title": "Cloudflare Images - Expanded support for EXIF, XMP, and IPTC-IIM metadata in Images",
+      "link": "https://developers.cloudflare.com/changelog/post/2026-11-23-expanded-metadata-preservation/",
+      "date": "Mon, 23 Nov 2026 00:00:00 GMT"
+    },
+    {
+      "title": "K2 - K2 metrics in the dashboard and GraphQL Analytics API",
+      "link": "https://developers.cloudflare.com/changelog/post/2026-11-23-k2-metrics/",
+      "date": "Mon, 23 Nov 2026 00:00:00 GMT"
+    },
+    {
+      "title": "Workers for Platforms, Workers - Grant access to Workers in specific dispatch namespaces",
+      "link": "https://developers.cloudflare.com/changelog/post/2026-11-23-namespace-scoped-roles/",
+      "date": "Mon, 23 Nov 2026 00:00:00 GMT"
+    },
+    {
+      "title": "Workers, Durable Objects - CPU and heap profiling for Worker Previews",
+      "link": "https://developers.cloudflare.com/changelog/post/2026-11-23-previews-profiling/",
+      "date": "Mon, 23 Nov 2026 00:00:00 GMT"
+    },
+    {
+      "title": "WAF - Update: WAF Emergency Release - 2026-11-19",
+      "link": "https://developers.cloudflare.com/changelog/post/2026-11-19-emergency-waf-release/#update-2026-11-19T00-00",
+      "date": "Fri, 20 Nov 2026 21:33:51 GMT"
+    },
+    {
+      "title": "Agents - Agents SDK now supports Pi 1.6 with tools that wait without keeping your agent awake",
+      "link": "https://developers.cloudflare.com/changelog/post/2026-11-20-pi-harness-pi-1-6/",
+      "date": "Fri, 20 Nov 2026 00:00:00 GMT"
+    },
+    {
+      "title": "Browser Run - Run custom scripts in Browser Run with /script",
+      "link": "https://developers.cloudflare.com/changelog/post/2026-11-20-script-endpoint/",
+      "date": "Fri, 20 Nov 2026 00:00:00 GMT"
+    },
+    {
+      "title": "Cloudflare Images - Delivery analytics for hosted images",
+      "link": "https://developers.cloudflare.com/changelog/post/2026-11-20-hosted-image-delivery-analytics/",
+      "date": "Fri, 20 Nov 2026 00:00:00 GMT"
+    },
+    {
+      "title": "Radar - CVE pages in Zero Wire",
+      "link": "https://developers.cloudflare.com/changelog/post/2026-11-20-radar-zero-wire-cves/",
+      "date": "Fri, 20 Nov 2026 00:00:00 GMT"
+    },
+    {
+      "title": "WAF - WAF Emergency Release - 2026-11-20",
+      "link": "https://developers.cloudflare.com/changelog/post/2026-11-20-emergency-waf-release/",
+      "date": "Fri, 20 Nov 2026 00:00:00 GMT"
+    },
+    {
+      "title": "Workers for Platforms - Dispatch namespaces can no longer be renamed",
+      "link": "https://developers.cloudflare.com/changelog/post/2026-11-20-dispatch-namespace-rename-removed/",
+      "date": "Fri, 20 Nov 2026 00:00:00 GMT"
+    },
+    {
+      "title": "Browser Run - Capture PDFs, links, scraped elements, and extracted JSON with /snapshot",
+      "link": "https://developers.cloudflare.com/changelog/post/2026-11-19-snapshot-all-formats/",
+      "date": "Thu, 19 Nov 2026 00:00:00 GMT"
+    },
+    {
+      "title": "Durable Objects - Improved Durable Object Reliability During Runtime Updates",
+      "link": "https://developers.cloudflare.com/changelog/post/2026-11-19-durable-objects-runtime-update-reliability/",
+      "date": "Thu, 19 Nov 2026 00:00:00 GMT"
+    },
+    {
+      "title": "Email security, Cloudflare One - Recent searches for Email Security investigations",
+      "link": "https://developers.cloudflare.com/changelog/post/2026-11-19-recent-investigation-searches/",
+      "date": "Thu, 19 Nov 2026 00:00:00 GMT"
+    },
+    {
+      "title": "Cloudflare Images - Gaussian sharpening in Images",
+      "link": "https://developers.cloudflare.com/changelog/post/2026-11-19-configurable-sharpening/",
+      "date": "Thu, 19 Nov 2026 00:00:00 GMT"
+    },
+    {
+      "title": "R2 - View R2 operations as requests per second",
+      "link": "https://developers.cloudflare.com/changelog/post/2026-11-19-r2-requests-per-second/",
+      "date": "Thu, 19 Nov 2026 00:00:00 GMT"
+    },
+    {
+      "title": "Radar - Autonomous system types on Cloudflare Radar",
+      "link": "https://developers.cloudflare.com/changelog/post/2026-11-19-radar-as-types/",
+      "date": "Thu, 19 Nov 2026 00:00:00 GMT"
+    },
+    {
+      "title": "Spectrum - Redesigned Spectrum dashboard",
+      "link": "https://developers.cloudflare.com/changelog/post/2026-11-19-redesigned-dashboard/",
+      "date": "Thu, 19 Nov 2026 00:00:00 GMT"
+    },
+    {
+      "title": "Stream - B-frame detection for Low-Latency HLS live streams",
+      "link": "https://developers.cloudflare.com/changelog/post/2026-11-19-ll-hls-b-frame-warning/",
+      "date": "Thu, 19 Nov 2026 00:00:00 GMT"
+    },
+    {
+      "title": "WAF - WAF Emergency Release - 2026-11-19",
+      "link": "https://developers.cloudflare.com/changelog/post/2026-11-19-emergency-waf-release/",
+      "date": "Thu, 19 Nov 2026 00:00:00 GMT"
+    },
+    {
+      "title": "Spectrum, Containers, Durable Objects, Workers - Inbound TCP and gRPC for Workers and Containers now in public beta",
+      "link": "https://developers.cloudflare.com/changelog/post/2026-11-19-inbound-tcp/",
+      "date": "Thu, 19 Nov 2026 00:00:00 GMT"
+    },
+    {
+      "title": "Workers, Pages - Workers and Pages now keep versions for 30 days",
+      "link": "https://developers.cloudflare.com/changelog/post/2026-11-19-workers-pages-version-retention/",
+      "date": "Thu, 19 Nov 2026 00:00:00 GMT"
+    },
+    {
+      "title": "Cloudflare One, Access - Automatically retrieve SAML IdP signing certificates",
+      "link": "https://developers.cloudflare.com/changelog/post/2026-11-18-saml-idp-certificate-discovery/",
+      "date": "Wed, 18 Nov 2026 00:00:00 GMT"
+    },
+    {
+      "title": "Agent Lee - Attach images, PDFs, and text files to Agent Lee",
+      "link": "https://developers.cloudflare.com/changelog/post/2026-11-18-agent-lee-attachments/",
+      "date": "Wed, 18 Nov 2026 00:00:00 GMT"
+    },
+    {
+      "title": "Hyperdrive, Workers - Hyperdrive-connected PlanetScale databases now available to Cloudflare Startup Program customers",
+      "link": "https://developers.cloudflare.com/changelog/post/2026-11-18-hyperdrive-planetscale-startup-program/",
+      "date": "Wed, 18 Nov 2026 00:00:00 GMT"
+    },
+    {
+      "title": "Hyperdrive - Custom CA and mTLS certificates for Hyperdrive over Workers VPC",
+      "link": "https://developers.cloudflare.com/changelog/post/2026-11-18-hyperdrive-vpc-custom-ca-mtls/",
+      "date": "Wed, 18 Nov 2026 00:00:00 GMT"
+    },
+    {
+      "title": "Cloudflare Images - A new, consistent language across Images interfaces",
+      "link": "https://developers.cloudflare.com/changelog/post/2026-11-18-consistent-optimization-interfaces/",
+      "date": "Wed, 18 Nov 2026 00:00:00 GMT"
+    },
+    {
+      "title": "Rules - Cloud Connector is now generally available",
+      "link": "https://developers.cloudflare.com/changelog/post/2026-11-18-cloud-connector-ga/",
+      "date": "Wed, 18 Nov 2026 00:00:00 GMT"
+    },
+    {
+      "title": "WAF - WAF Emergency Release - 2026-11-18",
+      "link": "https://developers.cloudflare.com/changelog/post/2026-11-18-emergency-waf-release/",
+      "date": "Wed, 18 Nov 2026 00:00:00 GMT"
+    }
+  ]
+}
